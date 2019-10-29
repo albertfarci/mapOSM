@@ -110,7 +110,7 @@ export class MapPage {
   
   initMap() {
     
-    this.map = new Map('map').setView([39.21834898953833,9.1126227435], 10);
+    this.map = new Map('map').setView([39.21834898953833,9.1126227435], 12.5);
 
     tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -137,8 +137,13 @@ export class MapPage {
       this.layerGroup.addLayer(marker([e.latlng.lat, e.latlng.lng], {icon: this.icons.greenIcon}));
               
       this.pointsPath[0]={lat: e.latlng.lat, lng: e.latlng.lng}
+    }else if(!this.pointsPath[1]){
+      
+      this.layerGroup.addLayer(marker([e.latlng.lat, e.latlng.lng], {icon: this.icons.redIcon}));
+              
+      this.pointsPath[1]={lat: e.latlng.lat, lng: e.latlng.lng}
+
     }
-    
     if(this.pointsPath[0] && this.pointsPath[1]) this.pathIsCreated= true;
     
   }

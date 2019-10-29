@@ -28,4 +28,14 @@ export class HomePage {
 
     this.router.navigate(["/tabs/filters"]);
   }
+
+  goToProfile(){
+
+    this.router.navigate(["/tabs/profilo"]);
+  }
+
+  goToPreferiti(){
+
+    this.router.navigate(["/tabs/path"]);
+  }
 }

@@ -1,23 +1,21 @@
 
-<div id="map" style="height:65%;"></div>
+<div id="map" class="map" style="height:65%;"></div>
 
 <ion-content 
 [scrollEvents]="true">
 
     <ion-card *ngIf="!this.pointsPath[0]">
-      <ion-grid>
           <ion-row>
               <ion-col size="2">
                 <img src="/assets/pref-2/green-s.png" alt="" />
               </ion-col>
-              <ion-col size="8" class="padding-text">
+              <ion-col size="6" class="padding-text">
                 Scegli il punto su mappa
               </ion-col>
-              <ion-col size="2">
+              <ion-col size="4">
                   <ion-button (click)="checkGPSPermission()"><ion-icon name="locate"></ion-icon></ion-button>
                 </ion-col>
             </ion-row>
-      </ion-grid>
     </ion-card >
     <ion-card *ngIf="!this.pointsPath[1]">
         <ion-row>
