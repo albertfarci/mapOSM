@@ -40,7 +40,6 @@ export class ProfiloPage {
         anziani: [null,Validators.required],
         disabilita: [null,Validators.required]
       });
-
       
       this.sqlite.create({
         name: 'filters.db',
@@ -66,8 +65,6 @@ export class ProfiloPage {
 
   createDatabase(){
 
-
-    
     this.database.executeSql(`
     CREATE TABLE IF NOT EXISTS filtersProfile(
       rowid INTEGER PRIMARY KEY, 
@@ -110,7 +107,6 @@ export class ProfiloPage {
         })
       })
     })
-
 
   }
 

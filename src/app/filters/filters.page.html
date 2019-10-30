@@ -79,13 +79,95 @@
             
         
     </ion-item>
-
-        <ion-fab *ngIf="formDisabled" vertical="bottom" horizontal="end" slot="fixed">
-            <ion-fab-button>
-                <ion-button  type="submit"><ion-icon name="arrow-forward"></ion-icon></ion-button>
-            </ion-fab-button>
-        </ion-fab>
     
     </form>
+
+    <form [formGroup]="formFilters" >
+        <ion-item class="item">
+                        
+            <ion-grid>
+                <ion-row>
+                    <ion-col size="4" class="ion-text-start">
+                        
+                        <ion-row >
+                            <img style="height:50px" src="/assets/icon/icon3-s.png" alt="" />
+                        </ion-row>
+                        <ion-row >
+                                <ion-toggle class="toggle" formControlName="turisti"></ion-toggle>
+                        </ion-row>
+                        <ion-row >
+                            <ion-label class="label">Turisti</ion-label>
+                        </ion-row>
+                    </ion-col>
+                    <ion-col size="4" class="ion-text-center" >
+                        <ion-row >
+                            <img style="height:50px" src="/assets/icon/icon4-s.png" alt="" />
+                        </ion-row>
+                        <ion-row >
+                            <ion-toggle class="toggle"  formControlName="fitness"></ion-toggle>
+                        </ion-row>
+                        <ion-row >
+                            <ion-label class="label">Fitness</ion-label>
+                        </ion-row>
+                    
+                    </ion-col>
+                    <ion-col size="4" class="ion-text-ends" >
+                        <ion-row >
+                            <img style="height:50px" src="/assets/icon/icon5-s.png" alt="" />
+                        </ion-row>
+                        <ion-row >
+                            <ion-toggle class="toggle"  formControlName="famiglia"></ion-toggle>
+                        </ion-row>
+                        <ion-row >
+                            <ion-label class="label">Famiglia</ion-label>
+                        </ion-row>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+            
+        </ion-item>
+    
+        <ion-item class="item">
+                        
+            <ion-grid>
+                <ion-row>
+                    <ion-col size="4" class="ion-text-start">
+                        
+                        <ion-row >
+                            <img style="height:50px" src="/assets/icon/icon6-s.png" alt="" />
+                        </ion-row>
+                        <ion-row >
+                                <ion-toggle class="toggle" formControlName="anziani"></ion-toggle>
+                        </ion-row>
+                        <ion-row >
+                            <ion-label class="label">Età avanzata</ion-label>
+                        </ion-row>
+                    </ion-col>
+                    <ion-col size="4" class="ion-text-center" >
+                        <ion-row >
+                            <img style="height:50px" src="/assets/icon/icon7-s.png" alt="" />
+                        </ion-row>
+                        <ion-row >
+                            <ion-toggle class="toggle"  formControlName="disabilita"></ion-toggle>
+                        </ion-row>
+                        <ion-row >
+                            <ion-label class="label">Disabilità</ion-label>
+                        </ion-row>
+                    
+                    </ion-col>
+                    
+                </ion-row>
+            </ion-grid>
+            
+        </ion-item> 
+
+            <ion-fab *ngIf="formDisabled" vertical="bottom" horizontal="end" slot="fixed">
+                <ion-fab-button>
+                    <ion-button  type="submit"><ion-icon name="arrow-forward"></ion-icon></ion-button>
+                </ion-fab-button>
+            </ion-fab>
+        
+    </form>
+
     </div>
 </ion-content>
