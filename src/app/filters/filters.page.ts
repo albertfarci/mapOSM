@@ -33,19 +33,16 @@ export class FiltersPage {
     public filterService: FilterListService,
     private sqlite: SQLite,
     private toast: Toast) {
+      
       this.formModalitaFilters = this.formBuilder.group({
         piedi: [null,Validators.required],
         bici: [null,Validators.required],
-        macchina: [null,Validators.required],
-      });
-
-      
-      this.formFilters = this.formBuilder.group({
-        turisti: [null,Validators.required],
-        fitness: [null,Validators.required],
-        famiglia: [null,Validators.required],
-        anziani: [null,Validators.required],
-        disabilita: [null,Validators.required]
+        macchina: [null],
+        turisti: [null],
+        fitness: [null],
+        famiglia: [null],
+        anziani: [null],
+        disabilita: [null]
       });
 
       
@@ -92,18 +89,18 @@ export class FiltersPage {
               toast => {
                 console.log(toast);
             })
-            this.formFilters.controls.turisti.setValue(JSON.parse(resultSelect.rows.item(0).turisti))
-            this.formFilters.controls.fitness.setValue(JSON.parse(resultSelect.rows.item(0).fitness))
-            this.formFilters.controls.famiglia.setValue(JSON.parse(resultSelect.rows.item(0).famiglia))
-            this.formFilters.controls.anziani.setValue(JSON.parse(resultSelect.rows.item(0).anziani))
-            this.formFilters.controls.disabilita.setValue(JSON.parse(resultSelect.rows.item(0).disabilita))
+            this.formModalitaFilters.controls.turisti.setValue(JSON.parse(resultSelect.rows.item(0).turisti))
+            this.formModalitaFilters.controls.fitness.setValue(JSON.parse(resultSelect.rows.item(0).fitness))
+            this.formModalitaFilters.controls.famiglia.setValue(JSON.parse(resultSelect.rows.item(0).famiglia))
+            this.formModalitaFilters.controls.anziani.setValue(JSON.parse(resultSelect.rows.item(0).anziani))
+            this.formModalitaFilters.controls.disabilita.setValue(JSON.parse(resultSelect.rows.item(0).disabilita))
             
           }else{
-            this.formFilters.controls.turisti.setValue(false)
-            this.formFilters.controls.fitness.setValue(false)
-            this.formFilters.controls.famiglia.setValue(false)
-            this.formFilters.controls.anziani.setValue(false)
-            this.formFilters.controls.disabilita.setValue(false)
+            this.formModalitaFilters.controls.turisti.setValue(false)
+            this.formModalitaFilters.controls.fitness.setValue(false)
+            this.formModalitaFilters.controls.famiglia.setValue(false)
+            this.formModalitaFilters.controls.anziani.setValue(false)
+            this.formModalitaFilters.controls.disabilita.setValue(false)
           }
         })
         .catch((e)=>{
@@ -115,6 +112,7 @@ export class FiltersPage {
       })
   
     }
+
   setFiltersPath(){
     if(this.formModalitaFilters.controls.piedi.value==true){
       
