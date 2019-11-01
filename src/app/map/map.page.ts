@@ -109,8 +109,8 @@ export class MapPage {
   }
   
   initMap() {
-    
-    this.map = new Map('map').setView([39.21834898953833,9.1126227435], 12.5);
+    console.log();
+    this.map = new Map('map-page').setView([39.21834898953833,9.1126227435], 12.5);
 
     tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

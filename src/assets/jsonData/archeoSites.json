@@ -1,0 +1,46 @@
+[
+    {
+        "_id": "5820aceb19538c3d0b2fdba0",
+        "link": "http://it.dbpedia.org/resource/Anfiteatro_romano_di_Cagliari",
+        "label": "Anfiteatro romano di Cagliari",
+        "abstract": "L'anfiteatro romano di Cagliari è un edificio di origine romana, situato a Cagliari.",
+        "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Roman_Amphitheatre_of_Cagliari.jpg?width=300",
+        "lat": "39.2241",
+        "long": "9.11341",
+        "photo": [
+            "https://upload.wikimedia.org/wikipedia/it/thumb/e/e4/Ricostruzione_anfiteatro_romano_%28Cagliari%29.jpg/800px-Ricostruzione_anfiteatro_romano_%28Cagliari%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Cagliari_Roman_Amphitheatre_2003.jpg/800px-Cagliari_Roman_Amphitheatre_2003.jpg",
+            "https://upload.wikimedia.org/wikipedia/it/2/2f/AnfiteatroRomanoCA2014.jpg"
+        ]
+    },
+    {
+        "_id": "5820aceb19538c3d0b2fdba2",
+        "link": "http://it.dbpedia.org/resource/Necropoli_di_Tuvixeddu",
+        "label": "Necropoli di Tuvixeddu",
+        "abstract": "La necropoli di Tuvixeddu è la più grande necropoli fenicio-punica ancora esistente. Si estende all'interno della città di Cagliari, su tutto il colle omonimo, ed è compresa fra il rione cresciuto lungo il viale Sant'Avendrace e quello di via Is Maglias.Il nome tuvixeddu significa \"colle dei piccoli fori\", dal termine sardo tuvu per \"cavità\", \"vuoto\", \"buco\", dovuto proprio alla presenza delle numerose tombe scavate nella roccia calcarea.",
+        "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Necropoli_di_Tuvixeddu.jpg?width=300",
+        "lat": 39.22928915,
+        "long": 9.10293260191218,
+        "photo": [
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Tuvixeddu_Sant%27Avendrace.jpg/800px-Tuvixeddu_Sant%27Avendrace.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Corredo_funebre_Tuvixeddu.jpg/800px-Corredo_funebre_Tuvixeddu.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Tuvixeddu_model.jpg/800px-Tuvixeddu_model.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/e/e2/Cagliari%2C_necropoli_di_et%C3%A0_punica_di_Tuvixeddu_-_tomba_dell%27Ureo.jpg"
+        ]
+    },
+    {
+        "_id": "5820aceb19538c3d0b2fdba1",
+        "link": "http://it.dbpedia.org/resource/Villa_di_Tigellio",
+        "label": "Villa di Tigellio",
+        "abstract": "La cosiddetta Villa di Tigellio è un complesso di rovine situato nell'omonima via, in zona Stampace a Cagliari.In realtà dopo alcuni studi archeologici ci si è accorti che non si tratta di una sola abitazione ma di ben tre edifici, due dei quali hanno ancora le basi strutturali ben visibili. La prima è denominata Casa del Tablino, per i suoi numerosi affreschi che circondano la zona di ricevimento; la seconda, invece, è nota come Casa degli Stucchi, per i suoi notevoli abbellimenti di cui è rimasta traccia.Queste costruzioni sono una delle presenze di edilizia privata romana a Cagliari.",
+        "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Villa_Tigellio_CA.jpg?width=300",
+        "lat": 39.2206044,
+        "long": 9.10841572761019,
+        "photo": [
+            "https://upload.wikimedia.org/wikipedia/it/thumb/b/b9/Villa_di_Tigellio.jpg/800px-Villa_di_Tigellio.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/VillaTigellio_LadyHella79.jpg/800px-VillaTigellio_LadyHella79.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Antichit%C3%A0_e_modernit%C3%A0.JPG/800px-Antichit%C3%A0_e_modernit%C3%A0.JPG",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Villa_di_Tigellio_nell%27antica_Caralis.JPG/800px-Villa_di_Tigellio_nell%27antica_Caralis.JPG"
+        ]
+    }
+]

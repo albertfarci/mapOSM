@@ -58,6 +58,16 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'pois_view',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../pois_view/pois_view.module').then(m => m.PoisViewPageModule)
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full'

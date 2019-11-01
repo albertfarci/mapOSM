@@ -1,0 +1,502 @@
+[
+    {
+        "_id": "579a644740ad12753c6e6ece",
+        "category": "Stabilimenti Balneari",
+        "title": "Ottagono",
+        "description": "",
+        "phone": "070 373817",
+        "address": "Viale Poetto, 09126 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2100152,
+        "longitude": 9.169659
+    },
+    {
+        "_id": "579a644740ad12753c6e6ecf",
+        "category": "Ristoranti",
+        "title": "La Boheme",
+        "description": "",
+        "phone": "070 482444",
+        "address": "Via Enrico Lai 48, 09128 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2242588,
+        "longitude": 9.1235846
+    },
+    {
+        "_id": "579a644740ad12753c6e6ed1",
+        "category": "Ristoranti",
+        "title": "La Stella Marina di Montecristo",
+        "description": "",
+        "phone": "347 5788964",
+        "address": "Via Sardegna 140, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2130328,
+        "longitude": 9.115109
+    },
+    {
+        "_id": "579a644740ad12753c6e6ed2",
+        "category": "Ristoranti",
+        "title": "Locanda Dei Buoni e Dei Cattivi",
+        "description": "",
+        "phone": "070 7345223",
+        "address": "Via Vittorio Veneto 96, 09123 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2243018,
+        "longitude": 9.1038239
+    },
+    {
+        "_id": "579a644740ad12753c6e6ed3",
+        "category": "Ristoranti",
+        "title": "Lo Scoglio",
+        "description": "",
+        "phone": "070 371927",
+        "address": "Via Borgo Sant'elia, 09126 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.1902269,
+        "longitude": 9.1419126
+    },
+    {
+        "_id": "579a644840ad12753c6e6ed4",
+        "category": "Ristoranti - Trattorie ed Osterie",
+        "title": "La Pirata",
+        "description": "",
+        "phone": "070 658474",
+        "address": "Viale Regina Margherita 22, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2132026,
+        "longitude": 9.1157496
+    },
+    {
+        "_id": "579d07478433d23e0a8998a2",
+        "category": "Ristoranti",
+        "title": "Ristorante il Malandrino",
+        "description": "",
+        "phone": "070 2346986",
+        "address": "Via Barcellona 55/57, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2152623,
+        "longitude": 9.1138352
+    },
+    {
+        "_id": "579d07478433d23e0a8998a3",
+        "category": "Ristoranti",
+        "title": "Man. Gia",
+        "description": "",
+        "phone": "070 2041940",
+        "address": "Via Goffredo Mameli 196, 09123 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2213616,
+        "longitude": 9.1042997
+    },
+    {
+        "_id": "579d07478433d23e0a8998a8",
+        "category": "Ristoranti",
+        "title": "La Paillote",
+        "description": "",
+        "phone": "070 371584",
+        "address": "Localita Cala Fighera, 09126 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.187017,
+        "longitude": 9.152223
+    },
+    {
+        "_id": "579d07478433d23e0a8998a9",
+        "category": "Ristoranti",
+        "title": "La Parranda",
+        "description": "",
+        "phone": "070 42155",
+        "address": "Via Francesco Salaris, 09128 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2256196,
+        "longitude": 9.1244491
+    },
+    {
+        "_id": "579d07478433d23e0a8998aa",
+        "category": "Ristoranti",
+        "title": "Scacco Matto y Sueno",
+        "description": "",
+        "phone": "070 3481256",
+        "address": "Localita Via Darwin, 09126 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": "",
+        "longitude": ""
+    },
+    {
+        "_id": "579d07478433d23e0a8998ab",
+        "category": "Ristoranti",
+        "title": "La Tana Del Gusto",
+        "description": "",
+        "phone": "070 7543153",
+        "address": "Via Giovanni Battista Pergolesi 1, 09128 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2226639,
+        "longitude": 9.1273934
+    },
+    {
+        "_id": "579d07478433d23e0a8998ac",
+        "category": "Ristoranti",
+        "title": "Sardegna 85",
+        "description": "",
+        "phone": "070 657902",
+        "address": "Via Sardegna 85, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2141642,
+        "longitude": 9.1133764
+    },
+    {
+        "_id": "579d07478433d23e0a8998af",
+        "category": "Ristoranti",
+        "title": "Ristorante 51",
+        "description": "",
+        "phone": "070 8586629",
+        "address": "Via Santa Croce 51, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2192911,
+        "longitude": 9.1148661
+    },
+    {
+        "_id": "579d07478433d23e0a8998b0",
+        "category": "Ristoranti",
+        "title": "San Cortes",
+        "description": "",
+        "phone": "070 680943",
+        "address": "Corso Vittorio Emanuele ii 56, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.217769,
+        "longitude": 9.1118996
+    },
+    {
+        "_id": "579d07478433d23e0a8998b2",
+        "category": "Ristoranti",
+        "title": "Saint Remy",
+        "description": "",
+        "phone": "070 657377",
+        "address": "Via San Salvatore da Horta 16, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2150232,
+        "longitude": 9.1166663
+    },
+    {
+        "_id": "579d07478433d23e0a8998b3",
+        "category": "Ristoranti",
+        "title": "Su Cumbidu s.a.s. di Giovanni Dedoni & c.",
+        "description": "",
+        "phone": "070 660017",
+        "address": "Via Napoli 13, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2142738,
+        "longitude": 9.112415
+    },
+    {
+        "_id": "579d07478433d23e0a8998b4",
+        "category": "Ristoranti",
+        "title": "Metzcal",
+        "description": "",
+        "phone": "070 670151",
+        "address": "Piazza Yenne 15, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2179075,
+        "longitude": 9.1140044
+    },
+    {
+        "_id": "579d07478433d23e0a8998b5",
+        "category": "Ristoranti",
+        "title": "Owl S.n.c. di Carla Cabras & c.",
+        "description": "",
+        "phone": "070 673158",
+        "address": "Via Principe Amedeo 14, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2152592,
+        "longitude": 9.1153917
+    },
+    {
+        "_id": "579d07478433d23e0a8998b8",
+        "category": "Ristoranti",
+        "title": "Ristorante Retro Burger",
+        "description": "",
+        "phone": "388 8506085",
+        "address": "Via Domenico Alberto Azuni 98, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2185282,
+        "longitude": 9.1119895
+    },
+    {
+        "_id": "579d07478433d23e0a8998b9",
+        "category": "Ristoranti",
+        "title": "Prima Classe",
+        "description": "",
+        "phone": "070 2041536",
+        "address": "Via Sardegna 12, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2128575,
+        "longitude": 9.1154808
+    },
+    {
+        "_id": "579d07478433d23e0a8998ba",
+        "category": "Ristoranti",
+        "title": "Roben S.r.l.",
+        "description": "",
+        "phone": "070 283969",
+        "address": "Via San Simone 60, 09122 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.232179,
+        "longitude": 9.091201
+    },
+    {
+        "_id": "579d07478433d23e0a8998bb",
+        "category": "Ristoranti",
+        "title": "Ristorante il Viale S.r.l.s.",
+        "description": "",
+        "phone": "340 5627934",
+        "address": "Viale Trieste 120, 09123 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2207534,
+        "longitude": 9.1029044
+    },
+    {
+        "_id": "5a30435953dfc1e3794b016e",
+        "category": "Ristoranti",
+        "title": "Mangiogiusto",
+        "description": "",
+        "phone": "",
+        "address": "Via Venti Settembre 51, CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.0096943,
+        "longitude": 9.0034942
+    },
+    {
+        "_id": "5a30435953dfc1e3794b016f",
+        "category": "Ristoranti",
+        "title": "Ginger Fusion Restaurant",
+        "description": "",
+        "phone": "",
+        "address": "Viale dei Giornalisti, CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2279622,
+        "longitude": 9.0975191
+    },
+    {
+        "_id": "5a30435953dfc1e3794b0170",
+        "category": "Ristoranti",
+        "title": "Ristorante Kilimangiaro",
+        "description": "",
+        "phone": "",
+        "address": "Via della Pineta 67, CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2116103,
+        "longitude": 9.130807
+    },
+    {
+        "_id": "5a30435953dfc1e3794b0171",
+        "category": "Ristoranti",
+        "title": "Mytilus Bistrot",
+        "description": "",
+        "phone": "",
+        "address": "Viale Bonaria 112, CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2106842,
+        "longitude": 9.1208968
+    },
+    {
+        "_id": "5a30435953dfc1e3794b0172",
+        "category": "Ristoranti",
+        "title": "F.f. Ristorazione S.r.l.s.",
+        "description": "",
+        "phone": "",
+        "address": "Via Cavour Camillo Benso 83, CAGLIARI,(CA),SARDEGNA",
+        "latitude": "",
+        "longitude": ""
+    },
+    {
+        "_id": "5a30435953dfc1e3794b0173",
+        "category": "Ristoranti",
+        "title": "Miro's Street Food",
+        "description": "",
+        "phone": "",
+        "address": "Viale Regina Margherita 27, CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2127192,
+        "longitude": 9.1160753
+    },
+    {
+        "_id": "5a3437dac0fa416c21c74719",
+        "category": "Ristoranti",
+        "title": "Yang Guang di Liao Shengguo s.a.s",
+        "description": "",
+        "phone": "",
+        "address": "Viale Diaz Armando 141, CAGLIARI,(CA),SARDEGNA",
+        "latitude": "",
+        "longitude": ""
+    },
+    {
+        "_id": "5a455b5b524b69a21f00f83f",
+        "category": "Ristoranti",
+        "title": "F.lli Aresu di Aresu Roberta - Massimo e Ivan Snc",
+        "description": "",
+        "phone": "",
+        "address": "Viale del Poetto 170, CAGLIARI,(CA),SARDEGNA",
+        "latitude": "",
+        "longitude": ""
+    },
+    {
+        "_id": "5790e056604b53f90782cc2a",
+        "category": "Ristoranti",
+        "title": "La Pirata 2 la Vendetta",
+        "description": "La Pirata 2 La Vendetta di Cagliari mette a disposizione della sua ricercata ed esigente clientela il meglio della cucina tradizionale sarda",
+        "phone": "070 605901",
+        "address": "V. Marina Piccola 1, 09126 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.193599,
+        "longitude": 9.1567572
+    },
+    {
+        "_id": "5790e056604b53f90782cc2c",
+        "category": "Ristoranti",
+        "title": "Ristorante la Peonia",
+        "description": "Il ristorante La Peonia è situato nel centro di Cagliari e offre ai suoi clienti le migliori specialità della cucina cinese e thailandese.",
+        "phone": "070 6402281",
+        "address": "V. Roma 177, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2161271,
+        "longitude": 9.1088003
+    },
+    {
+        "_id": "5790e056604b53f90782cc2d",
+        "category": "Pizzerie",
+        "title": "Da Massimo Pizzeria e Bisteccheria",
+        "description": "Da Massimo è una pizzeria e bisteccheria situata nel cuore di Cagliari, nello storico e pittoresco quartiere di Stampace.",
+        "phone": "070 3111130",
+        "address": "V. Ospedale 20, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2195938,
+        "longitude": 9.1118686
+    },
+    {
+        "_id": "5790e056604b53f90782cc2e",
+        "category": "Ristoranti",
+        "title": "Ristorante da Pericle il Libraio",
+        "description": "Vi paghiamo il taxi per venire da Pericle Il Libraio a Cagliari, la cifra sarà detratta dal conto e vi verrà regalato un voucher per riportarvi in taxi a casa",
+        "phone": "070 684416",
+        "address": "V. Roma 51, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2133621,
+        "longitude": 9.1137633
+    },
+    {
+        "_id": "57927b48e6e460c249fc6c7c",
+        "category": "Ristoranti",
+        "title": "Galilei",
+        "description": "",
+        "phone": "070 491715",
+        "address": "Piazza Galileo Galilei 28, 09128 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2203831,
+        "longitude": 9.1228857
+    },
+    {
+        "_id": "57927b48e6e460c249fc6c7e",
+        "category": "Ristoranti",
+        "title": "La Muraglia",
+        "description": "",
+        "phone": "070 497242",
+        "address": "Via San Benedetto 39, 09129 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2240583,
+        "longitude": 9.1286082
+    },
+    {
+        "_id": "57927b48e6e460c249fc6c80",
+        "category": "Ristoranti",
+        "title": "Olympic Beijing di Zhou Shiran",
+        "description": "",
+        "phone": "070 657902",
+        "address": "Via Sardegna 36, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2147897,
+        "longitude": 9.112403
+    },
+    {
+        "_id": "57927b48e6e460c249fc6c81",
+        "category": "Ristoranti",
+        "title": "Capitolodue",
+        "description": "",
+        "phone": "070 4510719",
+        "address": "Corso Vittorio Emanuele ii 199, 09123 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.219141,
+        "longitude": 9.1097075
+    },
+    {
+        "_id": "57927b48e6e460c249fc6c83",
+        "category": "Ristoranti",
+        "title": "Corallo",
+        "description": "",
+        "phone": "070 668027",
+        "address": "Via Napoli 4, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2142789,
+        "longitude": 9.1123507
+    },
+    {
+        "_id": "57927b48e6e460c249fc6c84",
+        "category": "Ristoranti",
+        "title": "Basilio",
+        "description": "",
+        "phone": "070 480330",
+        "address": "Satta, 09128 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2186619,
+        "longitude": 9.1229015
+    },
+    {
+        "_id": "57927b48e6e460c249fc6c86",
+        "category": "Ristoranti",
+        "title": "Hotel Ristorante Flora Srl",
+        "description": "",
+        "phone": "070 664735",
+        "address": "V. Sassari 47, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2168553,
+        "longitude": 9.1105212
+    },
+    {
+        "_id": "57927b48e6e460c249fc6c87",
+        "category": "Ristoranti",
+        "title": "Lapola",
+        "description": "",
+        "phone": "070 650604",
+        "address": "Vico Barcellona 10, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2157156,
+        "longitude": 9.1135278
+    },
+    {
+        "_id": "57927b48e6e460c249fc6c89",
+        "category": "Ristoranti",
+        "title": "Lo Zodiaco",
+        "description": "",
+        "phone": "070 670333",
+        "address": "Via Sassari 59, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2170584,
+        "longitude": 9.1107885
+    },
+    {
+        "_id": "57927b48e6e460c249fc6c8b",
+        "category": "Ristoranti",
+        "title": "Ristorante Lord Nelson",
+        "description": "",
+        "phone": "070 291050",
+        "address": "Via Tevere 2, 09122 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.231785,
+        "longitude": 9.0968794
+    },
+    {
+        "_id": "57927b48e6e460c249fc6c8d",
+        "category": "Ristoranti",
+        "title": "My Flower",
+        "description": "",
+        "phone": "070 480338",
+        "address": "Via Dante Alighieri 230, 09128 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2138341,
+        "longitude": 9.1240618
+    },
+    {
+        "_id": "57927b48e6e460c249fc6c8e",
+        "category": "Ristoranti",
+        "title": "Ammentos",
+        "description": "",
+        "phone": "070 651075",
+        "address": "Via Sassari 120, 09124 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2176762,
+        "longitude": 9.1111877
+    },
+    {
+        "_id": "5795d95bf5b749207fca66b6",
+        "category": "Ristoranti",
+        "title": "Gattoarancio Srl",
+        "description": "",
+        "phone": "070 282226",
+        "address": "Viale Trieste 84, 09123 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2196973,
+        "longitude": 9.1036361
+    },
+    {
+        "_id": "5795d95bf5b749207fca66b7",
+        "category": "Ristoranti",
+        "title": "Gurru Pizza",
+        "description": "",
+        "phone": "070 4525216",
+        "address": "Via San Benedetto 32, 09129 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2234478,
+        "longitude": 9.1279102
+    },
+    {
+        "_id": "5795d95bf5b749207fca66b8",
+        "category": "Ristoranti",
+        "title": "Ikka Sushi Srl",
+        "description": "",
+        "phone": "070 4614262",
+        "address": "Viale Bonaria 100, 09125 - CAGLIARI,(CA),SARDEGNA",
+        "latitude": 39.2107644,
+        "longitude": 9.120642
+    }
+]

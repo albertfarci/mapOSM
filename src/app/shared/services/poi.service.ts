@@ -1,11 +1,32 @@
 import { Injectable } from '@angular/core';
 import * as monuments from "../../../assets/jsonData/monuments.json";
+import * as archeoSites from "../../../assets/jsonData/archeoSites.json";
+import * as gardens from "../../../assets/jsonData/gardens.json";
+import * as museums from "../../../assets/jsonData/museums.json";
+import * as restaurants from "../../../assets/jsonData/restaurants.json";
+
 
 @Injectable()
 export class PoiService {
 
     getMonuments(){
         return JSON.stringify(monuments)
+    }
+
+    getArcheoSites(){
+        return JSON.stringify(archeoSites)
+    }
+
+    getGardens(){
+        return JSON.stringify(gardens)
+    }
+
+    getMuseums(){
+        return JSON.stringify(museums)
+    }
+
+    getRestaurants(){
+        return JSON.stringify(restaurants)
     }
 
 }

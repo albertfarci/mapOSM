@@ -38,4 +38,9 @@ export class HomePage {
 
     this.router.navigate(["/tabs/path"]);
   }
+
+  goToPoisView(){
+
+    this.router.navigate(["/tabs/pois_view"]);
+  }
 }
