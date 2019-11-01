@@ -1,0 +1,29 @@
+[
+    {
+        "_id": "5820ae38fd013b540be3ee80",
+        "link": "http://it.dbpedia.org/resource/Giardino_sotto_le_mura",
+        "label": "Giardino sotto le mura",
+        "abstract": "Il giardino sotto le mura è un'area verde nel quartiere storico Villanova, a Cagliari. Situato lungo Viale Regina Elena, è stato inaugurato il 28 Marzo 2014, come naturale prolungamento della passeggiata coperta sotto il bastione di Saint Remy, al quale è collegato con un ascensore.Alla sua realizzazione ha partecipato anche lo scultore Pinuccio Sciola con la creazione di sette opere da esterno. Fra queste,  quattro sculture, riguardanti il rapporto tra l'uomo e la città ed il concetto di comunità urbana, rappresentano le sfaccettature di Cagliari nell'interpretazione dell'artista: la città arroccata di Castello, la città sommersa di Santa Igia (capitale del giudicato di Calari), la città del sale con i suoi cumuli piramidali e quella che potrebbe essere la Cagliari futuribile.",
+        "image": "",
+        "lat": 39.21757175,
+        "long": 9.11710053695848
+    },
+    {
+        "_id": "5820ae38fd013b540be3ee81",
+        "link": "http://it.dbpedia.org/resource/Monte_Urpinu_(parco)",
+        "label": "Monte Urpinu (parco)",
+        "abstract": "Monte Urpinu è un parco urbano di Cagliari, che si trova nell'omonimo quartiere.Per secoli dominato da natura selvaggia, abitato da animali come le volpi, da cui il nome Urpinu, che in sardo significa Volpino, nell'Ottocento i proprietari, i Sanjust di Teulada, piantano numerosi pini d'aleppo.Durante il fascismo il colle viene acquistato dal Comune di Cagliari e dichiarato primo parco urbano della città.Tuttavia la proprietà comunale è solo parziale, e parte del colle viene adibito a cava e un'altra, durante la guerra fredda, a base militare, con numerosi serbatoi di carburante collegati, tramite condotte, al porto e all'aeroporto.Negli anni ottanta il comune pratica un'importante riqualificazione del parco, con rimboschimento e chiusura dell'area con recinzione.Oggi il parco si estende per 350.000 m², che diventeranno di più con la dismissione dell'area militare, con suggestivi punti di vita su Cagliari e il Campidano, lo stagno di Molentargius e la spiaggia del Poetto (Su Poettu). Il Viale Europa lo percorre sulla cresta in tutta la sua lunghezza.Le specie botaniche più diffuse, non tutte spontanee ma adatte al clima mediterraneo caldo e semiarido e al suolo roccioso calcareo, sono il pino d'Aleppo, l'olivastro, il carrubo, il leccio, il lentisco, l'euforbia arborea, l'alimo, l'alaterno, la fillirea, il bagolaro, il pino delle Canarie.",
+        "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Panorama_of_Cagliari_from_the_hill_and_park_of_Monte_Urpinu.jpg?width=300",
+        "lat": 39.215513,
+        "long": 9.1344761296399
+    },
+    {
+        "_id": "5820ae38fd013b540be3ee7f",
+        "link": "http://it.dbpedia.org/resource/Giardini_Pubblici_(Cagliari)",
+        "label": "Giardini Pubblici (Cagliari)",
+        "abstract": "I giardini pubblici di Cagliari sono un parco urbano situati al confine tra il quartiere La Vega ed il quartiere Castello, il più antico della città. Sorgono su un'area che il Comune di Cagliari acquistò nel 1840, e furono edificati sotto il regno dei Savoia. Ampi poco meno di 2 ettari, ospitano l'edificio della Galleria comunale d'arte di Cagliari, che una volta era una polveriera dell'arsenale di Cagliari, e fino al 2005 erano presenti due enormi cannoni risalenti al periodo di guerra, proprio all'interno del parco. Sono presenti una sessantina di piante tutte centenarie, piante esotiche, palme, e due ficus magnoloidi di oltre 125 anni.I lavori del 2005, costati circa un milione di euro, hanno permesso di apportare diverse migliorie ai giardini, come le due vasche d'acqua con fontane, la ristrutturazione dell'antica passeggiata centrale lunga 300 metri che era andata distrutta in diverse parti, l'impianto idrico completamente nuovo ed è stato ricavato uno spazio dove sorgerà il Museo d'arte contemporanea.",
+        "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Cagliari_Giardini_pubblici.jpg?width=300",
+        "lat": 39.2245765,
+        "long": 9.11697915948625
+    }
+]
