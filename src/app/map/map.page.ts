@@ -109,7 +109,6 @@ export class MapPage {
   }
   
   initMap() {
-    console.log();
     this.map = new Map('map-page').setView([39.21834898953833,9.1126227435], 12.5);
 
     tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -149,12 +148,18 @@ export class MapPage {
   }
 
   getShowPath(){
+    this.map.fitBounds([
+      [this.pointsPath[0].lat, this.pointsPath[0].lng],
+      [this.pointsPath[1].lat, this.pointsPath[1].lng]
+    ]);
     let pointStart= this.pointsPath[0].lat + "," +this.pointsPath[0].lng
     let pointEnd= this.pointsPath[1].lat + "," +this.pointsPath[1].lng
-    for (let index = 0; index < this.filterListService.getFilterObject().length; index++) {
-      console.log(this.filterListService.getFilterObject()[index])
-      const element = this.filterListService.getFilterObject()[index];
-      this.pathService.getPath(pointStart,pointEnd, element)
+    const elements = Object.keys(this.paths)
+    for (let index = 0; index < Object.keys(this.paths).length; index++) {
+      //console.log(this.filterListService.getFilterObject()[index])
+      
+      //const element = this.filterListService.getFilterObject()[index];
+      this.pathService.getPath(pointStart,pointEnd, elements[index])
       .subscribe(
           posts => {
             let newGeometry = posts.geometry.replace("[","");
@@ -201,7 +206,7 @@ export class MapPage {
             }));
 
             this.pathCreated.push({
-              "filter": this.paths[element.id],
+              "filter": this.paths[elements[index]],
               "type": "LineString", 
               "coordinates": geometryArray2Dim
             })
@@ -257,8 +262,6 @@ export class MapPage {
 
   pathSelected($event){
 
-    console.log(this.layerGroup)
-
     this.map.removeLayer(this.layerGroup)
     
     this.layerGroup = new LayerGroup();
@@ -268,8 +271,6 @@ export class MapPage {
     this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], {icon: this.icons.redIcon}));
     
     //this.map.clearLayers()
-
-    console.log($event.detail.value)
 
     this.pathCreated.filter(x => x.filter.value == $event.detail.value)
     .map(x => {
@@ -327,7 +328,6 @@ export class MapPage {
   requestGPSPermission() {
     this.locationAccuracy.canRequest().then((canRequest: boolean) => {
       if (canRequest) {
-        console.log("4");
       } else {
         //Show 'GPS Permission Request' dialogue
         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
