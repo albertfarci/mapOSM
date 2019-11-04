@@ -1,27 +1,20 @@
 
-<div id="map-page" class="map-page" style="height:65%;"></div>
+<div id="map-page" class="map-page"></div>
 
 <ion-content 
-[scrollEvents]="true">
-
-    <ion-card *ngIf="!this.pointsPath[0]">
+[scrollEvents]="true" >
+    <ion-card *ngIf="!this.pointsPath[0]" class="card">
           <ion-row>
-              <ion-col size="2">
-                <img src="/assets/pref-2/green-s.png" alt="" />
-              </ion-col>
-              <ion-col size="6" class="padding-text">
+              <ion-col size="9" class="padding-text">
                 Scegli il punto su mappa
               </ion-col>
-              <ion-col size="4">
+              <ion-col size="3">
                   <ion-button (click)="checkGPSPermission()"><ion-icon name="locate"></ion-icon></ion-button>
                 </ion-col>
             </ion-row>
     </ion-card >
-    <ion-card *ngIf="!this.pointsPath[1]">
+    <ion-card *ngIf="!this.pointsPath[1] && this.pointsPath[0]" class="card">
         <ion-row>
-            <ion-col size="2">
-                <img src="/assets/pref-2/red-s.png" alt="" />
-            </ion-col>
             <ion-col >
               <ion-select [disabled]="this.pointsPath[1]" (ionChange)="itemSelected($event)" placeholder="Scegli il punto da lista" class="select">
                   <ion-select-option *ngFor="let point of endPoints" value={{point._id}}>{{point | label}}</ion-select-option> 
@@ -30,7 +23,7 @@
         </ion-row>
     </ion-card>
     
-    <ion-card *ngIf="savePath">
+    <ion-card *ngIf="savePath" class="card">
         <ion-row>
             <ion-col size="2" class="path">
                 <img src="/assets/bb/icon3-m.png" alt="" />
@@ -43,7 +36,7 @@
             </ion-col>
         </ion-row>
     </ion-card>
-    
+
         <ion-fab *ngIf="pathIsCreated" vertical="bottom" horizontal="start" slot="fixed">
             <ion-fab-button>
                 <ion-icon name="arrow-back" [routerLink]="['/tabs/filters']"></ion-icon>
@@ -63,7 +56,7 @@
 
       <ion-fab *ngIf="onPathSelected" vertical="bottom" horizontal="end" slot="fixed">
           <ion-fab-button>
-              <ion-button  (click)="savePathNavigate()" type="submit"><ion-icon name="done-all"></ion-icon></ion-button>
+              <ion-button  (click)="savePathNavigate()" type="submit"><ion-icon name="star"></ion-icon></ion-button>
           </ion-fab-button>
       </ion-fab>
   

@@ -34,7 +34,7 @@
         
     </ion-item>
     
-    <form [formGroup]="formModalitaFilters" (ngSubmit)="setFiltersPath()">
+    <form [formGroup]="formModalitaFilters" >
     <ion-item class="item">
                     
         <ion-grid>
@@ -158,13 +158,17 @@
             
         </ion-item> 
 
-            <ion-fab *ngIf="formDisabled" vertical="bottom" horizontal="end" slot="fixed">
-                <ion-fab-button>
-                    <ion-button  type="submit"><ion-icon name="arrow-forward"></ion-icon></ion-button>
-                </ion-fab-button>
-            </ion-fab>
         
     </form>
 
     </div>
 </ion-content>
+
+<ion-footer>
+    
+    <ion-fab *ngIf="formDisabled" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button>
+            <ion-button  type="submit" (click)="setFiltersPath()"><ion-icon name="arrow-forward"></ion-icon></ion-button>
+        </ion-fab-button>
+    </ion-fab>
+</ion-footer>
