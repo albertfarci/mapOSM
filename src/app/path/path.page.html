@@ -17,12 +17,12 @@
                     <img src="/assets/bb/icon3-m.png" alt="" />
                 </ion-col>
                 <ion-col size="6">
-                    <ion-text class="title">{{path.filter}}</ion-text> 
-                    
+                    <ion-text class="title">{{path.filter|pathLabel }}</ion-text> 
                 </ion-col>
                 <ion-col size="4" class="ion-text-end">
                     <div>
-                        <ion-button ><ion-icon name="arrow-forward"></ion-icon></ion-button>
+                      <ion-button (click)="goToPathId(path.rowid)"><ion-icon name="arrow-forward"></ion-icon></ion-button>
+                      
                     </div>
                   </ion-col> 
             </ion-row>
