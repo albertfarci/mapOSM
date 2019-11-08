@@ -45,7 +45,6 @@ import { PoiService } from '../shared/services/poi.service';
     this.plt.ready().then(() => {
       
       if(this.map) {
-        console.log("CIao")
         this.map.removeLayer(this.layerGroup);
         this.map.remove()
       }
