@@ -12,6 +12,7 @@ import { Toast } from '@ionic-native/toast/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-map',
@@ -64,7 +65,11 @@ export class MapPage {
   
   locationCoords: any;
   timetest: any;
- 
+
+  setAlarmBool: boolean=false
+  timeSelected:any
+  isSetAlertSelectedItem: boolean;
+
 
   constructor(
     public plt: Platform,
@@ -95,6 +100,20 @@ export class MapPage {
   ionViewDidEnter(){
 
     this.plt.ready().then(() => {
+      /*
+   this.sqlite.create({
+    name: 'filters.db',
+    location: 'default'
+  })
+    .then((db: SQLiteObject) => {
+      db.executeSql(`DROP TABLE paths`,[])
+      .then((tableInserted)=>{
+        this.toast.show("TABLE DROPPED", '3000', 'center').subscribe(
+          toast => {
+            console.log(toast);
+        })
+      })
+    })*/
       if(this.map) {
         this.map.removeLayer(this.layerGroup);
         this.pointsPath=[]
@@ -103,6 +122,8 @@ export class MapPage {
         this.savePath=false
         this.onPathSelected=false
         this.pathCreated=[]
+        this.isSetAlertSelectedItem=false
+        this.setAlarmBool=false
       }
       this.initMap()
     });
@@ -257,7 +278,9 @@ export class MapPage {
           })
         })
       })
-
+    
+   
+   //console.log(this.pointsPath)
   }
 
   pathSelected($event){
@@ -284,6 +307,20 @@ export class MapPage {
     })
   }
 
+  setAlarm(){
+    this.onPathSelected=false;
+    this.savePath=false;
+    
+    this.setAlarmBool=true;
+    this.timeSelected=undefined
+  }
+
+  isSetAlertSelected(){
+    console.log("isSetAlertSelected")
+    
+    this.isSetAlertSelectedItem=!this.isSetAlertSelectedItem
+  }
+
   itemSelected($event){
     
     if(!this.pointsPath[1]){
@@ -302,6 +339,10 @@ export class MapPage {
 
     if(this.pointsPath[0] && this.pointsPath[1]) this.pathIsCreated= true;
       
+  }
+
+  setTimeAlert(){
+    console.log(this.timeSelected)
   }
 
   

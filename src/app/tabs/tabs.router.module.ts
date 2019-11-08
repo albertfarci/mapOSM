@@ -57,6 +57,15 @@ const routes: Routes = [
           }
         ]
       },
+      { path: 'pathId/:id', 
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../pathId/pathId.module').then(m => m.PathIdPageModule)
+          }
+        ]
+      },
       {
         path: 'pois_view',
         children: [

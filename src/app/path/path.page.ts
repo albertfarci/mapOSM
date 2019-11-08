@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-path',
@@ -10,12 +11,13 @@ import { Platform } from '@ionic/angular';
 })
 export class PathPage {
 
-  
+  filter;
   pathsSaved = [];
   constructor(
     public plt: Platform,
     private sqlite: SQLite,
-    private toast: Toast) {
+    private toast: Toast,
+    public router: Router) {
   }
 
   ionViewDidEnter(){
@@ -48,6 +50,11 @@ export class PathPage {
           })
         })
     });
+  }
+
+  
+  goToPathId(filter){
+    this.router.navigate(['/tabs/pathId', JSON.parse(filter)]);
   }
 
 }
