@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PathPage } from './path.page';
 import { PathLabelPipe } from './pathLabel.pipe';
+import { PathValuePipe } from './pathValue.pipe';
 @NgModule({
   imports: [
     IonicModule,
@@ -12,6 +13,6 @@ import { PathLabelPipe } from './pathLabel.pipe';
     FormsModule,
     RouterModule.forChild([{ path: '', component: PathPage }])
   ],
-  declarations: [PathPage, PathLabelPipe]
+  declarations: [PathPage, PathLabelPipe,PathValuePipe]
 })
 export class PathPageModule {}
