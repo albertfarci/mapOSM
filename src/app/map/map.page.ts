@@ -248,27 +248,20 @@ export class MapPage {
       location: 'default'
     })
       .then((db: SQLiteObject) => {
-        this.toast.show("databse create", '3000', 'center').subscribe(
-          toast => {
-            console.log(toast);
-        })
         db.executeSql(`CREATE TABLE IF NOT EXISTS paths(
           rowid INTEGER PRIMARY KEY, 
           filter TEXT,
           coordinates TEX)`,[])
         .then((tableInserted)=>{
-          this.toast.show("TABLE CREATED", '3000', 'center').subscribe(
-            toast => {
-              console.log(toast);
-          })
           db.executeSql(`
             INSERT INTO paths (filter,coordinates)
               VALUES(?,?)`, [JSON.stringify(this.fitlerActive.filter),JSON.stringify(this.pointsPath)])
           .then((tableInserted)=>{
-            this.toast.show("TABLE INSERTED", '3000', 'center').subscribe(
+            this.toast.show("Percorso salvato", '3000', 'center').subscribe(
               toast => {
                 console.log(toast);
             })
+            this.router.navigate(['/tabs/home']);
           })
         })
         .catch((e) => {
@@ -303,7 +296,7 @@ export class MapPage {
       this.layerGroup.addLayer(geoJSON({
               "type": "LineString", 
               "coordinates": x.coordinates,
-            }));
+            }).bindPopup('<h1>'+x.filter.name+'</h1>'));
     })
   }
 

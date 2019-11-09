@@ -26,6 +26,7 @@ import { PoiService } from '../shared/services/poi.service';
     }
     poisList=[]
     pointsPath=[]
+    currentFilter
     layerGroup 
     map: Map
     constructor(
@@ -81,22 +82,18 @@ import { PoiService } from '../shared/services/poi.service';
               
               
               if(tableSelect.rows.item(i).rowid == this.route.snapshot.params.id){
-                this.toast.show(JSON.stringify(tableSelect.rows.item(i)), '3000', 'center').subscribe(
-                  toast => {
-                    console.log(this.pointsPath);
-                })
+                
                 
                 this.pointsPath[0]=JSON.parse(tableSelect.rows.item(i).coordinates)[0]
+                   
                 this.layerGroup.addLayer(marker([this.pointsPath[0].lat, this.pointsPath[0].lng], {icon: this.icons.greenIcon}));
                 
                 this.pointsPath[1]=JSON.parse(tableSelect.rows.item(i).coordinates)[1]
                 this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], {icon: this.icons.redIcon}));
                 
+                this.currentFilter=JSON.parse(tableSelect.rows.item(i).filter)
                 //this.showPath(this.pointsPath[0],this.pointsPath[1],JSON.parse(tableSelect.rows.item(i).filter).value)
-                this.toast.show(JSON.stringify(i), '3000', 'center').subscribe(
-                  toast => {
-                    console.log(this.pointsPath);
-                })
+                
               }
               
             }
@@ -109,5 +106,66 @@ import { PoiService } from '../shared/services/poi.service';
           })
         })
       })
+  }
+
+  
+  getShowPath(){
+    this.map.fitBounds([
+      [this.pointsPath[0].lat, this.pointsPath[0].lng],
+      [this.pointsPath[1].lat, this.pointsPath[1].lng]
+    ]);
+    
+    let pointStart= this.pointsPath[0].lat + "," +this.pointsPath[0].lng
+    let pointEnd= this.pointsPath[1].lat + "," +this.pointsPath[1].lng
+      //const element = this.filterListService.getFilterObject()[index];
+      this.pathService.getPath(pointStart,pointEnd,this.currentFilter.value)
+      .subscribe(
+          posts => {
+            let newGeometry = posts.geometry.replace("[","");
+            newGeometry = newGeometry.replace("]","");
+            newGeometry = newGeometry.replace(/ /g,"|");
+            newGeometry = newGeometry.replace("|","");	
+        
+            // 2. split sulle virgole:
+            let geometryArray1Dim = newGeometry.split(",");    
+        
+            // 3. crea array bidimesionale:
+            let geometryArray2Dim = Array.from(Array(geometryArray1Dim.length), () => new Array(2));
+        
+            // 4. popola array: per ogni elemento del precedente array, split su |:    
+            for(let i=0; i<geometryArray1Dim.length; i++)
+            {
+              let tempArray = geometryArray1Dim[i].split("|");
+              for(let j=0; j<2; j++)
+              {
+                geometryArray2Dim[i][0] = parseFloat(tempArray[0]);
+                geometryArray2Dim[i][1] = parseFloat(tempArray[1]);
+              }
+            }
+  
+            let newPointList = posts.nodes.replace("[","");
+            newPointList = newPointList.replace("]","");
+        
+            // 2. split sulle virgole:
+            let PointList1Dim = newPointList.split(",");
+
+            geoJSON({
+              "type": "LineString", 
+              "coordinates": geometryArray2Dim,
+            })
+          
+            this.layerGroup.addLayer(geoJSON({
+              "type": "LineString", 
+              "coordinates": geometryArray2Dim,
+            }).bindPopup('<h1>'+this.currentFilter.name+'</h1>'));
+
+          },
+          error => {
+            this.toast.show(JSON.stringify(error), '3000', 'center').subscribe(
+              toast => {
+                console.log(this.pointsPath);
+            })
+          });
+
   }
 }   
