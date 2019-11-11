@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Map,LeafIcon, tileLayer, marker, icon,polyline ,geoJSON, removeLayers, LayerGroup } from 'leaflet';
-import { Platform } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 import { PathService } from '../shared/services/path.service';
 import { FilterListService } from '../shared/services/filters.service';
-import { first, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { PoiService } from '../shared/services/poi.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -12,7 +11,9 @@ import { Toast } from '@ionic-native/toast/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+ 
 
 @Component({
   selector: 'app-map',
@@ -82,7 +83,9 @@ export class MapPage {
     private toast: Toast,
     private androidPermissions: AndroidPermissions,
     private geolocation: Geolocation,
-    private locationAccuracy: LocationAccuracy) {
+    private locationAccuracy: LocationAccuracy,
+    private localNotifications: LocalNotifications,
+    public alertCtrl: AlertController) {
 
       
       this.locationCoords = {
@@ -242,6 +245,21 @@ export class MapPage {
   }
 
   savePathNavigate(){
+
+    if(this.setAlarmBool && !this.isSetAlertSelectedItem){
+      console.log("Now")
+    }else{
+      // Schedule a single notification
+      // Schedule a single notification
+      this.localNotifications.schedule({
+        id: 1,
+        text: 'Single ILocalNotification',
+        sound:  'file://sound.mp3',
+        data: { secret: "key" }
+      });
+
+      console.log(this.timeSelected.split("T")[1].split(".")[0])
+    }
     
     this.sqlite.create({
       name: 'filters.db',
