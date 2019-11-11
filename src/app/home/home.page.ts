@@ -5,6 +5,7 @@ import { Map, tileLayer, marker, icon } from 'leaflet';
 import { Http } from '@angular/http';
 import { map } from 'rxjs/operators';
 import { PathService } from '../shared/services/path.service';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @Component({
   selector: 'app-home',
@@ -20,13 +21,24 @@ export class HomePage {
 
   constructor(public http: Http,
             public plt: Platform,
-            public router: Router) {
+            public router: Router,
+            private localNotifications: LocalNotifications) {
 
             }
 
   setTypePAth(){
 
     this.router.navigate(["/tabs/filters"]);
+  }
+
+  single_notification() {
+    // Schedule a single notification
+    this.localNotifications.schedule({
+      id: 1,
+      text: 'Single ILocalNotification',
+      data: { secret: 'key_data' },
+      smallIcon: 'assets://bb/icon3-m.png'
+    });
   }
 
   goToProfile(){
