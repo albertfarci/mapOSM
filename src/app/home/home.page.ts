@@ -33,11 +33,19 @@ export class HomePage {
 
   single_notification() {
     // Schedule a single notification
+    
+    const now= new Date()
+    const trigger = new Date()
+    trigger.setDate(now.getDate()+1)
+    
+    trigger.setMinutes(now.getMinutes()+3)
     this.localNotifications.schedule({
       id: 1,
       text: 'Single ILocalNotification',
       data: { secret: 'key_data' },
-      smallIcon: 'assets://bb/icon3-m.png'
+      trigger: {at: trigger},
+      smallIcon: 'assets://bb/icon3-m.png',
+      sound:  'file://sound.mp3',
     });
   }
 
