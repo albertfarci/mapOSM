@@ -247,20 +247,42 @@ export class MapPage {
   savePathNavigate(){
 
     if(this.setAlarmBool && !this.isSetAlertSelectedItem){
-      console.log("Now")
-    }else{
-      // Schedule a single notification
-      // Schedule a single notification
       this.localNotifications.schedule({
         id: 1,
         text: 'Single ILocalNotification',
+        data: { secret: 'key_data' },
+        smallIcon: 'assets://bb/icon3-m.png',
         sound:  'file://sound.mp3',
-        data: { secret: "key" }
       });
+    }else{
+      // Schedule a single notification
+      // Schedule a single notification
 
-      console.log(this.timeSelected.split("T")[1].split(".")[0])
-    }
-    
+      // Schedule a single notification
+      
+      const now= new Date()
+      const trigger = new Date(this.timeSelected)
+      if(trigger.getTime() > now.getTime()){
+        this.localNotifications.schedule({
+          id: 1,
+          text: 'Single ILocalNotification',
+          data: { secret: 'key_data' },
+          trigger: {at: trigger},
+          smallIcon: 'assets://bb/icon3-m.png',
+          sound:  'file://sound.mp3',
+        });
+      }else{
+        trigger.setDate(now.getDate()+1)
+        this.localNotifications.schedule({
+          id: 1,
+          text: 'Single ILocalNotification',
+          data: { secret: 'key_data' },
+          trigger: {at: trigger},
+          smallIcon: 'assets://bb/icon3-m.png',
+          sound:  'file://sound.mp3',
+        });
+      }
+      
     this.sqlite.create({
       name: 'filters.db',
       location: 'default'
@@ -290,7 +312,7 @@ export class MapPage {
         })
       })
     
-   
+    }
    //console.log(this.pointsPath)
   }
 
