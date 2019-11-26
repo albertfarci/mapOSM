@@ -28,7 +28,7 @@ export class HomePage {
 
   setTypePAth(){
 
-    this.router.navigate(["/tabs/filters"]);
+    this.router.navigate(["/tabs/map"]);
   }
 
   single_notification() {
