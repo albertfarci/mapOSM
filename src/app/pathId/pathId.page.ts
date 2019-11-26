@@ -24,6 +24,7 @@ import { PoiService } from '../shared/services/poi.service';
         popupAnchor: [0, -20]
       })
     }
+    pathSelected
     poisList=[]
     pointsPath=[]
     currentFilter
