@@ -1,9 +1,193 @@
-
+<ion-header style="box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75)">
+    <ion-toolbar>
+      <div>
+          <img src="/assets/release1/header.PNG">
+      </div>
+    </ion-toolbar>
+</ion-header>
+  
 <div id="map-page" class="map-page"></div>
 
-<ion-content 
-[scrollEvents]="true" >
-    <ion-card *ngIf="!this.pointsPath[0]" class="card">
+<ion-content >
+    <ion-grid style="height: 100%;" *ngIf="!savePath">
+        
+        <ion-row style="height: 60%">
+            <ion-col size="3">
+            <div (click)="goToPreferiti()">
+            <img src="/assets/release1/puntoApuntoB.PNG" alt="" 
+                 style="
+                    height: -webkit-fill-available;
+                    width: -webkit-fill-available;"/>
+            </div>
+            </ion-col>
+            <ion-col size="9">
+                <ion-row style="height: 50%">
+                    <ion-title *ngIf="!this.pointsPath[0]" 
+                    style="width: -webkit-fill-available; font-size: 14px;">
+                        Scegli il punto di partenza
+                    </ion-title>
+                    <ion-title *ngIf="this.pointsPath[0]" 
+                    style="width: -webkit-fill-available; font-size: 14px;"
+                    >
+                        {{pointsPath[0].title}}
+                    </ion-title>
+                </ion-row>
+                <ion-row style="height: 50%">
+                    <ion-title *ngIf="!this.pointsPath[1]" 
+                    style="width: -webkit-fill-available; font-size: 14px;">
+                        Scegli il punto di arrivo
+                    </ion-title>
+                    <ion-title *ngIf="this.pointsPath[1]" 
+                        style="width: -webkit-fill-available; font-size: 14px;"
+                        >
+                        {{pointsPath[1].title}}
+                    </ion-title>
+                </ion-row>
+            </ion-col>
+            
+        </ion-row>
+        
+        <ion-row style=" height: 40%;">
+                <ion-title style="    
+                        font-size: 19px;
+                        text-align: center;
+                    ">
+                    <ion-button *ngIf="this.pointsPath[0] && this.pointsPath[1]" color="success" 
+                                shape="round"
+                                (click)="getShowPath()">
+                        Ricerca</ion-button>
+                </ion-title>
+            </ion-row>
+    </ion-grid>
+    
+    <ion-grid style="height: 100%;" *ngIf="savePath">
+        <ion-row>
+            <ion-col size="2" >
+                
+                <ion-button id="walk" [color]="walkNamedColor" [disabled]="walkDisabled" (click)="filterFoot()">
+                    <ion-icon name="walk"></ion-icon>
+                </ion-button>
+                
+            </ion-col>
+            <ion-col size="2" >
+                <ion-button id="bycicle" [color]="namedColor" [disabled]="namedDisabled" (click)="filterBicycle()">
+                        <ion-icon name="bicycle"></ion-icon>
+                </ion-button>
+            </ion-col>
+            <ion-col size="2">
+                <ion-button id="car" [color]="carNamedColor" [disabled]="carDisabled"  (click)="filterCar()">
+                    <ion-icon name="car"></ion-icon>
+                </ion-button>
+            </ion-col>
+            <ion-col size="6"  style="text-align: end">
+                <button (click)="filterOptions()"
+                    style="
+                        height: 100%;
+                        width: 100%;">
+                        Opzioni
+                    <ion-icon name="funnel"></ion-icon>
+                </button>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="optionsFilter" style="background-color: aliceblue">
+            <ion-row style="width: -webkit-fill-available;">
+                <ion-col size="2" >
+                    <ion-button [color]="touristColor" [disabled]="touristDisabled" (click)="filterTourist()">
+                        <!--<ion-icon name="car"></ion-icon>-->
+                        <img style="width: -webkit-fill-available;" src="/assets/icon/icon3-s.png" alt="" />
+                    </ion-button>
+                </ion-col>
+                <ion-col size="2">
+                    <ion-button [color]="familyColor"  [disabled]="!namedDisabled || familyDisabled" (click)="filterFamily()">
+                        <img style="width: -webkit-fill-available;" src="/assets/icon/icon5-s.png" alt="" />
+                    </ion-button>
+                </ion-col>
+                <ion-col size="2" >
+                    <ion-button [color]="oldAgeColor" [disabled]="!namedDisabled || oldAgeDisabled" (click)="filterOldAge()">
+                        <img style="width: -webkit-fill-available;" src="/assets/icon/icon6-s.png" alt="" />
+                    </ion-button>
+                </ion-col>
+                <ion-col size="2">
+                    <ion-button [color]="fitnessColor" [disabled]="!namedDisabled || !carDisabled || fitnessDisabled" (click)="filterFitness()">
+                        <img style="width: -webkit-fill-available;" src="/assets/icon/icon4-s.png" alt="" />
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size="12">
+                    <ion-label style="font-weight: bold; 
+                    font-size: x-large;">
+                        QUANDO FARE IL PERCORSO
+                    </ion-label>
+                </ion-col>
+                <ion-col size="12">
+                    <ion-datetime [(ngModel)] = "timeSelected" displayFormat="h:mm A" minuteValues="0,30" (ionChange)="setTimeAlert()" placeholder="Select Date"> </ion-datetime>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size="12">
+                    <ion-label style="font-weight: bold; 
+                    font-size: x-large;">
+                        TIPO DI PERCORSO
+                    </ion-label>
+                </ion-col>
+                
+                <ion-col size="12">
+                    <ion-col size="3">
+                        <ion-checkbox color="secondary"></ion-checkbox>
+                    </ion-col>
+                    <ion-col size="9">
+                        <ion-label style="font-weight: bold;">
+                            Più breve
+                        </ion-label>
+                    </ion-col>
+                </ion-col>
+                <ion-col size="12">
+                    <ion-col size="3">
+                        <ion-checkbox color="secondary"></ion-checkbox>
+                    </ion-col>
+                    <ion-col size="9">
+                        <ion-label style="font-weight: bold;">
+                            Più sostenibile
+                        </ion-label>
+                    </ion-col>
+                </ion-col>
+                
+            </ion-row>
+        </ion-row>
+        <ion-row *ngFor="let path of pathCreated; let i = index;" 
+                     
+                    [ngClass]="(i % 2 == 0) ? 'odd' : 'even'">
+                <ion-col size="2" style="font-size: -webkit-xxx-large">
+                    <ion-row large>
+                        <!--<ion-icon name="{{path.icon}}" ></ion-icon>-->
+                        <img style="height:50px" src="{{path.icon}}" alt="" />
+                    </ion-row>
+                </ion-col>
+                <ion-col size="8">
+                    <ion-row>
+                        <ion-col size="6">
+                            {{path.duration}} minuti
+                        </ion-col>
+                        <ion-col size="6">
+                            {{path.distance}} metri
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            tramite via Napoli
+                        </ion-col>
+                    </ion-row>
+                </ion-col>
+                <ion-col size="2" style="font-size: -webkit-xxx-large; color: grey;">
+                    <ion-icon id="{{path.filter.value}}" name="heart" (click)="savePathNavigate(path.filter)"></ion-icon>
+                </ion-col>
+            </ion-row>
+        
+        
+    </ion-grid>
+    <!--
+<ion-card *ngIf="!this.pointsPath[0]" class="card">
           <ion-row>
               <ion-col size="9" class="padding-text">
                 Scegli il punto su mappa
@@ -88,6 +272,8 @@
                 <ion-button  (click)="savePathNavigate()" type="submit"><ion-icon name="star"></ion-icon></ion-button>
             </ion-fab-button>
     </ion-fab>
+    -->
+    
   
   
 </ion-content>

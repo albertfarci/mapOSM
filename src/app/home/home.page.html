@@ -1,18 +1,52 @@
 <ion-content>
-  <ion-list>
-    <ion-grid >
+    <ion-grid style="height: -webkit-fill-available">
 
-      <ion-row>
-        <ion-card class="welcome-card" (click)="setTypePAth()">
-          <img src="/assets/icon-m.png" alt="" />
-          <ion-card-header>
-            <ion-card-title class="card-l-title">Crea percorso</ion-card-title>
-          </ion-card-header>
-        </ion-card>
+      <ion-row style="height: 33%">
+        <ion-col>
+          <div (click)="setTypePAth()">
+            <img src="/assets/release1/creaPercorso.PNG" alt="" style="
+            height: -webkit-fill-available;
+            width: -webkit-fill-available;" />
+          </div>
+        </ion-col>
+       
       </ion-row>
 
       
-      <ion-row>
+      <ion-row style="height: 33%">
+        <ion-col size="6">
+          <div (click)="goToPreferiti()">
+            <img src="/assets/release1/percorsoBike.PNG" alt=""  style="
+            height: -webkit-fill-available;
+            width: -webkit-fill-available;"/>
+          </div>  
+        </ion-col>
+        <ion-col size="6">
+          <div (click)="goToPreferiti()">
+            <img src="/assets/release1/percorsoFitness.PNG" alt="" style="
+            height: -webkit-fill-available;
+            width: -webkit-fill-available;" />
+          </div>  
+        </ion-col>
+      </ion-row>
+      <ion-row style="height: 33%">
+        <ion-col size="6">
+          <div (click)="goToPreferiti()">
+            <img src="/assets/release1/percorsoTuristico.PNG" alt="" style="
+            height: -webkit-fill-available;
+            width: -webkit-fill-available;"/>
+          </div>
+        </ion-col>
+        <ion-col size="6">
+          <div (click)="goToPoisView()">
+            <img src="/assets/release1/eventi.PNG" alt=""
+            style="
+            height: -webkit-fill-available;
+            width: -webkit-fill-available;" />
+          </div>
+        </ion-col>
+      </ion-row>
+        <!--
         <ion-col offset-4>
           <ion-card class="welcome-card" (click)="goToPreferiti()">
             <img src="/assets/icon0-m.png" alt="" />
@@ -24,7 +58,7 @@
 
         <ion-col>
           <ion-card class="welcome-card" (click)="goToPreferiti()">
-            <img src="/assets/icon1-m.png" alt="" />
+            
             <ion-card-header>
               <ion-card-title class="card-m-title">Percorsi fitness</ion-card-title>
             </ion-card-header>
@@ -61,6 +95,7 @@
         </ion-card>
       </ion-row>
 
+        -->
+
     </ion-grid>
-  </ion-list>
 </ion-content>
