@@ -12,33 +12,24 @@
     <ion-grid style="height: 100%;" *ngIf="!savePath">
         
         <ion-row style="height: 60%">
-            <ion-col size="3">
-            <img src="/assets/release1/puntoApuntoB.PNG" alt="" 
-                 style="
-                    height: -webkit-fill-available;
-                    width: -webkit-fill-available;"/>
-            </div>
+            <ion-col size="3" style="height: 100%;">
+            <img src="/assets/release1/puntoApuntoB.PNG" alt="" style="height: 100%; width: 100%;"/>
+            
             </ion-col>
             <ion-col size="9">
                 <ion-row style="height: 50%">
-                    <ion-title *ngIf="!this.pointsPath[0]" 
-                    style="width: -webkit-fill-available; font-size: 14px;">
+                    <ion-title *ngIf="!this.pointsPath[0]" style="height: 100%; width: 100%;">
                         Scegli il punto di partenza
                     </ion-title>
-                    <ion-title *ngIf="this.pointsPath[0]" 
-                    style="width: -webkit-fill-available; font-size: 14px;"
-                    >
+                    <ion-title *ngIf="this.pointsPath[0]" style="height: 100%; width: 100%;">
                         {{pointsPath[0].title}}
                     </ion-title>
                 </ion-row>
                 <ion-row style="height: 50%">
-                    <ion-title *ngIf="!this.pointsPath[1]" 
-                    style="width: -webkit-fill-available; font-size: 14px;">
+                    <ion-title *ngIf="!this.pointsPath[1]" style="height: 100%; width: 100%;">
                         Scegli il punto di arrivo
                     </ion-title>
-                    <ion-title *ngIf="this.pointsPath[1]" 
-                        style="width: -webkit-fill-available; font-size: 14px;"
-                        >
+                    <ion-title *ngIf="this.pointsPath[1]" style="height: 100%; width: 100%;">
                         {{pointsPath[1].title}}
                     </ion-title>
                 </ion-row>
@@ -89,26 +80,26 @@
             </ion-col>
         </ion-row>
         <ion-row *ngIf="optionsFilter" style="background-color: aliceblue">
-            <ion-row style="width: -webkit-fill-available;">
+            <ion-row >
                 <ion-col size="2" >
                     <ion-button [color]="touristColor" [disabled]="touristDisabled" (click)="filterTourist()">
                         <!--<ion-icon name="car"></ion-icon>-->
-                        <img style="width: -webkit-fill-available;" src="/assets/icon/icon3-s.png" alt="" />
+                        <img  src="/assets/icon/icon3-s.png" alt="" />
                     </ion-button>
                 </ion-col>
                 <ion-col size="2">
                     <ion-button [color]="familyColor"  [disabled]="!namedDisabled || familyDisabled" (click)="filterFamily()">
-                        <img style="width: -webkit-fill-available;" src="/assets/icon/icon5-s.png" alt="" />
+                        <img src="/assets/icon/icon5-s.png" alt="" />
                     </ion-button>
                 </ion-col>
                 <ion-col size="2" >
                     <ion-button [color]="oldAgeColor" [disabled]="!namedDisabled || oldAgeDisabled" (click)="filterOldAge()">
-                        <img style="width: -webkit-fill-available;" src="/assets/icon/icon6-s.png" alt="" />
+                        <img  src="/assets/icon/icon6-s.png" alt="" />
                     </ion-button>
                 </ion-col>
                 <ion-col size="2">
                     <ion-button [color]="fitnessColor" [disabled]="!namedDisabled || !carDisabled || fitnessDisabled" (click)="filterFitness()">
-                        <img style="width: -webkit-fill-available;" src="/assets/icon/icon4-s.png" alt="" />
+                        <img  src="/assets/icon/icon4-s.png" alt="" />
                     </ion-button>
                 </ion-col>
             </ion-row>
@@ -185,96 +176,6 @@
         
         
     </ion-grid>
-    <!--
-<ion-card *ngIf="!this.pointsPath[0]" class="card">
-          <ion-row>
-              <ion-col size="9" class="padding-text">
-                Scegli il punto su mappa
-              </ion-col>
-              <ion-col size="3">
-                  <ion-button (click)="checkGPSPermission()"><ion-icon name="locate"></ion-icon></ion-button>
-                </ion-col>
-            </ion-row>
-    </ion-card >
-    <ion-card *ngIf="!this.pointsPath[1] && this.pointsPath[0]" class="card">
-        <ion-row>
-            <ion-col >
-              <ion-select [disabled]="this.pointsPath[1]" (ionChange)="itemSelected($event)" placeholder="Scegli il punto da lista" class="select">
-                  <ion-select-option *ngFor="let point of endPoints" value={{point._id}}>{{point | label}}</ion-select-option> 
-              </ion-select>
-            </ion-col>
-        </ion-row>
-    </ion-card>
-    
-    <ion-card *ngIf="savePath" class="card">
-        <ion-row>
-            <ion-col size="2" class="path">
-                <img src="/assets/bb/icon3-m.png" alt="" />
-            </ion-col>
-            <ion-col size="10">
-              
-              <ion-select (ionChange)="pathSelected($event)" placeholder="Select One" class="select">
-                  <ion-select-option *ngFor="let path of pathCreated" value={{path.filter.value}}>{{path.filter.name}}</ion-select-option> 
-              </ion-select> 
-            </ion-col>
-        </ion-row>
-    </ion-card>
-
-    <ion-card *ngIf="setAlarmBool" class="card">
-        <ion-row>
-            <ion-col size="9" class="padding-text">
-                Desideri farlo più tardi?
-            </ion-col>
-            
-            <ion-col size="3">
-                <ion-toggle class="toggle" (ionChange)="isSetAlertSelected()"></ion-toggle>
-            </ion-col>
-        </ion-row>
-        <ion-row *ngIf="isSetAlertSelectedItem">
-            <ion-col size="12" class="padding-text">
-                Quando fare il percorso:
-            </ion-col>
-            <ion-col size="9">
-                <ion-datetime [(ngModel)] = "timeSelected" displayFormat="h:mm A" minuteValues="0,30" (ionChange)="setTimeAlert()" placeholder="Select Date"> </ion-datetime>
-            </ion-col>
-            <ion-col size="3">
-                <ion-button (click)="savePathNavigate()"><ion-icon name="star"></ion-icon></ion-button>
-            </ion-col>
-        </ion-row>
-    </ion-card>
-
-        <ion-fab *ngIf="pathIsCreated" vertical="bottom" horizontal="start" slot="fixed">
-            <ion-fab-button>
-                <ion-icon name="arrow-back" [routerLink]="['/tabs/filters']"></ion-icon>
-            </ion-fab-button>
-        </ion-fab>
-
-        <ion-fab *ngIf="onPathSelected" vertical="bottom" horizontal="start" slot="fixed">
-                <ion-fab-button>
-                    <ion-icon name="arrow-back" [routerLink]="['/tabs/filters']"></ion-icon>
-                </ion-fab-button>
-            </ion-fab>
-      <ion-fab *ngIf="pathIsCreated" vertical="bottom" horizontal="end" slot="fixed">
-          <ion-fab-button>
-              <ion-button  (click)="getShowPath()"  type="submit"><ion-icon name="navigate"></ion-icon></ion-button>
-          </ion-fab-button>
-      </ion-fab>
-
-      <ion-fab *ngIf="onPathSelected" vertical="bottom" horizontal="end" slot="fixed">
-          <ion-fab-button>
-              <ion-button  (click)="setAlarm()" type="submit"><ion-icon name="alarm"></ion-icon></ion-button>
-          </ion-fab-button>
-      </ion-fab>
-      
-      <ion-fab *ngIf="setAlarmBool && !isSetAlertSelectedItem" vertical="bottom" horizontal="end" slot="fixed">
-            <ion-fab-button>
-                <ion-button  (click)="savePathNavigate()" type="submit"><ion-icon name="star"></ion-icon></ion-button>
-            </ion-fab-button>
-    </ion-fab>
-    -->
-    
-  
-  
 </ion-content>
  
 

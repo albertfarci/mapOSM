@@ -192,8 +192,8 @@ export class MapPage {
 
 
 
-    //this.getLocationCoordinates()
-    this.checkGPSPermission()
+    this.getLocationCoordinates()
+    //this.checkGPSPermission()
 
   }
 
