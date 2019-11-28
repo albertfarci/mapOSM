@@ -12,27 +12,21 @@
     <ion-grid style="height: 100%;" *ngIf="!savePath">
         
         <ion-row style="height: 60%">
-            <ion-col size="3" style="height: 100%;">
-            <img src="/assets/release1/puntoApuntoB.PNG" alt="" style="height: 100%; width: 100%;"/>
+            <ion-col size="3" style="height: 80%;">
+                <img src="/assets/release1/puntoApuntoB.PNG" alt="" style="height: 100%; width: 100%;"/>
             
             </ion-col>
             <ion-col size="9">
-                <ion-row style="height: 50%">
-                    <ion-title *ngIf="!this.pointsPath[0]" style="height: 100%; width: 100%;">
-                        Scegli il punto di partenza
-                    </ion-title>
-                    <ion-title *ngIf="this.pointsPath[0]" style="height: 100%; width: 100%;">
-                        {{pointsPath[0].title}}
-                    </ion-title>
-                </ion-row>
-                <ion-row style="height: 50%">
-                    <ion-title *ngIf="!this.pointsPath[1]" style="height: 100%; width: 100%;">
-                        Scegli il punto di arrivo
-                    </ion-title>
-                    <ion-title *ngIf="this.pointsPath[1]" style="height: 100%; width: 100%;">
-                        {{pointsPath[1].title}}
-                    </ion-title>
-                </ion-row>
+                <ion-grid style="height: 100%;">
+                    <ion-row style="height: 50%;" (click)="deletePoint(0)">
+                        <h5 *ngIf="!this.pointsPath[0]" style="font-weight: bold;">Punto di partenze</h5>
+                        <h5 *ngIf="this.pointsPath[0]" style="font-weight: bold;">{{pointsPath[0].title}}</h5>
+                    </ion-row>
+                    <ion-row style="height: 50%;" (click)="deletePoint(1)">
+                        <h5 *ngIf="!this.pointsPath[1]" style="font-weight: bold;">Punto di arrivo</h5>
+                        <h5 *ngIf="this.pointsPath[1]" style="font-weight: bold;"> {{pointsPath[1].title}}</h5>
+                    </ion-row>
+                </ion-grid>
             </ion-col>
             
         </ion-row>
@@ -44,7 +38,8 @@
                     ">
                     <ion-button *ngIf="this.pointsPath[0] && this.pointsPath[1]" color="success" 
                                 shape="round"
-                                (click)="getShowPath()">
+                                (click)="getShowPath()"
+                                style="width: 60%;">
                         Ricerca</ion-button>
                 </ion-title>
             </ion-row>
@@ -73,7 +68,9 @@
                 <button (click)="filterOptions()"
                     style="
                         height: 100%;
-                        width: 100%;">
+                        width: 100%;
+                        font-size: 19px;
+                        font-weight: bold;">
                         Opzioni
                     <ion-icon name="funnel"></ion-icon>
                 </button>

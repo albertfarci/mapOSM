@@ -164,7 +164,7 @@ export class MapPage {
 
   initMap() {
 
-    this.map = new Map('map-page').setView([39.21834898953833, 9.1126227435], 18);
+    this.map = new Map('map-page').setView([39.21834898953833, 9.1126227435], 12);
 
     tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -173,6 +173,10 @@ export class MapPage {
 
     this.layerGroup = new LayerGroup();
     this.layerGroup.addTo(this.map);
+
+    this.map.on('click', (e)=>{
+      this.onMapClick(e)
+    });
 
     this.map.invalidateSize();
 
@@ -192,9 +196,63 @@ export class MapPage {
 
 
 
-    //this.getLocationCoordinates()
-    this.checkGPSPermission()
+    this.getLocationCoordinates()
+    //this.checkGPSPermission()
 
+  }
+
+  onMapClick(e) {
+
+    if(!this.pointsPath[0]){
+      
+      this.layerGroup.addLayer(marker([e.latlng.lat, e.latlng.lng], {icon: this.icons.redIcon}));
+              
+      this.pointsPath[0]={lat: e.latlng.lat, lng: e.latlng.lng, title:e.latlng.lat+" , "+ e.latlng.lng }
+    }else if(!this.pointsPath[1]){
+
+      this.layerGroup.addLayer(marker([e.latlng.lat, e.latlng.lng], {icon: this.icons.greenIcon}));
+              
+      this.pointsPath[1]={lat: e.latlng.lat, lng: e.latlng.lng,  title: e.latlng.lat +" , "+ e.latlng.lng}
+    }
+    
+    
+  }
+
+  deletePoint(index){
+    
+    this.map.removeLayer(this.layerGroup)
+
+    this.layerGroup = new LayerGroup();
+    this.layerGroup.addTo(this.map);
+
+    
+    this.pointsPath[index]=null
+    
+    if(this.pointsPath[0]){
+      this.layerGroup.addLayer(marker([this.pointsPath[0].lat, this.pointsPath[0].lng], { icon: this.icons.redIcon }))
+    }
+    if(this.pointsPath[1]){
+      this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], { icon: this.icons.greenIcon }))
+    }
+
+    
+    JSON.parse(this.poiService.getMonuments())
+      .default
+      .map(x => {
+        this.endPoints.push(x)
+        console.log(x)
+        this.layerGroup.addLayer(marker([x.lat, x.long], { title: x.label, icon: this.icons.greenIcon }).bindPopup('<h5>' + x.label + '</h5>').on('click', (x => {
+
+          //this.layerGroup.addLayer(marker([x.latlng.lat, x.latlng.lng], {icon: this.icons.redIcon}));
+
+          this.pointsPath[1] = { lat: x.latlng.lat, lng: x.latlng.lng, title: x.target.options.title }
+
+        })))
+      })
+
+
+
+    this.getLocationCoordinates()
   }
 
   getShowPath() {
@@ -413,9 +471,9 @@ export class MapPage {
     //console.log(this.pointsPath)
   }
 
-  carNamedColor = "light";
-  walkNamedColor = "light";
-  namedColor = "light";
+  carNamedColor = "secondary";
+  walkNamedColor = "secondary";
+  namedColor = "secondary";
   touristColor="light";
   fitnessColor="ligt";
   oldAgeColor="light";
@@ -950,14 +1008,14 @@ export class MapPage {
     this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], { icon: this.icons.redIcon }));
 
 
-    if (this.carNamedColor === 'light') {
-      this.walkDisabled = true
-      this.namedDisabled = true
-      this.carNamedColor = 'secondary'
-    } else {
+    if (this.carNamedColor != 'light') {
       this.walkDisabled = false
       this.namedDisabled = false
-      this.carNamedColor = "light"
+      this.carNamedColor = 'light'
+    } else {
+      this.walkDisabled = true
+      this.namedDisabled = true
+      this.carNamedColor = "secondary"
     }
     console.log(this.pathFilter)
     if (this.pathFilter.length == 0) {
@@ -1072,14 +1130,14 @@ export class MapPage {
     this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], { icon: this.icons.redIcon }));
 
 
-    if (this.walkNamedColor === 'light') {
-      this.carDisabled = true
-      this.namedDisabled = true
-      this.walkNamedColor = 'secondary'
-    } else {
+    if (this.walkNamedColor != 'light') {
       this.carDisabled = false
       this.namedDisabled = false
-      this.walkNamedColor = "light"
+      this.walkNamedColor = 'light'
+    } else {
+      this.carDisabled = true
+      this.namedDisabled = true
+      this.walkNamedColor = "secondary"
     }
     console.log(this.pathFilter)
     if (this.pathFilter.length == 0) {
@@ -1190,15 +1248,15 @@ export class MapPage {
     this.layerGroup.addLayer(marker([this.pointsPath[0].lat, this.pointsPath[0].lng], { icon: this.icons.greenIcon }));
     this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], { icon: this.icons.redIcon }));
 
-    if (this.namedColor === 'light') {
+    if (this.namedColor != 'light') {
 
       this.carDisabled = true
       this.walkDisabled = true
-      this.namedColor = 'secondary'
+      this.namedColor = 'light'
     } else {
       this.carDisabled = false
       this.walkDisabled = false
-      this.namedColor = "light"
+      this.namedColor = "secondary"
     }
     console.log(this.pathFilter)
     if (this.pathFilter.length == 0) {
@@ -1207,9 +1265,9 @@ export class MapPage {
       this.pathCreated = this.pathCreated
         .filter(x => {
 
-          return x.icon === "/assets/icon/icon1-s.png"
+          return !(x.icon === "/assets/icon/icon1-s.png"
                  || x.icon === "/assets/icon/icon3-s.png"
-                 || x.icon === "/assets/icon/icon5-s.png"
+                 || x.icon === "/assets/icon/icon5-s.png")
         })
     } else {
 
@@ -1418,8 +1476,17 @@ export class MapPage {
   getLocationCoordinates() {
 
     this.geolocation.getCurrentPosition().then((resp) => {
+      this.layerGroup.addLayer(marker([resp.coords.latitude, resp.coords.longitude], { icon: this.icons.redIcon }).bindPopup('<h5>Me!</h5>').on('click', (x => {
 
+        //this.layerGroup.addLayer(marker([x.latlng.lat, x.latlng.lng], {icon: this.icons.redIcon}));
+        if(!this.pointsPath[0]){
+          this.pointsPath[0] = { lat: x.latlng.lat, lng: x.latlng.lng, title:"Posizione corrente"}  
+        }
+      })));
 
+      this.map.setView([resp.coords.latitude, resp.coords.longitude], 10);
+
+      /*
       if (!this.pointsPath[0]) {
 
         this.layerGroup.addLayer(marker([resp.coords.latitude, resp.coords.longitude], { icon: this.icons.redIcon }).bindPopup('<h5>Me!</h5>'));
@@ -1429,7 +1496,7 @@ export class MapPage {
         this.pointsPath[0] = { lat: resp.coords.latitude, lng: resp.coords.longitude, title: "Posizione corrente" }
       }
 
-      if (this.pointsPath[0] && this.pointsPath[1]) this.pathIsCreated = true;
+      if (this.pointsPath[0] && this.pointsPath[1]) this.pathIsCreated = true;*/
     }).catch((error) => {
       console.log('Error getting location', error);
     });

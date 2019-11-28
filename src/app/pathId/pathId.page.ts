@@ -68,7 +68,7 @@ import { PoiService } from '../shared/services/poi.service';
 
     this.map.invalidateSize();
 
-    
+    /*
     this.sqlite.create({
       name: 'filters.db',
       location: 'default'
@@ -106,7 +106,7 @@ import { PoiService } from '../shared/services/poi.service';
               console.log(toast);
           })
         })
-      })
+      })*/
   }
 
   
