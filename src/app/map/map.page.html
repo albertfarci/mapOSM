@@ -1,102 +1,113 @@
 <ion-header style="box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75)">
     <ion-toolbar>
-      <div>
-          <img src="/assets/release1/header.PNG">
-      </div>
+        <div>
+            <img src="/assets/release1/header.PNG">
+        </div>
     </ion-toolbar>
 </ion-header>
-  
+
 <div id="map-page" class="map-page"></div>
 
-<ion-content >
+<ion-content>
     <ion-grid style="height: 100%;" *ngIf="!savePath">
-        
-        <ion-row style="height: 60%">
-            <ion-col size="3" style="height: 80%;">
-                <img src="/assets/release1/puntoApuntoB.PNG" alt="" style="height: 100%; width: 100%;"/>
-            
-            </ion-col>
-            <ion-col size="9">
+        <ion-row style="height: 5%">
+            <ion-icon src="../assets/release1/creaItinerario.svg" style="width: 100%;" size="large"></ion-icon>
+        </ion-row>
+        <ion-row style="height:fit-content">
+            <ion-col size="12">
                 <ion-grid style="height: 100%;">
                     <ion-row style="height: 50%;" (click)="deletePoint(0)">
-                        <h5 *ngIf="!this.pointsPath[0]" style="font-weight: bold;">Punto di partenze</h5>
-                        <h5 *ngIf="this.pointsPath[0]" style="font-weight: bold;">{{pointsPath[0].title}}</h5>
+                        <ion-col size="3">
+                            <div style="margin-top:15px; text-align: center">
+                                <ion-icon src="../assets/release1/Oval.svg" size="large"></ion-icon>
+                            </div>
+                        </ion-col>
+                        <ion-col size="9" style="font-family:Titillium Web; font-size: 18px ">
+                            <h5 *ngIf="!this.pointsPath[0]">Punto di partenze</h5>
+                            <h5 *ngIf="this.pointsPath[0]">{{pointsPath[0].title}}</h5>
+                        </ion-col>
                     </ion-row>
                     <ion-row style="height: 50%;" (click)="deletePoint(1)">
-                        <h5 *ngIf="!this.pointsPath[1]" style="font-weight: bold;">Punto di arrivo</h5>
-                        <h5 *ngIf="this.pointsPath[1]" style="font-weight: bold;"> {{pointsPath[1].title}}</h5>
+                        <ion-col size="3">
+                            <div style="margin-top:15px; text-align: center">
+                                <ion-icon src="../assets/release1/OvalBlack.svg" size="large"></ion-icon>
+                            </div>
+                        </ion-col>
+                        <ion-col size="9" style="font-family:Titillium Web; font-size: 18px ">
+                            <h5 *ngIf="!this.pointsPath[1]">Punto di arrivo</h5>
+                            <h5 *ngIf="this.pointsPath[1]"> {{pointsPath[1].title}}</h5>
+                        </ion-col>
                     </ion-row>
                 </ion-grid>
             </ion-col>
-            
+
         </ion-row>
-        
+
         <ion-row style=" height: 40%;">
-                <ion-title style="    
-                        font-size: 19px;
-                        text-align: center;
-                    ">
-                    <ion-button *ngIf="this.pointsPath[0] && this.pointsPath[1]" color="success" 
-                                shape="round"
-                                (click)="getShowPath()"
-                                style="width: 60%;">
-                        Ricerca</ion-button>
-                </ion-title>
-            </ion-row>
+            <ion-col size="12" style="text-align: center;">
+                <ion-button *ngIf="this.pointsPath[0] && this.pointsPath[1]" color="success" shape="round"
+                    (click)="getShowPath()" style="width: 60%;">
+                    Ricerca</ion-button>
+            </ion-col>
+        </ion-row>
     </ion-grid>
-    
+
     <ion-grid style="height: 100%;" *ngIf="savePath">
         <ion-row>
-            <ion-col size="2" >
-                
+            <ion-col size="2" size-xs="3">
+
                 <ion-button id="walk" [color]="walkNamedColor" [disabled]="walkDisabled" (click)="filterFoot()">
-                    <ion-icon name="walk"></ion-icon>
+                    <ion-icon name="walk" size="large"></ion-icon>
                 </ion-button>
-                
+
             </ion-col>
-            <ion-col size="2" >
+            <ion-col size="2" size-xs="3">
                 <ion-button id="bycicle" [color]="namedColor" [disabled]="namedDisabled" (click)="filterBicycle()">
-                        <ion-icon name="bicycle"></ion-icon>
+                    <ion-icon name="bicycle" size="large"></ion-icon>
                 </ion-button>
             </ion-col>
-            <ion-col size="2">
-                <ion-button id="car" [color]="carNamedColor" [disabled]="carDisabled"  (click)="filterCar()">
-                    <ion-icon name="car"></ion-icon>
+            <ion-col size="2" size-xs="3">
+                <ion-button id="car" [color]="carNamedColor" [disabled]="carDisabled" (click)="filterCar()">
+                    <ion-icon name="car" size="large"></ion-icon>
                 </ion-button>
             </ion-col>
-            <ion-col size="6"  style="text-align: end">
-                <button (click)="filterOptions()"
-                    style="
+            <ion-col size="6" style="text-align: end; background-color: #2A4C5B" size-xs="3" >
+                <button (click)="filterOptions()" style="
                         height: 100%;
                         width: 100%;
-                        font-size: 19px;
-                        font-weight: bold;">
-                        Opzioni
+                        background-color: #2A4C5B;
+                        color: white">
+                    Opzioni
                     <ion-icon name="funnel"></ion-icon>
                 </button>
             </ion-col>
         </ion-row>
-        <ion-row *ngIf="optionsFilter" style="background-color: aliceblue">
-            <ion-row >
-                <ion-col size="2" >
+        <ion-row *ngIf="optionsFilter" style="background-color: #2A4C5B; color: white">
+            <ion-row>
+                <ion-col size="3">
                     <ion-button [color]="touristColor" [disabled]="touristDisabled" (click)="filterTourist()">
-                        <!--<ion-icon name="car"></ion-icon>-->
-                        <img  src="/assets/icon/icon3-s.png" alt="" />
+                        <ion-icon src="../assets/release1/turistaBianco.svg" size="large"></ion-icon>
                     </ion-button>
                 </ion-col>
-                <ion-col size="2">
-                    <ion-button [color]="familyColor"  [disabled]="!namedDisabled || familyDisabled" (click)="filterFamily()">
-                        <img src="/assets/icon/icon5-s.png" alt="" />
+                <ion-col size="3">
+                    <ion-button [color]="familyColor" 
+                        [disabled]="familyDisabled"
+                        (click)="filterFamily()">
+                        <ion-icon src="../assets/release1/famiglia.svg" size="large"></ion-icon>
                     </ion-button>
                 </ion-col>
-                <ion-col size="2" >
-                    <ion-button [color]="oldAgeColor" [disabled]="!namedDisabled || oldAgeDisabled" (click)="filterOldAge()">
-                        <img  src="/assets/icon/icon6-s.png" alt="" />
+                <ion-col size="3">
+                    <ion-button [color]="oldAgeColor"  
+                        [disabled]="oldAgeDisabled"
+                        (click)="filterOldAge()">
+                        <ion-icon src="../assets/release1/anziano.svg" size="large"></ion-icon>
                     </ion-button>
                 </ion-col>
-                <ion-col size="2">
-                    <ion-button [color]="fitnessColor" [disabled]="!namedDisabled || !carDisabled || fitnessDisabled" (click)="filterFitness()">
-                        <img  src="/assets/icon/icon4-s.png" alt="" />
+                <ion-col size="3">
+                    <ion-button [color]="fitnessColor"
+                        [disabled]="fitnessDisabled"
+                        (click)="filterFitness()">
+                        <ion-icon src="../assets/release1/fitnessBianco.svg" size="large"></ion-icon>
                     </ion-button>
                 </ion-col>
             </ion-row>
@@ -108,7 +119,8 @@
                     </ion-label>
                 </ion-col>
                 <ion-col size="12">
-                    <ion-datetime [(ngModel)] = "timeSelected" displayFormat="h:mm A" minuteValues="0,30" (ionChange)="setTimeAlert()" placeholder="Select Date"> </ion-datetime>
+                    <ion-datetime [(ngModel)]="timeSelected" displayFormat="h:mm A" minuteValues="0,30"
+                        (ionChange)="setTimeAlert()" placeholder="Select Date"> </ion-datetime>
                 </ion-col>
             </ion-row>
             <ion-row>
@@ -118,7 +130,7 @@
                         TIPO DI PERCORSO
                     </ion-label>
                 </ion-col>
-                
+
                 <ion-col size="12">
                     <ion-col size="3">
                         <ion-checkbox color="secondary"></ion-checkbox>
@@ -139,40 +151,33 @@
                         </ion-label>
                     </ion-col>
                 </ion-col>
-                
+
             </ion-row>
         </ion-row>
-        <ion-row *ngFor="let path of pathCreated; let i = index;" 
-                     
-                    [ngClass]="(i % 2 == 0) ? 'odd' : 'even'">
-                <ion-col size="2" style="font-size: -webkit-xxx-large">
-                    <ion-row large>
-                        <!--<ion-icon name="{{path.icon}}" ></ion-icon>-->
-                        <img style="height:50px" src="{{path.icon}}" alt="" />
-                    </ion-row>
-                </ion-col>
-                <ion-col size="8">
-                    <ion-row>
-                        <ion-col size="6">
-                            {{path.duration}} minuti
-                        </ion-col>
-                        <ion-col size="6">
-                            {{path.distance}} metri
-                        </ion-col>
-                    </ion-row>
-                    <ion-row>
-                        <ion-col>
-                            tramite via Napoli
-                        </ion-col>
-                    </ion-row>
-                </ion-col>
-                <ion-col size="2" style="font-size: -webkit-xxx-large; color: grey;">
-                    <ion-icon id="{{path.filter.value}}" name="heart" (click)="savePathNavigate(path.filter)"></ion-icon>
-                </ion-col>
-            </ion-row>
-        
-        
+        <ion-row *ngFor="let path of pathFilter; let i = index;" [ngClass]="(i % 2 == 0) ? 'odd' : 'even'">
+            <ion-col size="2" >
+                <img style="height:50px" src="{{path.icon}}" alt="" />
+            </ion-col>
+            <ion-col size="8">
+                <ion-row>
+                    <ion-col size="6">
+                        {{path.duration}} minuti
+                    </ion-col>
+                    <ion-col size="6">
+                        {{path.distance}} metri
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        tramite via Napoli
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+            <ion-col size="2" style="font-size: -webkit-xxx-large; color: grey;">
+                <ion-icon id="{{path.filter.value}}" name="heart" (click)="savePathNavigate(path.filter)"></ion-icon>
+            </ion-col>
+        </ion-row>
+
+
     </ion-grid>
 </ion-content>
- 
-
