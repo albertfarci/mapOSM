@@ -6,6 +6,7 @@ import { Http } from '@angular/http';
 import { map } from 'rxjs/operators';
 import { PathService } from '../shared/services/path.service';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { PreferitiService } from '../shared/services/preferiti.service';
 
 @Component({
   selector: 'app-home',
@@ -19,9 +20,51 @@ export class HomePage {
 
   map: Map
 
+  
+  paths = {
+    "0": {
+      "value": 0,
+      "name": "Car"
+    },
+    "1": {
+      "value": 1,
+      "name": "Foot"
+    },
+    "2": {
+      "value": 2,
+      "name": "Bycicle"
+    },
+    "3": {
+      "value": 3,
+      "name": "Car by Speed"
+    },
+    "4": {
+      "value": 4,
+      "name": "Fitness"
+    },
+    "5": {
+      "value": 5,
+      "name": "Bycicle co2"
+    },
+    "6":{
+      "value": 6,
+      "name": "Anziani"
+    },
+    "7":{
+      "value":7,
+      "name":"Famiglie"
+    },
+    "8":{
+      "value":8,
+      "name":"Turistico"
+    }
+  }
+
+
   constructor(public http: Http,
             public plt: Platform,
             public router: Router,
+            public preferitiService: PreferitiService,
             private localNotifications: LocalNotifications) {
 
             }
@@ -54,8 +97,9 @@ export class HomePage {
     this.router.navigate(["/tabs/profilo"]);
   }
 
-  goToPreferiti(){
-
+  goToPreferiti(item){
+    console.log(this.paths[item])
+    this.preferitiService.setPeriti(this.paths[item])
     this.router.navigate(["/tabs/path"]);
   }
 

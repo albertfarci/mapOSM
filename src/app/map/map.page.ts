@@ -418,7 +418,10 @@ export class MapPage {
   savePathNavigate(item) {
     console.log(item)
     document.getElementById(item.value).style.color="red"
-    
+    this.toast.show("Percorso in salvataggio", '3000', 'center').subscribe(
+      toast => {
+        console.log(toast);
+      })
     if (this.setAlarmBool && !this.isSetAlertSelectedItem) {
       this.localNotifications.schedule({
         id: 1,
@@ -461,7 +464,7 @@ export class MapPage {
           filter TEXT,
           coordinates TEX)`, [])
             .then((tableInserted) => {
-              db.executeSql(`get
+              db.executeSql(`
             INSERT INTO paths (filter,coordinates)
               VALUES(?,?)`, [JSON.stringify(item), JSON.stringify(this.pointsPath)])
                 .then((tableInserted) => {

@@ -48,7 +48,7 @@ import { PoiService } from '../shared/services/poi.service';
       
       if(this.map) {
         this.map.removeLayer(this.layerGroup);
-        this.map.remove()
+        //this.map.remove()
       }
       this.initMap()
     });
@@ -68,7 +68,7 @@ import { PoiService } from '../shared/services/poi.service';
 
     this.map.invalidateSize();
 
-    /*
+    
     this.sqlite.create({
       name: 'filters.db',
       location: 'default'
@@ -93,11 +93,12 @@ import { PoiService } from '../shared/services/poi.service';
                 this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], {icon: this.icons.redIcon}));
                 
                 this.currentFilter=JSON.parse(tableSelect.rows.item(i).filter)
-                //this.showPath(this.pointsPath[0],this.pointsPath[1],JSON.parse(tableSelect.rows.item(i).filter).value)
+                //this.getShowPath(this.pointsPath[0],this.pointsPath[1],JSON.parse(tableSelect.rows.item(i).filter).value)
                 
               }
               
             }
+            this.getShowPath()
           }
         })
         .catch((e) => {
@@ -106,7 +107,7 @@ import { PoiService } from '../shared/services/poi.service';
               console.log(toast);
           })
         })
-      })*/
+      })
   }
 
   

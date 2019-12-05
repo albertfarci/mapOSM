@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { PathService } from '../shared/services/path.service';
+import { PreferitiService } from '../shared/services/preferiti.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tabs',
@@ -7,6 +10,12 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
-  constructor() {}
-
+  constructor(
+    public router: Router,
+    public preferitiService: PreferitiService) {}
+  goToPreferiti(){
+    console.log("Vuoto")
+    this.preferitiService.setPeriti(null)
+    this.router.navigate(["/tabs/path"]);
+  }
 }
