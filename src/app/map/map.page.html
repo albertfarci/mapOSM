@@ -71,7 +71,7 @@
                     <ion-icon name="car" size="large"></ion-icon>
                 </ion-button>
             </ion-col>
-            <ion-col size="6" style="text-align: end; background-color: #2A4C5B" size-xs="3" >
+            <ion-col size="6" style="text-align: end; " size-xs="3" >
                 <button (click)="filterOptions()" style="
                         height: 100%;
                         width: 100%;
@@ -133,7 +133,10 @@
 
                 <ion-col size="12">
                     <ion-col size="3">
-                        <ion-checkbox color="secondary"></ion-checkbox>
+                        <ion-checkbox 
+                        [disabled]="breveDisabled" 
+                        (ionChange)="breveOnChange($event)"
+                        color="secondary"></ion-checkbox>
                     </ion-col>
                     <ion-col size="9">
                         <ion-label style="font-weight: bold;">
@@ -143,7 +146,10 @@
                 </ion-col>
                 <ion-col size="12">
                     <ion-col size="3">
-                        <ion-checkbox color="secondary"></ion-checkbox>
+                        <ion-checkbox 
+                        [disabled]="sostenibileDisabled" 
+                        (ionChange)="sostenibileOnChange($event)"
+                        color="secondary"></ion-checkbox>
                     </ion-col>
                     <ion-col size="9">
                         <ion-label style="font-weight: bold;">
@@ -154,7 +160,7 @@
 
             </ion-row>
         </ion-row>
-        <ion-row *ngFor="let path of pathFilter; let i = index;" [ngClass]="(i % 2 == 0) ? 'odd' : 'even'">
+        <ion-row *ngFor="let path of pathFilter; let i = index;" [ngClass]="(i % 2 == 0) ? 'even' : 'odd'">
             <ion-col size="2" >
                 <img style="height:50px" src="{{path.icon}}" alt="" />
             </ion-col>
