@@ -150,7 +150,7 @@ export class PathPage {
             if (tableSelect.rows.length > 0) {
               
               for (var i = 0; i < tableSelect.rows.length; i++) {
-                if(JSON.parse(tableSelect.rows.item(i).filter).name == "Car"){
+                if(JSON.parse(tableSelect.rows.item(i).filter).name == "Car" || JSON.parse(tableSelect.rows.item(i).filter).name == "Car by Speed" ){
                   this.pathFiltered.push(tableSelect.rows.item(i))
                 }
               }
@@ -449,7 +449,7 @@ export class PathPage {
             if (tableSelect.rows.length > 0) {
               
               for (var i = 0; i < tableSelect.rows.length; i++) {
-                if(JSON.parse(tableSelect.rows.item(i).filter).name == "Bycicle"){
+                if(JSON.parse(tableSelect.rows.item(i).filter).name == "Bycicle" || JSON.parse(tableSelect.rows.item(i).filter).name =="Bycicle co2"){
                   this.pathFiltered.push(tableSelect.rows.item(i))
                 }
               }
