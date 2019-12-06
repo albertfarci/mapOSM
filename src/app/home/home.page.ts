@@ -98,7 +98,6 @@ export class HomePage {
   }
 
   goToPreferiti(item){
-    console.log(this.paths[item])
     this.preferitiService.setPeriti(this.paths[item])
     this.router.navigate(["/tabs/path"]);
   }

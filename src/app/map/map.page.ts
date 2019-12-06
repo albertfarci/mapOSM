@@ -416,12 +416,8 @@ export class MapPage {
   }
 
   savePathNavigate(item) {
-    console.log(item)
     document.getElementById(item.value).style.color="red"
-    this.toast.show("Percorso in salvataggio", '3000', 'center').subscribe(
-      toast => {
-        console.log(toast);
-      })
+    
     if (this.setAlarmBool && !this.isSetAlertSelectedItem) {
       this.localNotifications.schedule({
         id: 1,
@@ -476,7 +472,7 @@ export class MapPage {
                 })
             })
             .catch((e) => {
-              this.toast.show(JSON.stringify(e), '3000', 'center').subscribe(
+              this.toast.show("Something went wrong", '3000', 'center').subscribe(
                 toast => {
                   console.log(toast);
                 })
@@ -484,7 +480,6 @@ export class MapPage {
         })
 
     }
-    //console.log(this.pointsPath)
   }
 
   carNamedColor = "light";
@@ -547,8 +542,6 @@ export class MapPage {
   }
 
   isSetAlertSelected() {
-    console.log("isSetAlertSelected")
-
     this.isSetAlertSelectedItem = !this.isSetAlertSelectedItem
   }
 
@@ -641,17 +634,6 @@ export class MapPage {
 
       this.map.setView([resp.coords.latitude, resp.coords.longitude], 10);
 
-      /*
-      if (!this.pointsPath[0]) {
-
-        this.layerGroup.addLayer(marker([resp.coords.latitude, resp.coords.longitude], { icon: this.icons.redIcon }).bindPopup('<h5>Me!</h5>'));
-
-        this.map.setView([resp.coords.latitude, resp.coords.longitude], 10);
-
-        this.pointsPath[0] = { lat: resp.coords.latitude, lng: resp.coords.longitude, title: "Posizione corrente" }
-      }
-
-      if (this.pointsPath[0] && this.pointsPath[1]) this.pathIsCreated = true;*/
     }).catch((error) => {
       console.log('Error getting location', error);
     });
@@ -677,7 +659,7 @@ export class MapPage {
       this.carNamedColor = 'secondary'
       this.pathFilter = this.pathCreated
       .filter(x => {
-        console.log(x.icon)
+        
         return x.icon === "/assets/icon/icon2-s.png" 
               || x.icon === "/assets/icon/icon5-s.png" 
               || x.icon === "/assets/icon/icon3-s.png"
@@ -693,7 +675,7 @@ export class MapPage {
       this.carNamedColor = "light"
       this.pathFilter = this.pathFilter
       .filter(x => {
-        console.log(x.icon)
+        
         return !(x.icon === "/assets/icon/icon2-s.png" 
               || x.icon === "/assets/icon/icon5-s.png" 
               || x.icon === "/assets/icon/icon3-s.png")
@@ -706,7 +688,7 @@ export class MapPage {
       let icon
       let myStyle
       if (x.filter.name == "Car" || x.filter.name == "Car by Speed") {
-        console.log("car")
+        
         icon = "/assets/icon/icon2-s.png"
         myStyle = {
           "color": "red",
@@ -716,7 +698,6 @@ export class MapPage {
 
       }
       if(x.filter.name == "Famiglie"){
-        console.log("famiglia")
         icon = "/assets/icon/icon5-s.png"
         myStyle = {
           "color": "black",
@@ -725,7 +706,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Turistico"){
-        console.log("turistico")
         icon = "/assets/icon/icon3-s.png"
         myStyle = {
           "color": "purple",
@@ -763,7 +743,6 @@ export class MapPage {
       this.namedColor = 'secondary'
       this.pathFilter = this.pathCreated
       .filter(x => {
-        console.log(x.icon)
         return x.icon === "/assets/icon/icon1-s.png" 
               || x.icon === "/assets/icon/icon5-s.png" 
               || x.icon === "/assets/icon/icon3-s.png"
@@ -778,7 +757,6 @@ export class MapPage {
       this.namedColor = "light"
       this.pathFilter = this.pathFilter
       .filter(x => {
-        console.log(x.icon)
         return !(x.icon === "/assets/icon/icon1-s.png" 
               || x.icon === "/assets/icon/icon5-s.png" 
               || x.icon === "/assets/icon/icon3-s.png")
@@ -791,7 +769,7 @@ export class MapPage {
       let icon
       let myStyle
       if (x.filter.name== "Bycicle" || x.filter.name == "Bycicle co2") {
-        console.log("car")
+        
         icon = "/assets/icon/icon1-s.png"
         myStyle = {
           "color": "red",
@@ -801,7 +779,6 @@ export class MapPage {
 
       }
       if(x.filter.name == "Famiglie"){
-        console.log("famiglia")
         icon = "/assets/icon/icon5-s.png"
         myStyle = {
           "color": "black",
@@ -810,7 +787,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Turistico"){
-        console.log("turistico")
         icon = "/assets/icon/icon3-s.png"
         myStyle = {
           "color": "purple",
@@ -871,7 +847,6 @@ export class MapPage {
       let myStyle
       
       if(x.filter.name == "Fitness"){
-        console.log("fitness")
         icon = "/assets/icon/icon4-s.png"
         myStyle = {
           "color": "grey",
@@ -880,7 +855,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Famiglie"){
-        console.log("fitness")
         icon = "/assets/icon/icon5-s.png"
         myStyle = {
           "color": "black",
@@ -889,7 +863,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Anziani"){
-        console.log("fitness")
         icon = "/assets/icon/icon6-s.png"
         myStyle = {
           "color": "orange",
@@ -898,7 +871,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Turistico"){
-        console.log("fitness")
         icon = "/assets/icon/icon3-s.png"
         myStyle = {
           "color": "purple",
@@ -907,7 +879,6 @@ export class MapPage {
         };
       }
       if (x.filter.name == "Foot") {
-        console.log("walk")
         icon = "/assets/icon/icon0-s.png"
         myStyle = {
           "color": "green",
@@ -947,7 +918,6 @@ export class MapPage {
       this.sostenibileDisabled=true
       this.pathFilter =  this.pathCreated
         .filter(x => {
-          console.log(x.icon)
           return x.icon === "/assets/icon/icon6-s.png" 
         })
     }else{
@@ -967,12 +937,11 @@ export class MapPage {
     
     this.pathFilter.map(x => {
 
-      console.log(x)
 
       let icon
       let myStyle
       if (x.filter.name == "Car" || x.filter.name == "Car by Speed") {
-        console.log("car")
+        
         icon = "/assets/icon/icon2-s.png"
         myStyle = {
           "color": "red",
@@ -982,7 +951,7 @@ export class MapPage {
 
       }
       if (x.filter.name== "Bycicle" || x.filter.name == "Bycicle co2") {
-        console.log("bicycle")
+        
         icon = "/assets/icon/icon1-s.png"
         myStyle = {
           "color": "blue",
@@ -991,7 +960,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Fitness"){
-        console.log("fitness")
         icon = "/assets/icon/icon4-s.png"
         myStyle = {
           "color": "grey",
@@ -1000,7 +968,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Famiglie"){
-        console.log("fitness")
         icon = "/assets/icon/icon5-s.png"
         myStyle = {
           "color": "black",
@@ -1009,7 +976,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Anziani"){
-        console.log("fitness")
         icon = "/assets/icon/icon6-s.png"
         myStyle = {
           "color": "orange",
@@ -1018,7 +984,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Turistico"){
-        console.log("fitness")
         icon = "/assets/icon/icon3-s.png"
         myStyle = {
           "color": "purple",
@@ -1027,7 +992,6 @@ export class MapPage {
         };
       }
       if (x.filter.name == "Foot") {
-        console.log("walk")
         icon = "/assets/icon/icon0-s.png"
         myStyle = {
           "color": "green",
@@ -1066,7 +1030,6 @@ export class MapPage {
       this.breveDisabled=true
       this.pathFilter =  this.pathCreated
         .filter(x => {
-          console.log(x.icon)
           return x.icon === "/assets/icon/icon4-s.png" 
         })
     }else{
@@ -1086,12 +1049,11 @@ export class MapPage {
     
     this.pathFilter.map(x => {
 
-      console.log(x)
 
       let icon
       let myStyle
       if (x.filter.name == "Car" || x.filter.name == "Car by Speed") {
-        console.log("car")
+        
         icon = "/assets/icon/icon2-s.png"
         myStyle = {
           "color": "red",
@@ -1101,7 +1063,7 @@ export class MapPage {
 
       }
       if (x.filter.name== "Bycicle" || x.filter.name == "Bycicle co2") {
-        console.log("bicycle")
+        
         icon = "/assets/icon/icon1-s.png"
         myStyle = {
           "color": "blue",
@@ -1110,7 +1072,7 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Fitness"){
-        console.log("fitness")
+        
         icon = "/assets/icon/icon4-s.png"
         myStyle = {
           "color": "grey",
@@ -1119,7 +1081,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Famiglie"){
-        console.log("fitness")
         icon = "/assets/icon/icon5-s.png"
         myStyle = {
           "color": "white",
@@ -1128,7 +1089,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Anziani"){
-        console.log("fitness")
         icon = "/assets/icon/icon6-s.png"
         myStyle = {
           "color": "orange",
@@ -1137,7 +1097,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Turistico"){
-        console.log("fitness")
         icon = "/assets/icon/icon3-s.png"
         myStyle = {
           "color": "purple",
@@ -1146,7 +1105,6 @@ export class MapPage {
         };
       }
       if (x.filter.name == "Foot") {
-        console.log("walk")
         icon = "/assets/icon/icon0-s.png"
         myStyle = {
           "color": "green",
@@ -1191,14 +1149,12 @@ export class MapPage {
     } else {
       this.touristColor = "light"
       if(this.carNamedColor === 'secondary'){
-        console.log("Car")
         this.familyDisabled = false
         this.carDisabled=false
         this.breveDisabled=false
         this.sostenibileDisabled=false
         this.pathFilter = this.pathCreated
         .filter(x => {
-          console.log(x.icon)
           return x.icon === "/assets/icon/icon2-s.png" 
                 || x.icon === "/assets/icon/icon5-s.png" 
                 || x.icon === "/assets/icon/icon3-s.png"
@@ -1206,7 +1162,6 @@ export class MapPage {
       }
       if(this.namedColor === 'secondary'){
         
-        console.log("bike")
         this.familyDisabled = false
         this.namedDisabled=false
         
@@ -1214,7 +1169,6 @@ export class MapPage {
         this.sostenibileDisabled=false
         this.pathFilter = this.pathCreated
         .filter(x => {
-          console.log(x.icon)
           return x.icon === "/assets/icon/icon1-s.png" 
                 || x.icon === "/assets/icon/icon5-s.png" 
                 || x.icon === "/assets/icon/icon3-s.png"
@@ -1222,7 +1176,6 @@ export class MapPage {
       }
       if(this.walkNamedColor === 'secondary'){
         
-        console.log("foot")
         this.walkDisabled=false
         this.breveDisabled=false
         this.familyDisabled = false
@@ -1238,12 +1191,11 @@ export class MapPage {
     
     this.pathFilter.map(x => {
 
-      console.log(x)
 
       let icon
       let myStyle
       if (x.filter.name == "Car" || x.filter.name == "Car by Speed") {
-        console.log("car")
+        
         icon = "/assets/icon/icon2-s.png"
         myStyle = {
           "color": "red",
@@ -1253,7 +1205,7 @@ export class MapPage {
 
       }
       if (x.filter.name== "Bycicle" || x.filter.name == "Bycicle co2") {
-        console.log("bicycle")
+        
         icon = "/assets/icon/icon1-s.png"
         myStyle = {
           "color": "blue",
@@ -1262,7 +1214,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Fitness"){
-        console.log("fitness")
         icon = "/assets/icon/icon4-s.png"
         myStyle = {
           "color": "grey",
@@ -1271,7 +1222,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Famiglie"){
-        console.log("fitness")
         icon = "/assets/icon/icon5-s.png"
         myStyle = {
           "color": "black",
@@ -1280,7 +1230,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Anziani"){
-        console.log("fitness")
         icon = "/assets/icon/icon6-s.png"
         myStyle = {
           "color": "orange",
@@ -1289,7 +1238,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Turistico"){
-        console.log("fitness")
         icon = "/assets/icon/icon3-s.png"
         myStyle = {
           "color": "purple",
@@ -1298,7 +1246,6 @@ export class MapPage {
         };
       }
       if (x.filter.name == "Foot") {
-        console.log("walk")
         icon = "/assets/icon/icon0-s.png"
         myStyle = {
           "color": "green",
@@ -1342,14 +1289,12 @@ export class MapPage {
     } else {
       this.familyColor = "light"
       if(this.carNamedColor === 'secondary'){
-        console.log("Car")
         this.touristDisabled = false
         this.carDisabled=false
         this.breveDisabled=false
         this.sostenibileDisabled=false
         this.pathFilter = this.pathCreated
         .filter(x => {
-          console.log(x.icon)
           return x.icon === "/assets/icon/icon2-s.png" 
                 || x.icon === "/assets/icon/icon5-s.png" 
                 || x.icon === "/assets/icon/icon3-s.png"
@@ -1357,14 +1302,12 @@ export class MapPage {
       }
       if(this.namedColor === 'secondary'){
         
-        console.log("bike")
         this.touristDisabled = false
         this.namedDisabled=false
         this.breveDisabled=false
         this.sostenibileDisabled=false
         this.pathFilter = this.pathCreated
         .filter(x => {
-          console.log(x.icon)
           return x.icon === "/assets/icon/icon1-s.png" 
                 || x.icon === "/assets/icon/icon5-s.png" 
                 || x.icon === "/assets/icon/icon3-s.png"
@@ -1372,7 +1315,6 @@ export class MapPage {
       }
       if(this.walkNamedColor === 'secondary'){
         
-        console.log("foot")
         this.walkDisabled=false
         this.breveDisabled=false
         this.touristDisabled = false
@@ -1389,12 +1331,10 @@ export class MapPage {
     
     this.pathFilter.map(x => {
 
-      console.log(x)
-
       let icon
       let myStyle
       if (x.filter.name == "Car" || x.filter.name == "Car by Speed") {
-        console.log("car")
+        
         icon = "/assets/icon/icon2-s.png"
         myStyle = {
           "color": "red",
@@ -1404,7 +1344,7 @@ export class MapPage {
 
       }
       if (x.filter.name== "Bycicle" || x.filter.name == "Bycicle co2") {
-        console.log("bicycle")
+        
         icon = "/assets/icon/icon1-s.png"
         myStyle = {
           "color": "blue",
@@ -1413,7 +1353,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Fitness"){
-        console.log("fitness")
         icon = "/assets/icon/icon4-s.png"
         myStyle = {
           "color": "grey",
@@ -1422,7 +1361,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Famiglie"){
-        console.log("fitness")
         icon = "/assets/icon/icon5-s.png"
         myStyle = {
           "color": "black",
@@ -1431,7 +1369,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Anziani"){
-        console.log("fitness")
         icon = "/assets/icon/icon6-s.png"
         myStyle = {
           "color": "orange",
@@ -1440,7 +1377,6 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Turistico"){
-        console.log("fitness")
         icon = "/assets/icon/icon3-s.png"
         myStyle = {
           "color": "purple",
@@ -1449,7 +1385,6 @@ export class MapPage {
         };
       }
       if (x.filter.name == "Foot") {
-        console.log("walk")
         icon = "/assets/icon/icon0-s.png"
         myStyle = {
           "color": "green",
@@ -1469,8 +1404,6 @@ export class MapPage {
   }
 
   breveOnChange(e){
-    console.log(e)
-    
     this.map.removeLayer(this.layerGroup)
 
     this.layerGroup = new LayerGroup();
@@ -1481,7 +1414,6 @@ export class MapPage {
 
     if (e.detail.checked) {
       if(this.carNamedColor === 'secondary'){
-        console.log("Car")
         this.familyDisabled = true
         this.touristDisabled=true
         this.carDisabled=true
@@ -1509,7 +1441,6 @@ export class MapPage {
       
       if(this.walkNamedColor === 'secondary'){
         
-        console.log("foot")
         this.walkDisabled=true
         this.familyDisabled = true
         this.fitnessDisabled = true
@@ -1524,14 +1455,12 @@ export class MapPage {
 
     } else {
       if(this.carNamedColor === 'secondary'){
-        console.log("Car")
         this.familyDisabled = false
         this.touristDisabled=false
         this.carDisabled=false
         this.sostenibileDisabled=false
         this.pathFilter = this.pathCreated
         .filter(x => {
-          console.log(x.icon)
           return x.icon === "/assets/icon/icon2-s.png" 
                 || x.icon === "/assets/icon/icon5-s.png" 
                 || x.icon === "/assets/icon/icon3-s.png"
@@ -1546,7 +1475,6 @@ export class MapPage {
         this.sostenibileDisabled=false
         this.pathFilter = this.pathCreated
         .filter(x => {
-          console.log(x.icon)
           return x.icon === "/assets/icon/icon1-s.png" 
                 || x.icon === "/assets/icon/icon5-s.png" 
                 || x.icon === "/assets/icon/icon3-s.png"
@@ -1555,7 +1483,6 @@ export class MapPage {
       
       if(this.walkNamedColor === 'secondary'){
         
-        console.log("foot")
         this.walkDisabled=false
         this.familyDisabled = false
         this.fitnessDisabled = false
@@ -1572,12 +1499,10 @@ export class MapPage {
     
     this.pathFilter.map(x => {
 
-      console.log(x)
-
       let icon
       let myStyle
       if (x.filter.name == "Car" || x.filter.name == "Car by Speed") {
-        console.log("car")
+        
         icon = "/assets/icon/icon2-s.png"
         myStyle = {
           "color": "red",
@@ -1587,7 +1512,7 @@ export class MapPage {
 
       }
       if (x.filter.name== "Bycicle" || x.filter.name == "Bycicle co2") {
-        console.log("bicycle")
+        
         icon = "/assets/icon/icon1-s.png"
         myStyle = {
           "color": "blue",
@@ -1596,7 +1521,7 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Fitness"){
-        console.log("fitness")
+        
         icon = "/assets/icon/icon4-s.png"
         myStyle = {
           "color": "grey",
@@ -1605,7 +1530,7 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Famiglie"){
-        console.log("fitness")
+        
         icon = "/assets/icon/icon5-s.png"
         myStyle = {
           "color": "black",
@@ -1614,7 +1539,7 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Anziani"){
-        console.log("fitness")
+        
         icon = "/assets/icon/icon6-s.png"
         myStyle = {
           "color": "orange",
@@ -1623,7 +1548,7 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Turistico"){
-        console.log("fitness")
+        
         icon = "/assets/icon/icon3-s.png"
         myStyle = {
           "color": "purple",
@@ -1632,7 +1557,7 @@ export class MapPage {
         };
       }
       if (x.filter.name == "Foot") {
-        console.log("walk")
+        
         icon = "/assets/icon/icon0-s.png"
         myStyle = {
           "color": "green",
@@ -1652,7 +1577,6 @@ export class MapPage {
   }
 
   sostenibileOnChange(e){
-    console.log(e)
     
     this.map.removeLayer(this.layerGroup)
 
@@ -1666,7 +1590,6 @@ export class MapPage {
 
     if (e.detail.checked) {
       if(this.carNamedColor === 'secondary'){
-        console.log("Car")
         this.familyDisabled = true
         this.touristDisabled=true
         this.carDisabled=true
@@ -1691,7 +1614,6 @@ export class MapPage {
       
     } else {
       if(this.carNamedColor === 'secondary'){
-        console.log("Car")
         this.familyDisabled = false
         this.touristDisabled=false
         this.carDisabled=false
@@ -1707,7 +1629,6 @@ export class MapPage {
         this.breveDisabled=false
         this.pathFilter = this.pathCreated
         .filter(x => {
-          console.log(x.icon)
           return x.icon === "/assets/icon/icon1-s.png" 
                 || x.icon === "/assets/icon/icon5-s.png" 
                 || x.icon === "/assets/icon/icon3-s.png"
@@ -1719,12 +1640,10 @@ export class MapPage {
     
     this.pathFilter.map(x => {
 
-      console.log(x)
-
       let icon
       let myStyle
       if (x.filter.name == "Car" || x.filter.name == "Car by Speed") {
-        console.log("car")
+        
         icon = "/assets/icon/icon2-s.png"
         myStyle = {
           "color": "red",
@@ -1734,7 +1653,7 @@ export class MapPage {
 
       }
       if (x.filter.name== "Bycicle" || x.filter.name == "Bycicle co2") {
-        console.log("bicycle")
+        
         icon = "/assets/icon/icon1-s.png"
         myStyle = {
           "color": "blue",
@@ -1743,7 +1662,7 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Fitness"){
-        console.log("fitness")
+        
         icon = "/assets/icon/icon4-s.png"
         myStyle = {
           "color": "grey",
@@ -1752,7 +1671,7 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Famiglie"){
-        console.log("fitness")
+       
         icon = "/assets/icon/icon5-s.png"
         myStyle = {
           "color": "black",
@@ -1761,7 +1680,7 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Anziani"){
-        console.log("fitness")
+       
         icon = "/assets/icon/icon6-s.png"
         myStyle = {
           "color": "orange",
@@ -1770,7 +1689,7 @@ export class MapPage {
         };
       }
       if(x.filter.name == "Turistico"){
-        console.log("fitness")
+        
         icon = "/assets/icon/icon3-s.png"
         myStyle = {
           "color": "purple",
@@ -1779,7 +1698,6 @@ export class MapPage {
         };
       }
       if (x.filter.name == "Foot") {
-        console.log("walk")
         icon = "/assets/icon/icon0-s.png"
         myStyle = {
           "color": "green",

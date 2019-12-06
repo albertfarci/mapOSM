@@ -102,7 +102,6 @@ export class PathPage {
       this.pathsSaved = []
       this.pathFiltered=[]
       if(this.preferitiService.preferito.value){
-        console.log(this.preferitiService.preferito.value)
         switch(this.preferitiService.preferito.value) {
           case 2:
             // code block
