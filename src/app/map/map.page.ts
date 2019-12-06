@@ -159,6 +159,7 @@ export class MapPage {
       })
     })*/
       this.pointsPath = []
+      console.log(this.map)
       if (this.map) {
         this.map.removeLayer(this.layerGroup);
         this.map.remove()
@@ -195,7 +196,6 @@ export class MapPage {
       .default
       .map(x => {
         this.endPoints.push(x)
-        console.log(x)
         this.layerGroup.addLayer(marker([x.lat, x.long], { title: x.label, icon: this.icons.greenIcon }).bindPopup('<h5>' + x.label + '</h5>').on('click', (x => {
 
           //this.layerGroup.addLayer(marker([x.latlng.lat, x.latlng.lng], {icon: this.icons.redIcon}));

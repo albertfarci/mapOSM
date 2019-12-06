@@ -23,6 +23,7 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { SharedModule } from './shared/shared.module';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx'
 import { PreferitiService } from './shared/services/preferiti.service';
+import { DettaglioPreferitoService } from './shared/services/dettaglioPreferito.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,6 +37,7 @@ import { PreferitiService } from './shared/services/preferiti.service';
     SplashScreen,
     PathService,
     FilterListService,
+    DettaglioPreferitoService,
     PreferitiService,
     PoiService,
     AndroidPermissions,

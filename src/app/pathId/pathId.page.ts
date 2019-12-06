@@ -6,6 +6,7 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 import { PathService } from '../shared/services/path.service';
 import { PoiService } from '../shared/services/poi.service';
+import { DettaglioPreferitoService } from '../shared/services/dettaglioPreferito.service';
 @Component({
     selector: 'app-pathId',
     templateUrl: 'pathId.page.html',
@@ -13,14 +14,14 @@ import { PoiService } from '../shared/services/poi.service';
   })
   export class PathIdPage {
     icons= {
-      greenIcon : icon({
-        iconUrl: '/assets/pref-2/green-s.png',
-        iconSize: [25, 25], 
+      puntoA: icon({
+        iconUrl: '/assets/release1/Oval.svg',
+        iconSize: [25, 25],
         popupAnchor: [0, -20]
       }),
-      redIcon : icon({
-        iconUrl: '/assets/pref-2/red-s.png',
-        iconSize: [25, 25],  
+      puntoB: icon({
+        iconUrl: '/assets/release1/OvalBlack.svg',
+        iconSize: [25, 25],
         popupAnchor: [0, -20]
       })
     }
@@ -37,7 +38,9 @@ import { PoiService } from '../shared/services/poi.service';
       private toast: Toast,
       public router: Router,
       public pathService: PathService,
-      private poiService: PoiService,){
+      private poiService: PoiService,
+      public dettaglioPreferitoService: DettaglioPreferitoService
+      ){
         //this.initMap()
     }
 
@@ -45,10 +48,10 @@ import { PoiService } from '../shared/services/poi.service';
   ionViewDidEnter(){
 
     this.plt.ready().then(() => {
-      
+      console.log(this.map)
       if(this.map) {
         this.map.removeLayer(this.layerGroup);
-        //this.map.remove()
+        this.map.remove()
       }
       this.initMap()
     });
@@ -82,15 +85,16 @@ import { PoiService } from '../shared/services/poi.service';
             for (var i = 0; i < tableSelect.rows.length; i++) {
               
               
-              if(tableSelect.rows.item(i).rowid == this.route.snapshot.params.id){
+              
+              if(tableSelect.rows.item(i).rowid == this.dettaglioPreferitoService.dettaglioPreferito.id){
                 
                 
                 this.pointsPath[0]=JSON.parse(tableSelect.rows.item(i).coordinates)[0]
                    
-                this.layerGroup.addLayer(marker([this.pointsPath[0].lat, this.pointsPath[0].lng], {icon: this.icons.greenIcon}));
+                this.layerGroup.addLayer(marker([this.pointsPath[0].lat, this.pointsPath[0].lng], {icon: this.icons.puntoA}));
                 
                 this.pointsPath[1]=JSON.parse(tableSelect.rows.item(i).coordinates)[1]
-                this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], {icon: this.icons.redIcon}));
+                this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], {icon: this.icons.puntoB}));
                 
                 this.currentFilter=JSON.parse(tableSelect.rows.item(i).filter)
                 //this.getShowPath(this.pointsPath[0],this.pointsPath[1],JSON.parse(tableSelect.rows.item(i).filter).value)

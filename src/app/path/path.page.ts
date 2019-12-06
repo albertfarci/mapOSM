@@ -4,6 +4,7 @@ import { Toast } from '@ionic-native/toast/ngx';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { PreferitiService } from '../shared/services/preferiti.service';
+import { DettaglioPreferitoService } from '../shared/services/dettaglioPreferito.service';
 
 @Component({
   selector: 'app-path',
@@ -77,7 +78,9 @@ export class PathPage {
     private sqlite: SQLite,
     private toast: Toast,
     public router: Router,
-    public preferitiService: PreferitiService) {
+    public preferitiService: PreferitiService,
+    public dettaglioPreferitoService: DettaglioPreferitoService
+    ) {
   }
 
   ionViewDidEnter(){
@@ -120,7 +123,9 @@ export class PathPage {
 
   
   goToPathId(filter){
-    this.router.navigate(['/tabs/pathId', JSON.parse(filter)]);
+    
+    this.dettaglioPreferitoService.setPreferito(this.pathFiltered[filter],filter)
+    this.router.navigate(['/tabs/pathId']);
   }
   
   filterCar(){
