@@ -24,6 +24,7 @@ import { SharedModule } from './shared/shared.module';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx'
 import { PreferitiService } from './shared/services/preferiti.service';
 import { DettaglioPreferitoService } from './shared/services/dettaglioPreferito.service';
+import { GeoLocationService } from './shared/services/geoLocation.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,6 +39,7 @@ import { DettaglioPreferitoService } from './shared/services/dettaglioPreferito.
     PathService,
     FilterListService,
     DettaglioPreferitoService,
+    GeoLocationService,
     PreferitiService,
     PoiService,
     AndroidPermissions,
