@@ -15,6 +15,8 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { filter } from 'minimatch';
 import { Point } from '../shared/models/point.model';
+import { IfStmt } from '@angular/compiler';
+import { longStackSupport } from 'q';
 @Component({
   selector: 'app-pathId',
   templateUrl: 'pathId.page.html',
@@ -31,6 +33,26 @@ export class PathIdPage {
       iconUrl: '/assets/release1/OvalBlack.svg',
       iconSize: [25, 25],
       popupAnchor: [0, -20]
+    }),
+    monument: icon({
+      iconUrl: '/assets/release1/monument.svg',
+      iconSize: [25, 25],
+      popupAnchor: [0, -20]
+    }),
+    museum: icon({
+      iconUrl: '/assets/release1/museum.svg',
+      iconSize: [25, 25],
+      popupAnchor: [0, -20]
+    }),
+    restaurant: icon({
+      iconUrl: '/assets/release1/restaurant.svg',
+      iconSize: [25, 25],
+      popupAnchor: [0, -20]
+    }),
+    shop: icon({
+      iconUrl: '/assets/release1/shop.svg',
+      iconSize: [25, 25],
+      popupAnchor: [0, -20]
     })
   }
 
@@ -38,7 +60,7 @@ export class PathIdPage {
   start= []
   navigazioneAttiva
   poisList = []
-  pointsPath = []
+  pointsPath : Array<Point>=[]
   currentFilter
   layerGroup
   map: Map
@@ -47,11 +69,17 @@ export class PathIdPage {
     public router: Router,
     public pathService: PathService,
     public geoLocationService: GeoLocationService,
-    public dettaglioPreferitoService: DettaglioPreferitoService
+    public dettaglioPreferitoService: DettaglioPreferitoService,
+    private sqlite: SQLite,
+    private toast: Toast,
   ) {
   }
 
+  ionViewWillLeave(){
 
+    this.navigazioneAttiva=true
+    clearInterval(this.tracker)
+  }
   ionViewWillEnter() {
     
     this.plt.ready().then(() => {
@@ -65,7 +93,55 @@ export class PathIdPage {
 
       this.initMap()
       
-    });
+      
+      this.sqlite.create({
+        name: 'filters.db',
+        location: 'default'
+      })
+        .then((db: SQLiteObject) => {
+          
+          db.executeSql(`select * from paths`,[])
+          .then((tableSelect)=>{
+            
+            if (tableSelect.rows.length > 0) {
+              for (var i = 0; i < tableSelect.rows.length; i++) {
+                
+                
+                if(tableSelect.rows.item(i).rowid == this.dettaglioPreferitoService.dettaglioPreferito.id){
+                  
+                  this.pointsPath[0]={
+                    latitudine:JSON.parse(tableSelect.rows.item(i).coordinates)[0].lat,
+                    longitudine: JSON.parse(tableSelect.rows.item(i).coordinates)[0].lng
+                  }
+                  
+                  this.layerGroup.addLayer(marker([this.pointsPath[0].latitudine,this.pointsPath[0].longitudine], {icon: this.icons.puntoA}));
+                  
+                  this.pointsPath[1]={
+                    latitudine:JSON.parse(tableSelect.rows.item(i).coordinates)[1].lat,
+                    longitudine:JSON.parse(tableSelect.rows.item(i).coordinates)[1].lng
+                  }
+                  this.layerGroup.addLayer(marker([this.pointsPath[1].latitudine, this.pointsPath[1].longitudine], {icon: this.icons.puntoB}));
+                  
+                  this.currentFilter=JSON.parse(tableSelect.rows.item(i).filter)
+                  
+                }
+                
+              }
+              
+            }
+          })
+          .catch((e) => {
+            this.toast.show(JSON.stringify(e), '3000', 'center').subscribe(
+              toast => {
+                console.log(toast);
+            })
+          })
+        })
+     });
+  }
+
+  displayPointOnMap(){
+
   }
 
 
@@ -82,29 +158,148 @@ export class PathIdPage {
 
     this.map.invalidateSize();
     
-    
   }
   
   // Methos to get device accurate coordinates using device GPS
   getLocationCoordinates() {
     this.geoLocationService.getLocationCoordinates()
       .subscribe(
-        resp =>{this.map.removeLayer(this.layerGroup)
+        resp =>{
 
-            this.layerGroup = new LayerGroup();
-            this.layerGroup.addTo(this.map);
-            this.layerGroup.addLayer(marker([resp.latitudine, resp.longitudine], { icon: this.icons.puntoA }));
+            if(this.pointsPath[0]){
+              if(this.pointsPath[0].latitudine!=resp.latitudine && 
+                this.pointsPath[0].longitudine!=resp.longitudine){
+                  
+                  this.map.removeLayer(this.layerGroup)
+                  this.layerGroup = new LayerGroup();
+                  this.layerGroup.addTo(this.map);
+                  this.layerGroup.addLayer(marker([resp.latitudine, resp.longitudine], { icon: this.icons.puntoA }));
+                  
+                  this.map.setView([resp.latitudine, resp.longitudine], 16);
+                  //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
+                  this.getPath(resp)
+                  this.getPoiNearToPoint(resp)
+                  
+                  //this.getPoiNearToPoint({latitudine:"39.21477",longitudine:"9.11289" }as Point)
+                
+                this.pointsPath[0]=resp
+              }
+            }else{
+              this.map.removeLayer(this.layerGroup)
+                this.layerGroup = new LayerGroup();
+                this.layerGroup.addTo(this.map);
+                this.layerGroup.addLayer(marker([resp.latitudine, resp.longitudine], { icon: this.icons.puntoA }));
+                
+                this.map.setView([resp.latitudine, resp.longitudine], 16);
+                //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
+                this.getPath(resp)
+                this.getPoiNearToPoint(resp)
+                
+                //Athis.getPoiNearToPoint({latitudine:"39.21477",longitudine:"9.11289" }as Point)
+              
+              this.pointsPath[0]=resp
+            }
             
-            this.getPath(resp)
+            
       }
     )
   }
 
+  getPoiNearToPoint(currentPoint: Point){
+        
+        this.pathService.getPOIsNearToPoint(currentPoint,1)
+        .subscribe(
+          resp => {
+            if(resp.list_nodes){
+              
+              this.start=[]
+              resp.list_nodes.map(x=> {
+                
+                this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.restaurant }).bindPopup('<h5>' + x.tags.name + '</h5>'));
+                
+                this.start.push({
+                  icon: "/assets/release1/restaurant.svg",
+                  item: x
+                })
+              })
+            }
+            
+          }
+        )
 
-  getPath(start){
+        this.pathService.getPOIsNearToPoint(currentPoint,2)
+        .subscribe(
+          resp => {
+            if(resp.list_nodes){
+              
+              this.start=[]
+              resp.list_nodes.map(x=> {
+                
+                this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.shop }).bindPopup('<h5>' + x.tags.name + '</h5>'));
+                
+                this.start.push({
+                  icon: "/assets/release1/shop.svg",
+                  item: x
+                })
+              })
+            }
+            
+          }
+        )
+
+        this.pathService.getPOIsNearToPoint(currentPoint,3)
+        .subscribe(
+          resp => {
+            if(resp.list_nodes){
+              
+              this.start=[]
+              resp.list_nodes.map(x=> {
+                
+                this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.museum }).bindPopup('<h5>' + x.tags.name + '</h5>'));
+                
+                this.start.push({
+                  icon: "/assets/release1/museum.svg",
+                  item: x
+                })
+              })
+            }
+            
+          }
+        )
+
+        this.pathService.getPOIsNearToPoint(currentPoint,4)
+        .subscribe(
+          resp => {
+            if(resp.list_nodes){
+              
+              this.start=[]
+              resp.list_nodes.map(x=> {
+                
+                this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.monument }).bindPopup('<h5>' + x.tags.name + '</h5>'));
+                
+                this.start.push({
+                  icon: "/assets/release1/monument.svg",
+                  item: x
+                })
+              })
+            }
+            
+          }
+        )
+        
+        console.log(this.start)
+      
+  }
+
+  getPath(start?: Point, end?: Point){
     var point=start.latitudine+","+start.longitudine
-    
-    this.pathService.getPath(point, "39.223921,9.110375", 1)
+    //var point="39.21477,9.11289"
+    if(end){
+      var pointEnd=end.latitudine+","+end.longitudine
+    }else {
+      var pointEnd=this.pointsPath[1].latitudine+","+this.pointsPath[1].longitudine
+    }
+    this.pathService.getPath(point,pointEnd, this.currentFilter.value)
     .subscribe(
       posts => {
         let myStyle = {
@@ -125,36 +320,24 @@ export class PathIdPage {
               }
           )
         
-        this.pathService.getPOIsNearToPoint(start,1)
-              .subscribe(
-                resp => {
-                  this.start=resp
-                }
-              )
       });
   }
 
   startTracking(){
     this.navigazioneAttiva=false
     
-    //this.geoLocationService.checkPermission=false
+    this.geoLocationService.checkPermission=true
     if(this.geoLocationService.checkPermission == true){
       this.tracker = setInterval(() => {
         this.getLocationCoordinates()
-      }, 2000);
+      }, 1000);
     }else{
       this.geoLocationService.checkGPSPermission()
       this.tracker = setInterval(() => {
         this.getLocationCoordinates()
-      }, 2000);
+      }, 1000);
     }
 
-  }
-
-  stopTracking(){
-    
-    this.navigazioneAttiva=true
-    clearInterval(this.tracker)
   }
 
 }   

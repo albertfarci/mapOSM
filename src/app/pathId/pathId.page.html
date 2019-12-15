@@ -11,15 +11,16 @@
 
 <ion-content >
   <ion-grid style="height: 100%">
-    <ion-row *ngFor="let poi of start.list_nodes">
-      <ion-col size="2">
-        <ion-icon src="../assets/release1/museum.svg" style="width: 100%;" size="large"></ion-icon>
-        
-      </ion-col>
-      <ion-col size="10">
-        {{poi.tags.name}}
-      </ion-col>
-    </ion-row>
+      
+      <ion-row *ngFor="let poi of start" [ngClass]="(i % 2 == 0) ? 'even' : 'odd'">
+        <ion-col size="2">
+          <ion-icon src="{{poi.icon}}" style="width: 100%; height:50px" size="large"></ion-icon>
+        </ion-col>
+        <ion-col size="10" class="row">
+          {{poi.item.tags.name}}
+        </ion-col>
+      </ion-row>
+      
     <ion-row *ngIf="navigazioneAttiva" style="height: 100%">
       <ion-col size="12" style="text-align: center;">
           <ion-button  color="success" shape="round" (click)="startTracking()"
@@ -27,15 +28,6 @@
                       position: relative;
                       top: 80%;">
               Start</ion-button>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="!navigazioneAttiva" style="height: 100%">
-      <ion-col size="12" style="text-align: center;">
-          <ion-button  color="success" shape="round" (click)="stopTracking()"
-              style=" width: 60%;
-                      position: relative;
-                      top: 80%;">
-              Stop</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
