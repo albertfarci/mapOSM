@@ -158,7 +158,28 @@ export class MapPage {
         })
       })
     })*/
+
+    this.isSetAlertSelectedItem = false
+
+    this.carNamedColor = "light";
+    this.walkNamedColor = "light";
+    this.namedColor = "light";
+    this.touristColor ="light";
+    this.fitnessColor ="light";
+    this.oldAgeColor ="light";
+    this.familyColor ="light"
+
+    this.carDisabled = false
+    this.walkDisabled = false
+    this.namedDisabled = false
+    this.touristDisabled =true;
+    this.fitnessDisabled =true;
+    this.oldAgeDisabled =true;
+    this.familyDisabled =true
+    this.breveDisabled =true
+    this.sostenibileDisabled =true
       this.pointsPath = []
+      this.timeSelected=null
       console.log(this.map)
       if (this.map) {
         this.map.removeLayer(this.layerGroup);
@@ -417,36 +438,6 @@ export class MapPage {
 
   savePathNavigate(item) {
     document.getElementById(item.value).style.color="red"
-    
-    if (this.setAlarmBool && !this.isSetAlertSelectedItem) {
-      this.localNotifications.schedule({
-        id: 1,
-        text: 'Single ILocalNotification',
-        data: { secret: 'key_data' },
-        sound: 'file://sound.mp3',
-      });
-    } else {
-      const now = new Date()
-      const trigger = new Date(this.timeSelected)
-      if (trigger.getTime() > now.getTime()) {
-        this.localNotifications.schedule({
-          id: 1,
-          text: 'Single ILocalNotification',
-          data: { secret: 'key_data' },
-          trigger: { at: trigger },
-          sound: 'file://sound.mp3',
-        });
-      } else {
-        trigger.setDate(now.getDate() + 1)
-        this.localNotifications.schedule({
-          id: 1,
-          text: 'Single ILocalNotification',
-          data: { secret: 'key_data' },
-          trigger: { at: trigger },
-          sound: 'file://sound.mp3',
-        });
-      }
-
       this.sqlite.create({
         name: 'filters.db',
         location: 'default'
@@ -461,10 +452,39 @@ export class MapPage {
             INSERT INTO paths (filter,coordinates)
               VALUES(?,?)`, [JSON.stringify(item), JSON.stringify(this.pointsPath)])
                 .then((tableInserted) => {
-                  this.toast.show("Percorso salvato", '3000', 'center').subscribe(
-                    toast => {
-                      console.log(toast);
-                    })
+
+                  if (!this.isSetAlertSelectedItem) {
+                    this.toast.show("Percorso salvato, vai nei tuoi Preferiti per avviare il percorso", '3000', 'center').subscribe(
+                      toast => {
+                        console.log(toast);
+                      })
+                  }else{
+                    this.toast.show("Percorso salvato, riceverai una notifica 10 minuti prima di iniziare il percorso", '3000', 'center').subscribe(
+                      toast => {
+                        console.log(toast);
+                      })  
+                      const now = new Date()
+                    const trigger = new Date(this.timeSelected)
+                    if (trigger.getTime() > now.getTime()) {
+                        this.localNotifications.schedule({
+                        id: 1,
+                        text: 'Single ILocalNotification',
+                        data: { secret: 'key_data' },
+                        trigger: { at: trigger },
+                        sound: 'file://sound.mp3',
+                        });
+                    } else {
+                        trigger.setDate(now.getDate() + 1)
+                        this.localNotifications.schedule({
+                        id: 1,
+                        text: 'Single ILocalNotification',
+                        data: { secret: 'key_data' },
+                        trigger: { at: trigger },
+                        sound: 'file://sound.mp3',
+                        });
+                    }
+                  }
+                  
                 })
             })
             .catch((e) => {
@@ -475,26 +495,25 @@ export class MapPage {
             })
         })
 
-    }
   }
 
-  carNamedColor = "light";
-  walkNamedColor = "light";
-  namedColor = "light";
-  touristColor="light";
-  fitnessColor="light";
-  oldAgeColor="light";
-  familyColor="light"
+  carNamedColor:string = "light";
+  walkNamedColor:string = "light";
+  namedColor:string = "light";
+  touristColor:string ="light";
+  fitnessColor:string ="light";
+  oldAgeColor:string ="light";
+  familyColor:string ="light"
 
-  carDisabled = false
-  walkDisabled = false
-  namedDisabled = false
-  touristDisabled=true;
-  fitnessDisabled=true;
-  oldAgeDisabled=true;
-  familyDisabled=true
-  breveDisabled=true
-  sostenibileDisabled=true
+  carDisabled:boolean = false
+  walkDisabled:boolean = false
+  namedDisabled:boolean = false
+  touristDisabled:boolean =true;
+  fitnessDisabled:boolean =true;
+  oldAgeDisabled:boolean =true;
+  familyDisabled:boolean =true
+  breveDisabled:boolean =true
+  sostenibileDisabled:boolean =true
 
   filterOptions() {
     if (this.optionsFilter) {
@@ -562,6 +581,7 @@ export class MapPage {
   }
 
   setTimeAlert() {
+    this.isSetAlertSelectedItem=true
     console.log(this.timeSelected)
   }
 
