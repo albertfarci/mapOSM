@@ -63,6 +63,7 @@ export class PathIdPage {
   pointsPath : Array<Point>=[]
   currentFilter
   layerGroup
+  markerA
   map: Map
   constructor(
     public plt: Platform,
@@ -114,7 +115,8 @@ export class PathIdPage {
                     longitudine: JSON.parse(tableSelect.rows.item(i).coordinates)[0].lng
                   }
                   
-                  this.layerGroup.addLayer(marker([this.pointsPath[0].latitudine,this.pointsPath[0].longitudine], {icon: this.icons.puntoA}));
+                  this.markerA=marker([this.pointsPath[0].latitudine,this.pointsPath[0].longitudine], { icon: this.icons.puntoA })
+                  this.layerGroup.addLayer(this.markerA);
                   
                   this.pointsPath[1]={
                     latitudine:JSON.parse(tableSelect.rows.item(i).coordinates)[1].lat,
@@ -170,14 +172,14 @@ export class PathIdPage {
               if(this.pointsPath[0].latitudine!=resp.latitudine && 
                 this.pointsPath[0].longitudine!=resp.longitudine){
                   
-                  this.map.removeLayer(this.layerGroup)
-                  this.layerGroup = new LayerGroup();
-                  this.layerGroup.addTo(this.map);
-                  this.layerGroup.addLayer(marker([resp.latitudine, resp.longitudine], { icon: this.icons.puntoA }));
+                  this.map.removeLayer(this.markerA)
+                  
+                  this.markerA=marker([resp.latitudine, resp.longitudine], { icon: this.icons.puntoA })
+                  this.layerGroup.addLayer(this.markerA);
                   
                   this.map.setView([resp.latitudine, resp.longitudine], 16);
                   //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
-                  this.getPath(resp)
+                  
                   this.getPoiNearToPoint(resp)
                   
                   //this.getPoiNearToPoint({latitudine:"39.21477",longitudine:"9.11289" }as Point)
@@ -185,15 +187,16 @@ export class PathIdPage {
                 this.pointsPath[0]=resp
               }
             }else{
-              this.map.removeLayer(this.layerGroup)
-                this.layerGroup = new LayerGroup();
-                this.layerGroup.addTo(this.map);
-                this.layerGroup.addLayer(marker([resp.latitudine, resp.longitudine], { icon: this.icons.puntoA }));
-                
-                this.map.setView([resp.latitudine, resp.longitudine], 16);
-                //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
-                this.getPath(resp)
-                this.getPoiNearToPoint(resp)
+              this.map.removeLayer(this.markerA)
+                  
+              this.markerA=marker([resp.latitudine, resp.longitudine], { icon: this.icons.puntoA })
+              this.layerGroup.addLayer(this.markerA);
+              
+              this.map.setView([resp.latitudine, resp.longitudine], 16);
+              //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
+              
+              this.getPoiNearToPoint(resp)
+              
                 
                 //Athis.getPoiNearToPoint({latitudine:"39.21477",longitudine:"9.11289" }as Point)
               
@@ -328,11 +331,29 @@ export class PathIdPage {
     
     this.geoLocationService.checkPermission=true
     if(this.geoLocationService.checkPermission == true){
+      this.geoLocationService.getLocationCoordinates()
+      .subscribe(
+        resp =>{
+          this.markerA=marker([resp.latitudine, resp.longitudine], { icon: this.icons.puntoA })
+          this.layerGroup.addLayer(this.markerA);
+          this.map.setView([resp.latitudine, resp.longitudine], 16);
+                  //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
+          this.getPath(resp)
+        })
       this.tracker = setInterval(() => {
         this.getLocationCoordinates()
       }, 1000);
     }else{
       this.geoLocationService.checkGPSPermission()
+      this.geoLocationService.getLocationCoordinates()
+      .subscribe(
+        resp =>{
+          this.markerA=marker([resp.latitudine, resp.longitudine], { icon: this.icons.puntoA })
+          this.layerGroup.addLayer(this.markerA);
+          this.map.setView([resp.latitudine, resp.longitudine], 16);
+                  //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
+          this.getPath(resp)
+        })
       this.tracker = setInterval(() => {
         this.getLocationCoordinates()
       }, 1000);

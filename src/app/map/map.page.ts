@@ -207,7 +207,7 @@ export class MapPage {
     this.layerGroup = new LayerGroup();
     this.layerGroup.addTo(this.map);
 
-    this.map.on('click', (e)=>{
+    this.map.on('dblclick', (e)=>{
       this.onMapClick(e)
     });
 
