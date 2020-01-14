@@ -228,8 +228,8 @@ export class MapPage {
 
 
 
-    //this.getLocationCoordinates()
-    this.checkGPSPermission()
+    this.getLocationCoordinates()
+    //this.checkGPSPermission()
 
   }
 
@@ -665,9 +665,12 @@ export class MapPage {
     this.layerGroup.addLayer(marker([this.pointsPath[0].lat, this.pointsPath[0].lng], { icon: this.icons.puntoA }));
     this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], { icon: this.icons.puntoB }));
 
+    if(this.namedColor == 'secondary') this.filterBicycle()
+    if(this.walkNamedColor == 'secondary') this.filterFoot()
+
     if (this.carNamedColor == 'light') {
-      this.walkDisabled = true
-      this.namedDisabled = true
+      //this.walkDisabled = true
+      //this.namedDisabled = true
       this.touristDisabled=false
       this.familyDisabled=false
       this.breveDisabled=false
@@ -749,9 +752,12 @@ export class MapPage {
     this.layerGroup.addLayer(marker([this.pointsPath[0].lat, this.pointsPath[0].lng], { icon: this.icons.puntoA }));
     this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], { icon: this.icons.puntoB }));
 
+    if(this.carNamedColor== 'secondary') this.filterCar()
+    if(this.walkNamedColor == 'secondary') this.filterFoot()
+
     if (this.namedColor == 'light') {
-      this.walkDisabled = true
-      this.carDisabled = true
+      //this.walkDisabled = true
+      //this.carDisabled = true
       this.touristDisabled=false
       this.familyDisabled=false
       this.breveDisabled=false
@@ -830,9 +836,12 @@ export class MapPage {
     this.layerGroup.addLayer(marker([this.pointsPath[0].lat, this.pointsPath[0].lng], { icon: this.icons.puntoA }));
     this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], { icon: this.icons.puntoB }));
 
+    if(this.carNamedColor == 'secondary' ) this.filterCar()
+    if(this.namedColor == 'secondary') this.filterBicycle()
+
     if (this.walkNamedColor == 'light') {
-      this.carDisabled = true
-      this.namedDisabled = true
+      //this.carDisabled = true
+      //this.namedDisabled = true
       this.touristDisabled=false;
       this.fitnessDisabled=false;
       this.oldAgeDisabled=false;
