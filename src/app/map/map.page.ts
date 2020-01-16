@@ -655,6 +655,27 @@ export class MapPage {
     });
   }
 
+  timeConverter(val){
+    var hours =  Math.floor(val / 3600)
+    if(hours > 0){ 
+      var minutes= Math.floor(val/60 ) - (hours *60)
+      return  hours+" ore e "+ minutes+" minuti"
+    } else{
+      var minutes= Math.floor(val/60 ) 
+      return minutes+" minuti"
+    }
+  }
+
+  distanceConverter(val){
+    var km =  Math.floor(val / 1000)
+    if(km > 0){ 
+      var metres= Math.floor( val - km * 1000)
+      return  km+" km e "+ metres+" metri"
+    } else{
+      return val+" metri"
+    }
+  }
+
   filterCar() {
     
     this.map.removeLayer(this.layerGroup)
@@ -735,7 +756,7 @@ export class MapPage {
       this.layerGroup.addLayer(geoJSON({
         "type": "LineString",
         "coordinates": x.coordinates,
-      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + x.duration + ' seconds </h5><h5>' + x.distance + ' metres</h5>'));
+      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + this.timeConverter(x.duration) + ' </h5><h5>' + this.distanceConverter(x.distance) + ' </h5>'));
 
     })
 
@@ -819,7 +840,7 @@ export class MapPage {
       this.layerGroup.addLayer(geoJSON({
         "type": "LineString",
         "coordinates": x.coordinates,
-      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + x.duration + ' seconds </h5><h5>' + x.distance + ' metres</h5>'));
+      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + this.timeConverter(x.duration) + ' </h5><h5>' + this.distanceConverter(x.distance) + ' </h5>'));
 
     })
 
@@ -915,7 +936,7 @@ export class MapPage {
       this.layerGroup.addLayer(geoJSON({
         "type": "LineString",
         "coordinates": x.coordinates,
-      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + x.duration + ' seconds </h5><h5>' + x.distance + ' metres</h5>'));
+      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + this.timeConverter(x.duration) + ' </h5><h5>' + this.distanceConverter(x.distance) + ' </h5>'));
     })
   }
 
@@ -1029,7 +1050,7 @@ export class MapPage {
       this.layerGroup.addLayer(geoJSON({
         "type": "LineString",
         "coordinates": x.coordinates,
-      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + x.duration + ' seconds </h5><h5>' + x.distance + ' metres</h5>'));
+      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + this.timeConverter(x.duration) + ' </h5><h5>' + this.distanceConverter(x.distance) + ' </h5>'));
     })
   }
 
@@ -1142,7 +1163,7 @@ export class MapPage {
       this.layerGroup.addLayer(geoJSON({
         "type": "LineString",
         "coordinates": x.coordinates,
-      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + x.duration + ' seconds </h5><h5>' + x.distance + ' metres</h5>'));
+      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + this.timeConverter(x.duration) + ' </h5><h5>' + this.distanceConverter(x.distance) + ' </h5>'));
 
     })
   }
@@ -1283,7 +1304,7 @@ export class MapPage {
       this.layerGroup.addLayer(geoJSON({
         "type": "LineString",
         "coordinates": x.coordinates,
-      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + x.duration + ' seconds </h5><h5>' + x.distance + ' metres</h5>'));
+      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + this.timeConverter(x.duration) + ' </h5><h5>' + this.distanceConverter(x.distance) + ' </h5>'));
 
     })
   }
@@ -1422,7 +1443,7 @@ export class MapPage {
       this.layerGroup.addLayer(geoJSON({
         "type": "LineString",
         "coordinates": x.coordinates,
-      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + x.duration + ' seconds </h5><h5>' + x.distance + ' metres</h5>'));
+      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + this.timeConverter(x.duration) + ' </h5><h5>' + this.distanceConverter(x.distance) + ' </h5>'));
 
     })
 
@@ -1595,7 +1616,7 @@ export class MapPage {
       this.layerGroup.addLayer(geoJSON({
         "type": "LineString",
         "coordinates": x.coordinates,
-      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + x.duration + ' seconds </h5><h5>' + x.distance + ' metres</h5>'));
+      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + this.timeConverter(x.duration) + ' </h5><h5>' + this.distanceConverter(x.distance) + ' </h5>'));
 
     })
 
@@ -1735,7 +1756,7 @@ export class MapPage {
       this.layerGroup.addLayer(geoJSON({
         "type": "LineString",
         "coordinates": x.coordinates,
-      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + x.duration + ' seconds </h5><h5>' + x.distance + ' metres</h5>'));
+      }, { style: myStyle }).bindPopup('<img src="' + icon + '"><h5>' + this.timeConverter(x.duration) + ' </h5><h5>' + this.distanceConverter(x.distance) + ' </h5>'));
 
     })
   }

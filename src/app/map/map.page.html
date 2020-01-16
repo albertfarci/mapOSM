@@ -169,10 +169,10 @@
             <ion-col size="8">
                 <ion-row>
                     <ion-col size="6">
-                        {{path.duration}} minuti
+                        {{path.duration | timeConverter}}
                     </ion-col>
                     <ion-col size="6">
-                        {{path.distance}} metri
+                        {{path.distance | distanceConverter}}
                     </ion-col>
                 </ion-row>
                 <ion-row>
