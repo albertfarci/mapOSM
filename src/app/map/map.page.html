@@ -1,3 +1,4 @@
+<!--
 <ion-header style="box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75)">
     <ion-toolbar>
         <ion-grid>
@@ -7,6 +8,7 @@
         </ion-grid>
     </ion-toolbar>
 </ion-header>
+-->
 
 <div id="map-page" class="map-page"></div>
 
@@ -73,7 +75,7 @@
                     <ion-icon name="car" size="large"></ion-icon>
                 </ion-button>
             </ion-col>
-            <ion-col size="6" style="text-align: end; " size-xs="3" >
+            <ion-col size="6" style="text-align: end; " size-xs="3">
                 <button (click)="filterOptions()" style="
                         height: 100%;
                         width: 100%;
@@ -92,23 +94,17 @@
                     </ion-button>
                 </ion-col>
                 <ion-col size="3">
-                    <ion-button [color]="familyColor" 
-                        [disabled]="familyDisabled"
-                        (click)="filterFamily()">
+                    <ion-button [color]="familyColor" [disabled]="familyDisabled" (click)="filterFamily()">
                         <ion-icon src="../assets/release1/famiglia.svg" size="large"></ion-icon>
                     </ion-button>
                 </ion-col>
                 <ion-col size="3">
-                    <ion-button [color]="oldAgeColor"  
-                        [disabled]="oldAgeDisabled"
-                        (click)="filterOldAge()">
+                    <ion-button [color]="oldAgeColor" [disabled]="oldAgeDisabled" (click)="filterOldAge()">
                         <ion-icon src="../assets/release1/anziano.svg" size="large"></ion-icon>
                     </ion-button>
                 </ion-col>
                 <ion-col size="3">
-                    <ion-button [color]="fitnessColor"
-                        [disabled]="fitnessDisabled"
-                        (click)="filterFitness()">
+                    <ion-button [color]="fitnessColor" [disabled]="fitnessDisabled" (click)="filterFitness()">
                         <ion-icon src="../assets/release1/fitnessBianco.svg" size="large"></ion-icon>
                     </ion-button>
                 </ion-col>
@@ -135,10 +131,8 @@
 
                 <ion-col size="12">
                     <ion-col size="3">
-                        <ion-checkbox 
-                        [disabled]="breveDisabled" 
-                        (ionChange)="breveOnChange($event)"
-                        color="secondary"></ion-checkbox>
+                        <ion-checkbox [disabled]="breveDisabled" (ionChange)="breveOnChange($event)" color="secondary">
+                        </ion-checkbox>
                     </ion-col>
                     <ion-col size="9">
                         <ion-label style="font-weight: bold;">
@@ -148,10 +142,8 @@
                 </ion-col>
                 <ion-col size="12">
                     <ion-col size="3">
-                        <ion-checkbox 
-                        [disabled]="sostenibileDisabled" 
-                        (ionChange)="sostenibileOnChange($event)"
-                        color="secondary"></ion-checkbox>
+                        <ion-checkbox [disabled]="sostenibileDisabled" (ionChange)="sostenibileOnChange($event)"
+                            color="secondary"></ion-checkbox>
                     </ion-col>
                     <ion-col size="9">
                         <ion-label style="font-weight: bold;">
@@ -163,18 +155,27 @@
             </ion-row>
         </ion-row>
         <ion-row *ngFor="let path of pathFilter; let i = index;" [ngClass]="(i % 2 == 0) ? 'even' : 'odd'">
-            <ion-col size="2" >
+            <ion-col size="2">
                 <img style="height:50px" src="{{path.icon}}" alt="" />
             </ion-col>
             <ion-col size="8">
+
                 <ion-row>
-                    <ion-col size="6">
+                    <ion-col>
+                        {{path.filter.name}}
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
                         {{path.duration | timeConverter}}
                     </ion-col>
-                    <ion-col size="6">
+                </ion-row>
+                <ion-row>
+                    <ion-col>
                         {{path.distance | distanceConverter}}
                     </ion-col>
                 </ion-row>
+
                 <ion-row>
                     <ion-col>
                         tramite via Napoli
