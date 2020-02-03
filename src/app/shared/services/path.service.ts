@@ -11,6 +11,7 @@ export class PathService {
   constructor(private http: HttpClient) { }
 
   getPath(pointStart, pointEnd, filter) {
+    console.log(filter)
     return this.http.get<any>(`https://dss03.crs4.it/v1/requestTrip/31-12-2001/` + pointStart + '/' + pointEnd + '/' + filter)
   }
 

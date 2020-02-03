@@ -7,11 +7,6 @@ const routes: Routes = [
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
-    path: 'filters',
-    loadChildren: () => import('./filters/filters.module').then(m => m.FiltersPageModule)
-  },
-  
-  {
     path: 'prenotazione/:id',
     loadChildren: () => import('./percorso/percorso.module').then(m => m.PercorsoPageModule)
   }
@@ -22,4 +17,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

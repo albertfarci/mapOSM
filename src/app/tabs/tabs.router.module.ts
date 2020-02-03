@@ -38,16 +38,6 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'filters',
-        children: [
-          {
-            path: '',
-            loadChildren: () =>
-              import('../filters/filters.module').then(m => m.FiltersPageModule)
-          }
-        ]
-      },
-      {
         path: 'map',
         children: [
           {
@@ -57,7 +47,8 @@ const routes: Routes = [
           }
         ]
       },
-      { path: 'pathId', 
+      {
+        path: 'pathId',
         children: [
           {
             path: '',
@@ -94,4 +85,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TabsPageRoutingModule {}
+export class TabsPageRoutingModule { }
