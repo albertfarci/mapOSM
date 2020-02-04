@@ -35,8 +35,8 @@ export class FilterListService {
                         spunta: false
                     }],
                     spunta: null,
-                    color: null,
-                    icon: null
+                    color: 'light',
+                    icon: '../assets/release1/auto.svg'
                 }
             ],
             spunta: false,
@@ -303,6 +303,9 @@ export class FilterListService {
                         return x
                     })
             )
+
+
+
             resolve()
         });
     }

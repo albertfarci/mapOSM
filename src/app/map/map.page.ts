@@ -127,7 +127,6 @@ export class MapPage {
 
       this.pointsPath = []
       this.timeSelected = null
-      console.log(this.map)
       if (this.map) {
         this.map.removeLayer(this.layerGroup);
         this.map.remove()
@@ -175,8 +174,8 @@ export class MapPage {
 
 
 
-    this.getLocationCoordinates()
-    //this.checkGPSPermission()
+    //this.getLocationCoordinates()
+    this.checkGPSPermission()
 
   }
 
@@ -219,7 +218,6 @@ export class MapPage {
       .default
       .map(x => {
         this.endPoints.push(x)
-        console.log(x)
         this.layerGroup.addLayer(marker([x.lat, x.long], { title: x.label, icon: this.icons.greenIcon }).bindPopup('<h5>' + x.label + '</h5>').on('click', (x => {
 
           //this.layerGroup.addLayer(marker([x.latlng.lat, x.latlng.lng], {icon: this.icons.redIcon}));
@@ -261,9 +259,12 @@ export class MapPage {
   }
 
   savePathNavigate(item) {
-    console.log(item)
 
-    document.getElementById(item.valore).style.color = "red"
+    document.querySelectorAll("ion-icon[name='heart']")
+      .forEach(x => {
+
+        if (item.valore == x.id) x.setAttribute("style", "color: red")
+      })
     this.sqlite.create({
       name: 'filters.db',
       location: 'default'
@@ -332,11 +333,13 @@ export class MapPage {
     this.layerGroup.addLayer(marker([this.pointsPath[0].lat, this.pointsPath[0].lng], { icon: this.icons.puntoA }));
     this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], { icon: this.icons.puntoB }));
 
-
     if (document.getElementById(filter.valore).style.color != "blue") {
 
-      document.getElementById(filter.valore).style.color = "blue"
+      document.querySelectorAll("ion-icon[name='eye']").forEach(x => {
+        document.getElementById(x.id).style.color = "grey"
+      })
 
+      document.getElementById(filter.valore).style.color = "blue"
       this.pathFilter.filter(x => x.filter == filter)
         .map(x => {
           this.layerGroup.addLayer(geoJSON({
@@ -428,7 +431,6 @@ export class MapPage {
 
   setTimeAlert() {
     this.isSetAlertSelectedItem = true
-    console.log(this.timeSelected)
   }
 
 
@@ -527,15 +529,25 @@ export class MapPage {
   }
 
   filterFirstLevel(value) {
+
+    this.map.removeLayer(this.layerGroup)
+
+    this.layerGroup = new LayerGroup();
+    this.layerGroup.addTo(this.map);
+
+    this.layerGroup.addLayer(marker([this.pointsPath[0].lat, this.pointsPath[0].lng], { icon: this.icons.puntoA }));
+    this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], { icon: this.icons.puntoB }));
+
     this.pathFilter = []
     this.paths
       .map(x => {
         if (x.nome == value) {
-          console.log(x)
+
           if (x.spunta) {
 
             this.filterListService.setFalseSpunta(value).then(
               () => {
+                this.optionsFilter = false
                 this.setDisableButton()
                 this.optionsEnabled()
               }
@@ -552,7 +564,8 @@ export class MapPage {
                             this.setEnableButton()
                             this.setDisableButton()
                             if (x.nome == "Auto") {
-                              this.getPaths(x)
+                              x.modalita_figlio.map(x => this.getPaths(x))
+
                             }
                           }
                         )
