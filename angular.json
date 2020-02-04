@@ -37,9 +37,18 @@
               },
               {
                 "input": "src/global.scss"
+              },
+              {
+                "input": "node_modules/leaflet/dist/leaflet.css"
+              },
+              {
+                "input": "node_modules/leaflet-easybutton/src/easy-button.css"
               }
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/leaflet/dist/leaflet.js",
+              "node_modules/leaflet-easybutton/src/easy-button.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -128,7 +137,9 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "e2e": {

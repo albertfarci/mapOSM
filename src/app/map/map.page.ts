@@ -16,6 +16,9 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { post } from 'selenium-webdriver/http';
 import { FilterDisable, FilterColor } from '../shared/models/filter.model';
 
+import L from 'leaflet'
+import "leaflet-easybutton"
+
 
 @Component({
   selector: 'app-map',
@@ -46,7 +49,7 @@ export class MapPage {
   savePath: boolean = false;
   icons = {
 
-    greenIcon: icon({
+    greenIcon: L.icon({
       iconUrl: '/assets/pref-2/green-m.png',
       iconSize: [25, 25],
       popupAnchor: [0, -20]
@@ -143,15 +146,32 @@ export class MapPage {
 
   initMap() {
 
-    this.map = new Map('map-page').setView([39.21834898953833, 9.1126227435], 12);
+    this.map = new L.Map('map-page').setView([39.21834898953833, 9.1126227435], 12);
 
-    tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
 
 
     this.layerGroup = new LayerGroup();
     this.layerGroup.addTo(this.map);
+
+    L.easyButton(' <ion-icon name="contract" class="star"></ion-icon>', () => {
+
+      if (document.getElementById("map-page").style.height == "55%") {
+        document.getElementById("map-page").style.height = "100%"
+      } else {
+        document.getElementById("map-page").style.height = "55%"
+
+      }
+    }).addTo(this.map);
+
+    L.easyButton(' <ion-icon name="navigate" class="star"></ion-icon>', () => {
+      if (this.pointsPath[0] && this.pointsPath[1]) {
+        this.getShowPath()
+      }
+    }).addTo(this.map);
+
 
     this.map.on('dblclick', (e) => {
       this.onMapClick(e)
@@ -227,12 +247,10 @@ export class MapPage {
         })))
       })
 
-
-
     this.getLocationCoordinates()
   }
 
-  getShowPath(item) {
+  getShowPath() {
 
     this.savePath = true
 
@@ -495,7 +513,14 @@ export class MapPage {
           this.pointsPath[0] = { lat: x.latlng.lat, lng: x.latlng.lng, title: "Posizione corrente" }
         }
       })));
-
+      if (this.pointsPath[0] && this.pointsPath[1]) {
+        console.log("height")
+        document.getElementById("map-page").style.height = "55%"
+        this.map.fitBounds([
+          [this.pointsPath[0].lat, this.pointsPath[0].lng],
+          [this.pointsPath[1].lat, this.pointsPath[1].lng]
+        ]);
+      }
       this.map.setView([resp.coords.latitude, resp.coords.longitude], 10);
 
     }).catch((error) => {
