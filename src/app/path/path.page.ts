@@ -24,7 +24,6 @@ export class PathPage {
   private pathsToDisplay: any
 
   constructor(
-    private plt: Platform,
     private router: Router,
     private preferitiService: PreferitiService,
     private dettaglioPreferitoService: DettaglioPreferitoService,
@@ -38,40 +37,28 @@ export class PathPage {
 
   ionViewDidEnter() {
 
-    this.plt.ready().then(() => {
-      this.pathsSaved = []
+    this.pathsSaved = []
 
-      this.filterListService.filterList.subscribe(
-        (data) => {
-          this.paths = data
-        }
-      )
-      this.storageService.storageList.subscribe(
-        (data) => {
-          console.log(data)
-
-          this.pathFilter = data
-
-        }
-      )
-      /*
-      if (this.preferitiService.preferito.value) {
-        switch (this.preferitiService.preferito.value) {
-          case 2:
-            // code block
-            this.filterBicycle()
-            break;
-          case 4:
-            //this.filterCar()
-            break;
-          case 8:
-            //this.filterTourist()
-            break;
-        }
-      }*/
-
-
-    });
+    this.filterListService.filterList.subscribe(
+      (data) => {
+        this.paths = data
+      }
+    )
+    /*
+    if (this.preferitiService.preferito.value) {
+      switch (this.preferitiService.preferito.value) {
+        case 2:
+          // code block
+          this.filterBicycle()
+          break;
+        case 4:
+          //this.filterCar()
+          break;
+        case 8:
+          //this.filterTourist()
+          break;
+      }
+    }*/
   }
   optionsEnabled(): boolean {
     return this.paths.filter(x => x.spunta).length > 0
@@ -89,7 +76,7 @@ export class PathPage {
 
 
   filterFirstLevel(value) {
-
+    this.pathsToDisplay = []
     this.paths
       .map(x => {
         if (x.nome == value) {
@@ -133,6 +120,7 @@ export class PathPage {
   setEnableButtonSecondLevel(value) {
 
 
+    this.pathsToDisplay = []
     this.filterListService.setSecondLevelFalseSpunta().then(
       () => {
         this.paths
@@ -207,8 +195,13 @@ export class PathPage {
   }
 
   getPaths(button) {
-    console.log(button)
-
+    this.pathsToDisplay = []
+    this.storageService.getPathFromStorage().then(
+      (data) => {
+        this.pathsToDisplay = data
+      }
+    )
+    /*
     button.modalita_figlio.map(
       x => {
         console.log(x)
@@ -224,7 +217,7 @@ export class PathPage {
           })
       }
     )
-
+*/
 
   }
 

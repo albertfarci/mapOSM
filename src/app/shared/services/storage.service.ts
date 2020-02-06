@@ -5,42 +5,37 @@ import { Toast } from '@ionic-native/toast/ngx'
 
 @Injectable()
 export class StorageService {
+    pathFiltered = []
 
     constructor(private sqlite: SQLite, private toast: Toast) {
     }
 
-    getPathFromStorage(): [] {
-        this.toast.show("getPathFromStorage", '3000', 'center').subscribe(
-            toast => {
-                console.log(toast);
-            })
+    getPathFromStorage(): Promise<any> {
 
+        this.pathFiltered = []
         var pathFromStorage: [] = []
+        return new Promise((resolve, reject) => {
+            this.sqlite.create({
+                name: 'filters.db',
+                location: 'default'
+            })
+                .then((db: SQLiteObject) => {
 
-        this.sqlite.create({
-            name: 'filters.db',
-            location: 'default'
-        }).then((dbObject: SQLiteObject) => {
+                    db.executeSql(`select * from paths`, [])
+                        .then((tableSelect) => {
 
-            return dbObject.executeSql(`select * from paths`, [])
-                .then((tableSelect) => {
+                            if (tableSelect.rows.length > 0) {
 
-                    if (tableSelect.rows.length > 0) {
+                                for (var i = 0; i < tableSelect.rows.length; i++) {
 
-                        for (var i = 0; i < tableSelect.rows.length; i++) {
-                            pathFromStorage.push(tableSelect.rows.item(i))
-                        }
+                                    this.pathFiltered.push(tableSelect.rows.item(i))
+                                }
 
-                    }
-                    return pathFromStorage
-                })
-                .catch((e) => {
-                    this.toast.show("Error", '3000', 'center').subscribe(
-                        toast => {
-                            console.log(toast);
+                                resolve(this.pathFiltered)
+
+                            }
                         })
 
-                    return e
                 })
         })
     }
