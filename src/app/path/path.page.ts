@@ -5,6 +5,8 @@ import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { PreferitiService } from '../shared/services/preferiti.service';
 import { DettaglioPreferitoService } from '../shared/services/dettaglioPreferito.service';
+import { StorageService } from '../shared/services/storage.service';
+import { FilterListService } from '../shared/services/filters.service';
 
 @Component({
   selector: 'app-path',
@@ -15,465 +17,215 @@ export class PathPage {
 
   filter;
   pathsSaved = [];
-  pathFiltered =[]
+  pathFilter = []
 
-  
-  carNamedColor = "light";
-  walkNamedColor = "light";
-  namedColor = "light";
-  touristColor="light";
-  fitnessColor="light";
-  oldAgeColor="light";
-  familyColor="light"
-
-  carDisabled = false
-  walkDisabled = false
-  namedDisabled = false
-  touristDisabled=false;
-  fitnessDisabled=false;
-  oldAgeDisabled=false;
-  familyDisabled=false
-
-  paths = {
-    "0": {
-      "value": 0,
-      "name": "Car"
-    },
-    "1": {
-      "value": 1,
-      "name": "Foot"
-    },
-    "2": {
-      "value": 2,
-      "name": "Bycicle"
-    },
-    "3": {
-      "value": 3,
-      "name": "Car by Speed"
-    },
-    "4": {
-      "value": 4,
-      "name": "Fitness"
-    },
-    "5": {
-      "value": 5,
-      "name": "Bycicle co2"
-    },
-    "6":{
-      "value": 6,
-      "name": "Anziani"
-    },
-    "7":{
-      "value":7,
-      "name":"Famiglie"
-    },
-    "8":{
-      "value":8,
-      "name":"Turistico"
-    }
-  }
+  private optionsFilter: boolean = false;
+  private paths: any
+  private pathsToDisplay: any
 
   constructor(
-    public plt: Platform,
-    private sqlite: SQLite,
-    private toast: Toast,
-    public router: Router,
-    public preferitiService: PreferitiService,
-    public dettaglioPreferitoService: DettaglioPreferitoService
-    ) {
+    private plt: Platform,
+    private router: Router,
+    private preferitiService: PreferitiService,
+    private dettaglioPreferitoService: DettaglioPreferitoService,
+    private storageService: StorageService,
+    private filterListService: FilterListService,
+    private toast: Toast
+  ) {
   }
 
-  ionViewDidEnter(){
-    
-    this.carNamedColor = "light";
-    this.walkNamedColor = "light";
-    this.namedColor = "light";
-    this.touristColor="light";
-    this.fitnessColor="light";
-    this.oldAgeColor="light";
-    this.familyColor="light"
 
-    this.carDisabled = false
-    this.walkDisabled = false
-    this.namedDisabled = false
-    this.touristDisabled=false;
-    this.fitnessDisabled=false;
-    this.oldAgeDisabled=false;
-    this.familyDisabled=false
-    
+
+  ionViewDidEnter() {
+
     this.plt.ready().then(() => {
       this.pathsSaved = []
-      this.pathFiltered=[]
-      if(this.preferitiService.preferito.value){
-        switch(this.preferitiService.preferito.value) {
+
+      this.filterListService.filterList.subscribe(
+        (data) => {
+          this.paths = data
+        }
+      )
+      this.storageService.storageList.subscribe(
+        (data) => {
+          console.log(data)
+
+          this.pathFilter = data
+
+        }
+      )
+      /*
+      if (this.preferitiService.preferito.value) {
+        switch (this.preferitiService.preferito.value) {
           case 2:
             // code block
             this.filterBicycle()
             break;
           case 4:
-            this.filterFitness()
+            //this.filterCar()
             break;
           case 8:
-            this.filterTourist()
+            //this.filterTourist()
             break;
         }
-      }
+      }*/
+
+
     });
   }
+  optionsEnabled(): boolean {
+    return this.paths.filter(x => x.spunta).length > 0
+  }
 
-  
-  goToPathId(filter){
-    
-    this.dettaglioPreferitoService.setPreferito(this.pathFiltered[filter],filter)
+  goToPathId(filter) {
+
+    this.dettaglioPreferitoService.setPreferito(this.pathFilter[filter], filter)
     this.router.navigate(['/tabs/pathId']);
   }
-  
-  filterCar(){
-    if(this.carNamedColor=="light"){
 
-      this.carNamedColor="secondary"
-      this.namedDisabled=true
-      this.walkDisabled=true
-      this.touristDisabled=true
-      this.familyDisabled=true
-      this.oldAgeDisabled=true
-      this.fitnessDisabled=true
-      this.sqlite.create({
-        name: 'filters.db',
-        location: 'default'
+  filterBicycle() {
+    console.log("bici")
+  }
+
+
+  filterFirstLevel(value) {
+
+    this.paths
+      .map(x => {
+        if (x.nome == value) {
+
+          if (x.spunta) {
+
+            this.filterListService.setFalseSpunta(value).then(
+              () => {
+                this.setDisableButton()
+
+                this.optionsFilter = false
+              }
+            )
+          } else {
+            this.filterListService.setAllFalseSpunta()
+              .then(
+                () => {
+                  this.filterListService.setSecondLevelFalseSpunta()
+                    .then(
+                      () => {
+                        this.filterListService.setTrueSpunta(value).then(
+                          () => {
+                            this.setEnableButton()
+                            this.setDisableButton()
+                            if (x.nome == "Auto") {
+                              x.modalita_figlio.map(x => this.getPaths(x))
+
+                            }
+                          }
+                        )
+                      })
+                }
+              )
+
+          }
+        }
       })
-        .then((db: SQLiteObject) => {
-          
-          db.executeSql(`select * from paths`,[])
-          .then((tableSelect)=>{
-            
-            if (tableSelect.rows.length > 0) {
-              
-              for (var i = 0; i < tableSelect.rows.length; i++) {
-                if(JSON.parse(tableSelect.rows.item(i).filter).name == "Car" || JSON.parse(tableSelect.rows.item(i).filter).name == "Car by Speed" ){
-                  this.pathFiltered.push(tableSelect.rows.item(i))
-                }
-              }
-
-            }
-          })
+  }
 
 
-          .catch((e) => {
-            
-          })
-        })
-  
-    }else{
-      
-      this.carNamedColor="light"
-      this.namedDisabled=false
-      this.walkDisabled=false
-      this.touristDisabled=false
-      this.familyDisabled=false
-      this.oldAgeDisabled=false
-      this.fitnessDisabled=false
-      this.pathFiltered=[]
-    }
+  setEnableButtonSecondLevel(value) {
 
-    }
 
-    filterFamily(){
-      if(this.familyColor=="light"){
-  
-        this.familyColor="secondary"
-        this.namedDisabled=true
-        this.walkDisabled=true
-        this.carDisabled=true
-        this.touristDisabled=true
-        this.oldAgeDisabled=true
-        this.fitnessDisabled=true
-                                this.sqlite.create({
-                                  name: 'filters.db',
-                                  location: 'default'
-                                })
-                                  .then((db: SQLiteObject) => {
-                                    
-                                    db.executeSql(`select * from paths`,[])
-                                    .then((tableSelect)=>{
-                                      
-                                      if (tableSelect.rows.length > 0) {
-                                        
-                                        for (var i = 0; i < tableSelect.rows.length; i++) {
-                                          if(JSON.parse(tableSelect.rows.item(i).filter).name == "Famiglie"){
-                                            this.pathFiltered.push(tableSelect.rows.item(i))
-                                          }
-                                        }
-                          
-                                      }
-                                    })
-                          
-                          
-                                    .catch((e) => {
-                                      
-                                    })
-                                  })
-      }else{
-        
-        this.familyColor="light"
-        this.namedDisabled=false
-        this.walkDisabled=false
-        this.carDisabled=false
-        this.touristDisabled=false
-        this.oldAgeDisabled=false
-        this.fitnessDisabled=false
-        this.pathFiltered=[]
-      }
-  
-      }
+    this.filterListService.setSecondLevelFalseSpunta().then(
+      () => {
+        this.paths
+          .map(x => {
+            if (x.spunta) {
+              x.modalita_figlio.map(x => {
+                if (x.nome == value) {
+                  this.filterListService.setSecondLevelTrueSpunta(value)
+                    .then(
+                      () => {
+                        this.paths
+                          .map(x => {
+                            if (x.spunta) {
+                              x.modalita_figlio.map(x => {
+                                if (x.nome == value) {
+                                  x.color = 'secondary'
+                                }
+                              })
+                            }
+                          })
 
-    filterTourist(){
-      if(this.touristColor=="light"){
-  
-        this.touristColor="secondary"
-        this.namedDisabled=true
-        this.walkDisabled=true
-        this.carDisabled=true
-        this.familyDisabled=true
-        this.oldAgeDisabled=true
-        this.fitnessDisabled=true
-        this.sqlite.create({
-          name: 'filters.db',
-          location: 'default'
-        })
-          .then((db: SQLiteObject) => {
-            
-            db.executeSql(`select * from paths`,[])
-            .then((tableSelect)=>{
-              
-              if (tableSelect.rows.length > 0) {
-                
-                for (var i = 0; i < tableSelect.rows.length; i++) {
-                  if(JSON.parse(tableSelect.rows.item(i).filter).name == "Turistico"){
-                    this.pathFiltered.push(tableSelect.rows.item(i))
-                  }
-                }
-  
-              }
-            })
-  
-  
-            .catch((e) => {
-              
-            })
-          })
-    
-      }else{
-        
-        this.touristColor="light"
-        this.namedDisabled=false
-        this.walkDisabled=false
-        this.carDisabled=false
-        this.familyDisabled=false
-        this.oldAgeDisabled=false
-        this.fitnessDisabled=false
-        this.pathFiltered=[]
-      }
-  
-      }
+                        this.paths
+                          .map(x => {
+                            x.modalita_figlio.map(x => {
+                              if (x.nome != value) {
+                                x.color = 'light'
+                              }
+                            })
 
-      filterOldAge(){
-        if(this.oldAgeColor=="light"){
-    
-          this.oldAgeColor="secondary"
-          this.namedDisabled=true
-          this.walkDisabled=true
-          this.carDisabled=true
-          this.familyDisabled=true
-          this.touristDisabled=true
-          this.fitnessDisabled=true
-          this.sqlite.create({
-            name: 'filters.db',
-            location: 'default'
-          })
-            .then((db: SQLiteObject) => {
-              
-              db.executeSql(`select * from paths`,[])
-              .then((tableSelect)=>{
-                
-                if (tableSelect.rows.length > 0) {
-                  
-                  for (var i = 0; i < tableSelect.rows.length; i++) {
-                    if(JSON.parse(tableSelect.rows.item(i).filter).name == "Anziani"){
-                      this.pathFiltered.push(tableSelect.rows.item(i))
-                    }
-                  }
-    
+                          })
+                      }
+                    )
                 }
               })
-    
-    
-              .catch((e) => {
-                
+            }
+          })
+      }
+
+    )
+
+
+  }
+
+
+
+  setEnableButton() {
+
+    this.paths
+      .filter(x => x.spunta)
+      .map(x => {
+        x.color = "secondary"
+      })
+  }
+
+  setDisableButton() {
+    this.paths
+      .filter(x => !x.spunta)
+      .map(x => {
+        x.color = "light"
+      })
+  }
+
+
+  getEnabled() {
+
+    return this.paths.filter(x => x.spunta)
+      .map(x => { return x.modalita_figlio })[0]
+      .map(x => {
+        return x
+      })
+
+  }
+
+  getPaths(button) {
+    console.log(button)
+
+    button.modalita_figlio.map(
+      x => {
+        console.log(x)
+        this.pathFilter
+          //.filter(path => JSON.parse(path).value == x.valore)
+          .map(path => {
+
+            this.toast.show(JSON.parse(path.filter), '3000', 'center').subscribe(
+              toast => {
+                console.log(toast);
               })
-            })
-      
-        }else{
-          
-          this.oldAgeColor="light"
-          this.namedDisabled=false
-          this.walkDisabled=false
-          this.carDisabled=false
-          this.familyDisabled=false
-          this.touristDisabled=false
-          this.fitnessDisabled=false
-          this.pathFiltered=[]
-        }
-    
-        }
-
-    filterFitness(){
-      if(this.fitnessColor=="light"){
-  
-        this.fitnessColor="secondary"
-        this.namedDisabled=true
-        this.walkDisabled=true
-        this.carDisabled=true
-        this.familyDisabled=true
-        this.touristDisabled=true
-        this.oldAgeDisabled=true
-        this.sqlite.create({
-          name: 'filters.db',
-          location: 'default'
-        })
-          .then((db: SQLiteObject) => {
-            
-            db.executeSql(`select * from paths`,[])
-            .then((tableSelect)=>{
-              
-              if (tableSelect.rows.length > 0) {
-                
-                for (var i = 0; i < tableSelect.rows.length; i++) {
-                  if(JSON.parse(tableSelect.rows.item(i).filter).name == "Fitness"){
-                    this.pathFiltered.push(tableSelect.rows.item(i))
-                  }
-                }
-  
-              }
-            })
-  
-  
-            .catch((e) => {
-              
-            })
+            this.pathsToDisplay.push(path)
           })
-    
-      }else{
-        
-        this.fitnessColor="light"
-        this.namedDisabled=false
-        this.walkDisabled=false
-        this.carDisabled=false
-        this.familyDisabled=false
-        this.touristDisabled=false
-        this.oldAgeDisabled=false
-        this.pathFiltered=[]
       }
-  
-      }
-
-  filterFoot(){
-    if(this.walkNamedColor=="light"){
-
-      this.walkNamedColor="secondary"
-      this.namedDisabled=true
-      this.carDisabled=true
-      this.touristDisabled=true
-      this.familyDisabled=true
-      this.oldAgeDisabled=true
-      this.fitnessDisabled=true
-      this.sqlite.create({
-        name: 'filters.db',
-        location: 'default'
-      })
-        .then((db: SQLiteObject) => {
-          
-          db.executeSql(`select * from paths`,[])
-          .then((tableSelect)=>{
-            
-            if (tableSelect.rows.length > 0) {
-              
-              for (var i = 0; i < tableSelect.rows.length; i++) {
-                if(JSON.parse(tableSelect.rows.item(i).filter).name == "Foot"){
-                  this.pathFiltered.push(tableSelect.rows.item(i))
-                }
-              }
-
-            }
-          })
+    )
 
 
-          .catch((e) => {
-            
-          })
-        })
-  
-    }else{
-      
-      this.walkNamedColor="light"
-      this.namedDisabled=false
-      this.carDisabled=false
-      this.touristDisabled=false
-      this.familyDisabled=false
-      this.oldAgeDisabled=false
-      this.fitnessDisabled=false
-      this.pathFiltered=[]
-    }
-
-    }
-
-  filterBicycle(){
-    if(this.namedColor=="light"){
-
-      this.namedColor="secondary"
-      this.walkDisabled=true
-      this.carDisabled=true
-      this.touristDisabled=true
-      this.familyDisabled=true
-      this.oldAgeDisabled=true
-      this.fitnessDisabled=true
-      this.sqlite.create({
-        name: 'filters.db',
-        location: 'default'
-      })
-        .then((db: SQLiteObject) => {
-          
-          db.executeSql(`select * from paths`,[])
-          .then((tableSelect)=>{
-            
-            if (tableSelect.rows.length > 0) {
-              
-              for (var i = 0; i < tableSelect.rows.length; i++) {
-                if(JSON.parse(tableSelect.rows.item(i).filter).name == "Bycicle" || JSON.parse(tableSelect.rows.item(i).filter).name =="Bycicle co2"){
-                  this.pathFiltered.push(tableSelect.rows.item(i))
-                }
-              }
-
-            }
-          })
-
-
-          .catch((e) => {
-            
-          })
-        })
-    }else{
-      
-      this.namedColor="light"
-      this.walkDisabled=false
-      this.carDisabled=false
-      this.touristDisabled=false
-      this.familyDisabled=false
-      this.oldAgeDisabled=false
-      this.fitnessDisabled=false
-      this.pathFiltered=[]
-    }
-
-    }
+  }
 
 }

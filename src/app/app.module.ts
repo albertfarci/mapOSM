@@ -25,18 +25,20 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx'
 import { PreferitiService } from './shared/services/preferiti.service';
 import { DettaglioPreferitoService } from './shared/services/dettaglioPreferito.service';
 import { GeoLocationService } from './shared/services/geoLocation.service';
+import { StorageService } from './shared/services/storage.service';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpModule,HttpClientModule,SharedModule ],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpModule, HttpClientModule, SharedModule],
   providers: [
-    SQLite, 
+    SQLite,
     Toast,
     DatePicker,
     StatusBar,
     SplashScreen,
     PathService,
+    StorageService,
     FilterListService,
     DettaglioPreferitoService,
     GeoLocationService,
@@ -50,4 +52,4 @@ import { GeoLocationService } from './shared/services/geoLocation.service';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

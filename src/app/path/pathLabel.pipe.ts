@@ -1,9 +1,9 @@
 import { Pipe } from '@angular/core';
 
-@Pipe({name:"pathLabel"})
+@Pipe({ name: "pathLabel" })
 export class PathLabelPipe {
   transform(val) {
     console.log(val)
-    return JSON.parse(val).name
+    return JSON.parse(val).nome
   }
 }

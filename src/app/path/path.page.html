@@ -1,96 +1,59 @@
 <ion-content>
-  <ion-grid style="height: 100%; background: #2A4C5B">
-    <ion-row>
-      <ion-col size="12">
-          <ion-icon src="../assets/release1/preferenzaRicerca.svg" 
-            size="large"
-            style="width: 100%;"></ion-icon>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-        <ion-col size="2" size-xs="3">
+    <ion-grid style="height: 100%; background: #2A4C5B">
+        <ion-row>
+            <ion-col size="12">
+                <ion-icon src="../assets/release1/preferenzaRicerca.svg" size="large" style="width: 100%;"></ion-icon>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="2" size-xs="3" *ngFor="let path of paths">
+                <ion-button id="walk" [color]="path.color" (click)="filterFirstLevel(path.nome)">
+                    <ion-icon [name]="path.icon" size="large"></ion-icon>
+                </ion-button>
 
-            <ion-button id="walk" [color]="walkNamedColor" [disabled]="walkDisabled" (click)="filterFoot()">
-                <ion-icon name="walk" size="large"></ion-icon>
-            </ion-button>
+            </ion-col>
 
-        </ion-col>
-        <ion-col size="2" size-xs="3">
-            <ion-button id="bycicle" [color]="namedColor" [disabled]="namedDisabled" (click)="filterBicycle()">
-                <ion-icon name="bicycle" size="large"></ion-icon>
-            </ion-button>
-        </ion-col>
-        <ion-col size="2" size-xs="3">
-            <ion-button id="car" [color]="carNamedColor" [disabled]="carDisabled" (click)="filterCar()">
-                <ion-icon name="car" size="large"></ion-icon>
-            </ion-button>
-        </ion-col>
-        <ion-col size="2" size-xs="3">
-            <ion-button id="car" [color]="touristColor" [disabled]="touristDisabled" (click)="filterTourist()">
-                <ion-icon src="../assets/release1/turistaBianco.svg" size="large"></ion-icon>
-            </ion-button>
-        </ion-col>
-        
-        <ion-col size="2" size-xs="3">
-            <ion-button [color]="familyColor" 
-                        [disabled]="familyDisabled"
-                        (click)="filterFamily()">
-                        <ion-icon src="../assets/release1/famiglia.svg" size="large"></ion-icon>
-                    </ion-button>
-        </ion-col>
-        
-        <ion-col size="2" size-xs="3">
-            <ion-button [color]="oldAgeColor"  
-                        [disabled]="oldAgeDisabled"
-                        (click)="filterOldAge()">
-                        <ion-icon src="../assets/release1/anziano.svg" size="large"></ion-icon>
-                    </ion-button>
-        </ion-col>
-        
-        <ion-col size="2" size-xs="3">
-            <ion-button [color]="fitnessColor"
-                        [disabled]="fitnessDisabled"
-                        (click)="filterFitness()">
-                        <ion-icon src="../assets/release1/fitnessBianco.svg" size="large"></ion-icon>
-                    </ion-button>
-        </ion-col>
-        
-    </ion-row>
-    <ion-row>
-        <ion-col size="12">
-            <ion-icon src="../assets/release1/percorsiSalvati.svg" 
-              size="large"
-              style="width: 100%;"></ion-icon>
-        </ion-col>
-      </ion-row>
-      
-    <ion-list style="background: #2A4C5B">
-        
-    <ion-row *ngFor="let path of pathFiltered" style="color: white">
+        </ion-row>
+        <ion-row *ngIf="optionsEnabled()">
+            <ion-col *ngFor="let button of getEnabled()">
+                <ion-button *ngIf="button.nome" [color]="button.color" [disabled]="button.spunta"
+                    (click)="setEnableButtonSecondLevel(button.nome)" (click)="getPaths(button)">
+                    <ion-icon [src]="button.icon"></ion-icon>
+                </ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <ion-icon src="../assets/release1/percorsiSalvati.svg" size="large" style="width: 100%;"></ion-icon>
+            </ion-col>
+        </ion-row>
+
+        <ion-list style="background: #2A4C5B">
+
+            <ion-row *ngFor="let path of pathsToDisplay" style="color: white">
                 <ion-col size="2">
                     <ion-icon name="heart" style="
                     width: 100%;
                     height: 100%;
                     color: red;"></ion-icon>
-            
+
                 </ion-col>
                 <ion-col size="6" style="padding: 6%">
-                    <ion-text class="title">{{path.filter|pathLabel }}</ion-text> 
+                    <ion-text class="title">{{path.filter|pathLabel }}</ion-text>
                 </ion-col>
                 <ion-col size="4" class="ion-text-end">
                     <div>
-                      <ion-button (click)="goToPathId(path.rowid)"><ion-icon name="arrow-forward"></ion-icon></ion-button>
-                      
+                        <ion-button (click)="goToPathId(path.rowid)">
+                            <ion-icon name="arrow-forward"></ion-icon>
+                        </ion-button>
+
                     </div>
-                  </ion-col> 
+                </ion-col>
             </ion-row>
-        
 
-        
-      
-    </ion-list>
-  </ion-grid>
-  </ion-content>
 
-  
-  
+
+
+        </ion-list>
+    </ion-grid>
+</ion-content>

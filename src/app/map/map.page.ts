@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { Map, LeafIcon, tileLayer, marker, icon, polyline, geoJSON, removeLayers, LayerGroup } from 'leaflet';
+import { Map, tileLayer, marker, icon, polyline, geoJSON, LayerGroup } from 'leaflet';
 import { Platform, AlertController } from '@ionic/angular';
 import { PathService } from '../shared/services/path.service';
 import { FilterListService } from '../shared/services/filters.service';
 import { Router } from '@angular/router';
 import { PoiService } from '../shared/services/poi.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
@@ -13,9 +12,6 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-import { post } from 'selenium-webdriver/http';
-import { FilterDisable, FilterColor } from '../shared/models/filter.model';
-
 import L from 'leaflet'
 import "leaflet-easybutton"
 
@@ -28,25 +24,18 @@ import "leaflet-easybutton"
 export class MapPage {
   point: { lng: any; lat: any; };
 
-  paths
-  modalita_figlio
-  formCrationPath: FormGroup;
-  layerGroup
-  geoJson = []
-  pointsPath = []
-  map: Map
-  onPathSelected = false
-  pointB;
-  fitlerActive
-
-  pathFilter = []
-
-  pathCreated = []
-
-  endPoints = []
-
-  pathIsCreated: boolean = false;
-  savePath: boolean = false;
+  private paths
+  private layerGroup
+  private geoJson = []
+  private pointsPath = []
+  private map: Map
+  private onPathSelected = false
+  private pathFilter = []
+  private timetest: any;
+  private timeSelected: any
+  private isSetAlertSelectedItem: boolean;
+  private optionsFilter: boolean = false;
+  private savePath: boolean = false;
   icons = {
 
     greenIcon: L.icon({
@@ -71,21 +60,11 @@ export class MapPage {
     })
   }
 
-  locationCoords: any;
-  timetest: any;
-
-  setAlarmBool: boolean = false
-  timeSelected: any
-  isSetAlertSelectedItem: boolean;
-  optionsFilter: boolean = false;
-
-
   constructor(
     public plt: Platform,
     public pathService: PathService,
     public filterListService: FilterListService,
     public router: Router,
-    private formBuilder: FormBuilder,
     private poiService: PoiService,
     private sqlite: SQLite,
     private toast: Toast,
@@ -95,17 +74,7 @@ export class MapPage {
     private localNotifications: LocalNotifications,
     public alertCtrl: AlertController) {
 
-
-    this.locationCoords = {
-      latitude: "",
-      longitude: "",
-      accuracy: "",
-      timestamp: ""
-    }
     this.timetest = Date.now();
-    this.formCrationPath = this.formBuilder.group({
-      arrivo: [null, Validators.required]
-    });
   }
 
   ionViewDidEnter() {
@@ -133,12 +102,9 @@ export class MapPage {
       if (this.map) {
         this.map.removeLayer(this.layerGroup);
         this.map.remove()
-        this.pathIsCreated = false
         this.savePath = false
         this.onPathSelected = false
-        this.pathCreated = []
         this.isSetAlertSelectedItem = false
-        this.setAlarmBool = false
       }
       this.initMap()
     });
@@ -166,7 +132,7 @@ export class MapPage {
       }
     }).addTo(this.map);
 
-    L.easyButton(' <ion-icon name="navigate" class="star"></ion-icon>', () => {
+    L.easyButton('<div > <ion-icon name="navigate" class="star"></ion-icon> </div>', () => {
       if (this.pointsPath[0] && this.pointsPath[1]) {
         this.getShowPath()
       }
@@ -182,7 +148,6 @@ export class MapPage {
     JSON.parse(this.poiService.getMonuments())
       .default
       .map(x => {
-        this.endPoints.push(x)
         this.layerGroup.addLayer(marker([x.lat, x.long], { title: x.label, icon: this.icons.greenIcon }).bindPopup('<h5>' + x.label + '</h5>').on('click', (x => {
 
           //this.layerGroup.addLayer(marker([x.latlng.lat, x.latlng.lng], {icon: this.icons.redIcon}));
@@ -237,7 +202,6 @@ export class MapPage {
     JSON.parse(this.poiService.getMonuments())
       .default
       .map(x => {
-        this.endPoints.push(x)
         this.layerGroup.addLayer(marker([x.lat, x.long], { title: x.label, icon: this.icons.greenIcon }).bindPopup('<h5>' + x.label + '</h5>').on('click', (x => {
 
           //this.layerGroup.addLayer(marker([x.latlng.lat, x.latlng.lng], {icon: this.icons.redIcon}));
@@ -272,7 +236,7 @@ export class MapPage {
       [this.pointsPath[0].lat, this.pointsPath[0].lng],
       [this.pointsPath[1].lat, this.pointsPath[1].lng]
     ]);
-    this.pathIsCreated = false
+
 
   }
 
@@ -391,60 +355,8 @@ export class MapPage {
     }
   }
 
-  pathSelected($event) {
-
-    this.map.removeLayer(this.layerGroup)
-
-    this.layerGroup = new LayerGroup();
-    this.layerGroup.addTo(this.map);
-
-    this.layerGroup.addLayer(marker([this.pointsPath[0].lat, this.pointsPath[0].lng], { icon: this.icons.greenIcon }));
-    this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], { icon: this.icons.redIcon }));
-
-    //this.map.clearLayers()
-
-    this.pathCreated.filter(x => x.filter.value == $event.detail.value)
-      .map(x => {
-
-        this.fitlerActive = x
-        this.onPathSelected = true
-        this.layerGroup.addLayer(geoJSON({
-          "type": "LineString",
-          "coordinates": x.coordinates,
-        }).bindPopup('<h1>' + x.filter.name + '</h1>'));
-      })
-  }
-
-  setAlarm() {
-    this.onPathSelected = false;
-    this.savePath = false;
-
-    this.setAlarmBool = true;
-    this.timeSelected = undefined
-  }
-
   isSetAlertSelected() {
     this.isSetAlertSelectedItem = !this.isSetAlertSelectedItem
-  }
-
-  itemSelected($event) {
-
-    if (!this.pointsPath[1]) {
-
-      this.endPoints
-        .filter(x => x._id == $event.detail.value)
-        .map(x => {
-
-          this.layerGroup.addLayer(marker([x.lat, x.long], { icon: this.icons.redIcon }));
-          this.pointB = marker([x.lat, x.long], { icon: this.icons.redIcon })
-
-          this.pointsPath[1] = { lat: x.lat, lng: x.long }
-        })
-
-    }
-
-    if (this.pointsPath[0] && this.pointsPath[1]) this.pathIsCreated = true;
-
   }
 
   setTimeAlert() {
@@ -679,6 +591,7 @@ export class MapPage {
 
   getPaths(value) {
 
+    console.log(value)
     this.map.removeLayer(this.layerGroup)
 
     this.layerGroup = new LayerGroup();
