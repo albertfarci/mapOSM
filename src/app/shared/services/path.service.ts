@@ -16,7 +16,7 @@ export class PathService {
   }
 
   getPOIsNearToPoint(currentPoint, filter) {
-    return this.http.get<any>(`https://dss03.crs4.it/v1/requestTrip/info/` + currentPoint.latitudine + `/` + currentPoint.longitudine + '/100/' + filter)
+    return this.http.get<any>(`https://dss03.crs4.it/v1/requestTrip/info/?lat=` + currentPoint.latitudine + `&lon=` + currentPoint.longitudine + '&distance=100&type=' + filter)
   }
 
   calculateGeometry(arrayGeometry): Observable<any> {

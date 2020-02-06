@@ -47,6 +47,11 @@ export class PathIdPage {
       iconUrl: '/assets/release1/shop.svg',
       iconSize: [25, 25],
       popupAnchor: [0, -20]
+    }),
+    greenIcon: L.icon({
+      iconUrl: '/assets/pref-2/green-m.png',
+      iconSize: [25, 25],
+      popupAnchor: [0, -20]
     })
   }
 
@@ -155,8 +160,18 @@ export class PathIdPage {
 
 
     L.easyButton('<div > <ion-icon name="navigate" class="star"></ion-icon> </div>', () => {
-      if (this.pointsPath[0] && this.pointsPath[1]) {
-        this.startTracking()
+      //if (this.pointsPath[0] && this.pointsPath[1]) {
+      this.startTracking()
+      //}
+    }).addTo(this.map);
+
+    L.easyButton(' <ion-icon name="contract" class="star"></ion-icon>', () => {
+
+      if (document.getElementById("map-pathId").style.height == "55%") {
+        document.getElementById("map-pathId").style.height = "100%"
+      } else {
+        document.getElementById("map-pathId").style.height = "55%"
+
       }
     }).addTo(this.map);
 
@@ -220,7 +235,7 @@ export class PathIdPage {
             this.start = []
             resp.list_nodes.map(x => {
 
-              this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.restaurant }).bindPopup('<h5>' + x.tags.name + '</h5>'));
+              this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.greenIcon }).bindPopup('<h5>' + x.tags.name + '</h5>'));
 
               this.start.push({
                 icon: "/assets/release1/restaurant.svg",
@@ -240,7 +255,7 @@ export class PathIdPage {
             this.start = []
             resp.list_nodes.map(x => {
 
-              this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.shop }).bindPopup('<h5>' + x.tags.name + '</h5>'));
+              this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.greenIcon }).bindPopup('<h5>' + x.tags.name + '</h5>'));
 
               this.start.push({
                 icon: "/assets/release1/shop.svg",
@@ -260,7 +275,7 @@ export class PathIdPage {
             this.start = []
             resp.list_nodes.map(x => {
 
-              this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.museum }).bindPopup('<h5>' + x.tags.name + '</h5>'));
+              this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.greenIcon }).bindPopup('<h5>' + x.tags.name + '</h5>'));
 
               this.start.push({
                 icon: "/assets/release1/museum.svg",
@@ -280,7 +295,7 @@ export class PathIdPage {
             this.start = []
             resp.list_nodes.map(x => {
 
-              this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.monument }).bindPopup('<h5>' + x.tags.name + '</h5>'));
+              this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.greenIcon }).bindPopup('<h5>' + x.tags.name + '</h5>'));
 
               this.start.push({
                 icon: "/assets/release1/monument.svg",
@@ -297,14 +312,16 @@ export class PathIdPage {
   }
 
   getPath(start?: Point, end?: Point) {
+    console.log(start)
     var point = start.latitudine + "," + start.longitudine
-    //var point="39.21477,9.11289"
+    //var point = "39.21477,9.11289"
     if (end) {
       var pointEnd = end.latitudine + "," + end.longitudine
     } else {
       var pointEnd = this.pointsPath[1].latitudine + "," + this.pointsPath[1].longitudine
     }
-    this.pathService.getPath(point, pointEnd, this.currentFilter.value)
+    this.pathService.getPath(point, pointEnd, this.currentFilter.valore)
+      //this.pathService.getPath(point, pointEnd, 27)
       .subscribe(
         posts => {
           let myStyle = {
