@@ -24,18 +24,18 @@ import "leaflet-easybutton"
 export class MapPage {
   point: { lng: any; lat: any; };
 
-  private paths
+  paths
   private layerGroup
   private geoJson = []
-  private pointsPath = []
+  pointsPath = []
   private map: Map
   private onPathSelected = false
-  private pathFilter = []
+  pathFilter = []
   private timetest: any;
-  private timeSelected: any
+  timeSelected: any
   private isSetAlertSelectedItem: boolean;
-  private optionsFilter: boolean = false;
-  private savePath: boolean = false;
+  optionsFilter: boolean = false;
+  savePath: boolean = false;
   icons = {
 
     greenIcon: L.icon({

@@ -20,8 +20,8 @@ export class PathPage {
   pathFilter = []
 
   private optionsFilter: boolean = false;
-  private paths: any
-  private pathsToDisplay: any
+  paths: any
+  pathsToDisplay: any
 
   constructor(
     private router: Router,
