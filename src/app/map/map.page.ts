@@ -1,19 +1,18 @@
 import { Component } from '@angular/core';
-import { Map, tileLayer, marker, icon, polyline, geoJSON, LayerGroup } from 'leaflet';
-import { Platform, AlertController } from '@ionic/angular';
-import { PathService } from '../shared/services/path.service';
-import { FilterListService } from '../shared/services/filters.service';
 import { Router } from '@angular/router';
-import { PoiService } from '../shared/services/poi.service';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
-import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { AlertController, Platform } from '@ionic/angular';
+import L, { geoJSON, icon, LayerGroup, Map, marker } from 'leaflet';
+import "leaflet-easybutton";
+import { FilterListService } from '../shared/services/filters.service';
+import { PathService } from '../shared/services/path.service';
+import { PoiService } from '../shared/services/poi.service';
 
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-import L from 'leaflet'
-import "leaflet-easybutton"
 
 
 @Component({
@@ -24,6 +23,14 @@ import "leaflet-easybutton"
 export class MapPage {
   point: { lng: any; lat: any; };
 
+  //refactor
+  pointsOfInterest = []
+  start = []
+  step = 1
+  pointA
+  pointB
+
+  //
   paths
   private layerGroup
   private geoJson = []
@@ -62,7 +69,6 @@ export class MapPage {
 
   constructor(
     public plt: Platform,
-    public pathService: PathService,
     public filterListService: FilterListService,
     public router: Router,
     private poiService: PoiService,
@@ -80,6 +86,7 @@ export class MapPage {
   ionViewDidEnter() {
 
     this.plt.ready().then(() => {
+
       /*
    this.sqlite.create({
     name: 'filters.db',
@@ -95,6 +102,12 @@ export class MapPage {
       })
     })*/
 
+      this.filterListService.filterList.subscribe(
+        (data) => {
+          this.paths = data
+        }
+      )
+
       this.isSetAlertSelectedItem = false
 
       this.pointsPath = []
@@ -106,8 +119,85 @@ export class MapPage {
         this.onPathSelected = false
         this.isSetAlertSelectedItem = false
       }
-      this.initMap()
+      //this.initMap()
     });
+  }
+
+
+  //selezionato punto A
+  onPointSelectedA(e) {
+    console.log(e)
+    this.pointA = e
+  }
+
+  //selezionato punto B
+  onPointSelectedB(e) {
+    console.log(e)
+    this.pointB = e
+    this.onDetail()
+  }
+
+  //locate pressed
+  onNavigate(e) {
+
+    this.pointsPath = e
+    console.log(this.pointsPath)
+    /*
+    document.getElementById("map-search").style.height = "0%"
+    document.getElementById("map-search").style.visibility = "hidden"
+    document.getElementById("map-points-selection").style.visibility = "visible"
+    document.getElementById("map-points-selection").style.height = "fit-content"
+    */
+
+    this.onDetail()
+    this.onContract()
+    if (this.step == 1) {
+      this.step = 2
+      console.log(e)
+    }
+  }
+
+  onDetail() {
+    console.log("Detail")
+
+    if (document.getElementById("map-page").style.height == "100%") {
+
+      document.getElementById("map-page").style.height = "80%"
+    } else {
+
+      document.getElementById("map-page").style.height = "100%"
+    }
+  }
+
+
+  onContract() {
+    if (this.step == 1) {
+      if (document.getElementById("map-searchA").style.height == "fit-content" && document.getElementById("map-searchB").style.height == "fit-content") {
+
+        document.getElementById("map-searchA").style.height = "0%"
+        document.getElementById("map-searchA").style.visibility = "hidden"
+
+        document.getElementById("map-searchB").style.height = "0%"
+        document.getElementById("map-searchB").style.visibility = "hidden"
+      } else {
+
+        document.getElementById("map-searchA").style.height = "fit-content"
+        document.getElementById("map-searchA").style.visibility = "visible"
+        document.getElementById("map-searchB").style.height = "fit-content"
+        document.getElementById("map-searchB").style.visibility = "visible"
+      }
+    }
+    if (this.step == 2) {
+      if (document.getElementById("map-modalita").style.height == "fit-content") {
+
+        document.getElementById("map-modalita").style.height = "0%"
+        document.getElementById("map-modalita").style.visibility = "hidden"
+      } else {
+        document.getElementById("map-modalita").style.height = "fit-content"
+        document.getElementById("map-modalita").style.visibility = "visible"
+      }
+    }
+    console.log("contract")
   }
 
   initMap() {
@@ -156,11 +246,18 @@ export class MapPage {
 
         })))
       })
+    var controlSearch = new L.Control.Search({
+      position: 'topright',
+      initial: false,
+      zoom: 12,
+      marker: false
+    });
+
+    this.map.addControl(controlSearch);
 
 
-
-    //this.getLocationCoordinates()
-    this.checkGPSPermission()
+    this.getLocationCoordinates()
+    //this.checkGPSPermission()
 
   }
 
@@ -306,43 +403,6 @@ export class MapPage {
 
   }
 
-  showNavigate(filter) {
-    this.map.removeLayer(this.layerGroup)
-
-    this.layerGroup = new LayerGroup();
-    this.layerGroup.addTo(this.map);
-
-    this.layerGroup.addLayer(marker([this.pointsPath[0].lat, this.pointsPath[0].lng], { icon: this.icons.puntoA }));
-    this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], { icon: this.icons.puntoB }));
-
-    if (document.getElementById(filter.valore).style.color != "blue") {
-
-      document.querySelectorAll("ion-icon[name='eye']").forEach(x => {
-        document.getElementById(x.id).style.color = "grey"
-      })
-
-      document.getElementById(filter.valore).style.color = "blue"
-      this.pathFilter.filter(x => x.filter == filter)
-        .map(x => {
-          this.layerGroup.addLayer(geoJSON({
-            "type": "LineString",
-            "coordinates": x.coordinates,
-          }, { style: x.style }).bindPopup('<img src="' + x.icon + '"><h5>' + x.filter.nome + ' </h5><h5>' + this.timeConverter(x.duration) + ' </h5><h5>' + this.distanceConverter(x.distance) + ' </h5>'));
-
-        })
-    } else {
-      document.getElementById(filter.valore).style.color = "grey"
-
-      this.pathFilter.map(x => {
-        this.layerGroup.addLayer(geoJSON({
-          "type": "LineString",
-          "coordinates": x.coordinates,
-        }, { style: x.style }).bindPopup('<img src="' + x.icon + '"><h5>' + x.filter.nome + ' </h5><h5>' + this.timeConverter(x.duration) + ' </h5><h5>' + this.distanceConverter(x.distance) + ' </h5>'));
-
-      })
-    }
-
-  }
 
 
   filterOptions() {
@@ -444,36 +504,8 @@ export class MapPage {
     return this.paths.filter(x => x.spunta).length > 0
   }
 
-  timeConverter(val) {
-    var hours = Math.floor(val / 3600)
-    if (hours > 0) {
-      var minutes = Math.floor(val / 60) - (hours * 60)
-      return hours + " ore e " + minutes + " minuti"
-    } else {
-      var minutes = Math.floor(val / 60)
-      return minutes + " minuti"
-    }
-  }
-
-  distanceConverter(val) {
-    var km = Math.floor(val / 1000)
-    if (km > 0) {
-      var metres = Math.floor(val - km * 1000)
-      return km + " km e " + metres + " metri"
-    } else {
-      return val + " metri"
-    }
-  }
 
   filterFirstLevel(value) {
-
-    this.map.removeLayer(this.layerGroup)
-
-    this.layerGroup = new LayerGroup();
-    this.layerGroup.addTo(this.map);
-
-    this.layerGroup.addLayer(marker([this.pointsPath[0].lat, this.pointsPath[0].lng], { icon: this.icons.puntoA }));
-    this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], { icon: this.icons.puntoB }));
 
     this.pathFilter = []
     this.paths
@@ -490,6 +522,8 @@ export class MapPage {
               }
             )
           } else {
+
+            this.optionsFilter = true
             this.filterListService.setAllFalseSpunta()
               .then(
                 () => {
@@ -591,92 +625,7 @@ export class MapPage {
 
   getPaths(value) {
 
-    console.log(value)
-    this.map.removeLayer(this.layerGroup)
+    this.pathFilter = value.modalita_figlio
 
-    this.layerGroup = new LayerGroup();
-    this.layerGroup.addTo(this.map);
-
-    this.layerGroup.addLayer(marker([this.pointsPath[0].lat, this.pointsPath[0].lng], { icon: this.icons.puntoA }));
-    this.layerGroup.addLayer(marker([this.pointsPath[1].lat, this.pointsPath[1].lng], { icon: this.icons.puntoB }));
-
-    let pointStart = this.pointsPath[0].lat + "," + this.pointsPath[0].lng
-    let pointEnd = this.pointsPath[1].lat + "," + this.pointsPath[1].lng
-    value.modalita_figlio.map(x => {
-      this.pathService.getPath(pointStart, pointEnd, x.valore)
-        .subscribe(
-          posts => {
-            let newGeometry = posts.geometry.replace("[", "");
-            newGeometry = newGeometry.replace("]", "");
-            newGeometry = newGeometry.replace(/ /g, "|");
-            newGeometry = newGeometry.replace("|", "");
-
-            // 2. split sulle virgole:
-            let geometryArray1Dim = newGeometry.split(",");
-
-            // 3. crea array bidimesionale:
-            let geometryArray2Dim = Array.from(Array(geometryArray1Dim.length), () => new Array(2));
-
-            // 4. popola array: per ogni elemento del precedente array, split su |:    
-            for (let i = 0; i < geometryArray1Dim.length; i++) {
-              let tempArray = geometryArray1Dim[i].split("|");
-              for (let j = 0; j < 2; j++) {
-                geometryArray2Dim[i][0] = parseFloat(tempArray[0]);
-                geometryArray2Dim[i][1] = parseFloat(tempArray[1]);
-              }
-            }
-
-            let newPointList = posts.nodes.replace("[", "");
-            newPointList = newPointList.replace("]", "");
-
-            // 2. split sulle virgole:
-            let PointList1Dim = newPointList.split(",");
-
-            this.geoJson.push(geoJSON({
-              "type": "LineString",
-              "coordinates": geometryArray2Dim,
-            }))
-
-            geoJSON({
-              "type": "LineString",
-              "coordinates": geometryArray2Dim,
-            })
-
-            if (x.nome == "Sicuro") var myStyle = {
-              "color": "blue",
-              "weight": 5,
-              "opacity": 0.65
-            };
-            if (x.nome == "Veloce") var myStyle = {
-              "color": "red",
-              "weight": 5,
-              "opacity": 0.65
-            };
-            if (x.nome == "Ecosostenibile") var myStyle = {
-              "color": "green",
-              "weight": 5,
-              "opacity": 0.65
-            };
-
-            this.pathFilter.push({
-              "filter": x,
-              "type": "LineString",
-              "coordinates": geometryArray2Dim,
-              "icon": value.icon,
-              "duration": posts.duration,
-              "distance": posts.distance,
-              "style": myStyle
-            })
-
-            this.layerGroup.addLayer(geoJSON({
-              "type": "LineString",
-              "coordinates": geometryArray2Dim,
-            }, { style: myStyle }).bindPopup('<img src="' + value.icon + '"><h5>' + x.nome + ' </h5><h5>' + this.timeConverter(posts.duration) + ' </h5><h5>' + this.distanceConverter(posts.distance) + ' </h5>'));
-
-          },
-          error => {
-
-          });
-    })
   }
 }

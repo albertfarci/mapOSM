@@ -45,6 +45,7 @@
     "core-js": "^2.5.4",
     "leaflet": "^1.5.1",
     "leaflet-easybutton": "^2.4.0",
+    "leaflet-search": "^2.9.8",
     "rxjs": "^6.5.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"

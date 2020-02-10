@@ -43,11 +43,15 @@
               },
               {
                 "input": "node_modules/leaflet-easybutton/src/easy-button.css"
+              },
+              {
+                "input": "node_modules/leaflet-search/src/leaflet-search.css"
               }
             ],
             "scripts": [
               "node_modules/leaflet/dist/leaflet.js",
-              "node_modules/leaflet-easybutton/src/easy-button.js"
+              "node_modules/leaflet-easybutton/src/easy-button.js",
+              "node_modules/leaflet-search/src/leaflet-search.js"
             ]
           },
           "configurations": {

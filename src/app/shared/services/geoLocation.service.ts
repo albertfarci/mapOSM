@@ -10,7 +10,7 @@ import { mergeMap, map, filter } from 'rxjs/operators';
 @Injectable()
 export class GeoLocationService {
 
-    checkPermission:boolean
+    checkPermission: boolean
 
     constructor(
         private androidPermissions: AndroidPermissions,
@@ -19,8 +19,10 @@ export class GeoLocationService {
 
     //Check if application having GPS access permission  
     checkGPSPermission() {
+
         this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
             result => {
+
                 if (result.hasPermission) {
 
                     //If having permission show 'Turn On GPS' dialogue
@@ -35,6 +37,7 @@ export class GeoLocationService {
                 alert(err);
             }
         );
+
     }
 
     requestGPSPermission() {
@@ -62,40 +65,40 @@ export class GeoLocationService {
             () => {
                 // When GPS Turned ON call method to get Accurate location coordinates
                 //this.getLocationCoordinates()
-                this.checkPermission=true
+                this.checkPermission = true
             },
             error => alert('Error requesting location permissions ' + JSON.stringify(error))
         );
     }
 
-    getWatchCoordinates(){
-        var options = {timeout:1000};
+    getWatchCoordinates() {
+        var options = { timeout: 1000 };
 
         return this.geolocation.watchPosition(options)
-                .pipe(
-                    filter((p) => p.coords !== undefined),
-                    map(resp => {
+            .pipe(
+                filter((p) => p.coords !== undefined),
+                map(resp => {
                     return {
-                            latitudine:resp.coords.latitude,
-                            longitudine: resp.coords.longitude
-                        }as Point
-                    }
+                        latitudine: resp.coords.latitude,
+                        longitudine: resp.coords.longitude
+                    } as Point
+                }
                 ));
-                
+
 
     }
 
     // Methos to get device accurate coordinates using device GPS
     getLocationCoordinates(): Observable<Point> {
 
-        return from(this.geolocation.getCurrentPosition({enableHighAccuracy:true}))
-                .pipe(
-                    map(resp => {
+        return from(this.geolocation.getCurrentPosition({ enableHighAccuracy: true }))
+            .pipe(
+                map(resp => {
                     return {
-                            latitudine:resp.coords.latitude,
-                            longitudine: resp.coords.longitude
-                        }as Point
-                    }
+                        latitudine: resp.coords.latitude,
+                        longitudine: resp.coords.longitude
+                    } as Point
+                }
                 ));
 
     }
