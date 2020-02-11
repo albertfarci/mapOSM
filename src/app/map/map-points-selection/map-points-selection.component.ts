@@ -32,7 +32,7 @@ export class MapPointsSelectionComponent implements OnInit {
 
 
   }
-  onSearchByKeywordCancel() {
+  onSearchByKeywordCancel(event) {
 
   }
 
