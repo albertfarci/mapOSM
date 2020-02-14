@@ -6,12 +6,17 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
-import { AlertController, Platform } from '@ionic/angular';
+import { AlertController, Platform, ModalController } from '@ionic/angular';
 import L, { geoJSON, icon, LayerGroup, Map, marker } from 'leaflet';
 import "leaflet-easybutton";
 import { FilterListService } from '../shared/services/filters.service';
 import { PathService } from '../shared/services/path.service';
 import { PoiService } from '../shared/services/poi.service';
+import { CurrentPointService } from '../shared/services/current-points.service';
+import { Point } from '../shared/models/point.model';
+import { MapModalPage } from './map-modal/map-modal.page';
+import { CurrentStepService } from '../shared/services/current-step.services';
+import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.page';
 
 
 
@@ -27,8 +32,8 @@ export class MapPage {
   pointsOfInterest = []
   start = []
   step = 1
-  pointA
-  pointB
+  pointA: Point = { title: "Da dove vuoi partire", latitudine: "", longitudine: "", abstract: "", img: null }
+  pointB: Point = { title: "Dove vuoi arrivare", latitudine: "", longitudine: "", abstract: "", img: null }
 
   //
   paths
@@ -78,7 +83,10 @@ export class MapPage {
     private geolocation: Geolocation,
     private locationAccuracy: LocationAccuracy,
     private localNotifications: LocalNotifications,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController,
+    private currentPointService: CurrentPointService,
+    private currentStepService: CurrentStepService,
+    public modalController: ModalController) {
 
     this.timetest = Date.now();
   }
@@ -86,7 +94,24 @@ export class MapPage {
   ionViewDidEnter() {
 
     this.plt.ready().then(() => {
-
+      this.currentPointService.currentPointA.subscribe(
+        (data) => {
+          if (data) this.pointA = data
+        }
+      )
+      this.currentPointService.currentPointB.subscribe(
+        (data) => {
+          if (data) this.pointB = data
+        }
+      )
+      this.currentStepService.currentStep.subscribe(
+        (data) => {
+          if (data != 1) {
+            this.step = data
+            document.getElementById("row-map-display").style.height = "90%"
+          }
+        }
+      )
       /*
    this.sqlite.create({
     name: 'filters.db',
@@ -108,6 +133,7 @@ export class MapPage {
         }
       )
 
+
       this.isSetAlertSelectedItem = false
 
       this.pointsPath = []
@@ -123,16 +149,18 @@ export class MapPage {
     });
   }
 
+  onInputSearch(input) {
+    //this.router.navigateByUrl('/tabs/search', { state: input })
+    this.router.navigate(['/tabs/search', input]);
+  }
 
   //selezionato punto A
   onPointSelectedA(e) {
-    console.log(e)
     this.pointA = e
   }
 
   //selezionato punto B
   onPointSelectedB(e) {
-    console.log(e)
     this.pointB = e
     this.onDetail()
   }
@@ -141,7 +169,6 @@ export class MapPage {
   onNavigate(e) {
 
     this.pointsPath = e
-    console.log(this.pointsPath)
     /*
     document.getElementById("map-search").style.height = "0%"
     document.getElementById("map-search").style.visibility = "hidden"
@@ -149,40 +176,58 @@ export class MapPage {
     document.getElementById("map-points-selection").style.height = "fit-content"
     */
 
-    this.onDetail()
-    this.onContract()
+    //this.onContract()
     if (this.step == 1) {
       this.step = 2
-      console.log(e)
     }
   }
+  /*
+    onDetail() {
+      console.log("Detail")
+      
+      if (document.getElementById("map-page").style.height == "100%") {
+  
+        document.getElementById("map-page").style.height = "80%"
+      } else {
+  
+        document.getElementById("map-page").style.height = "100%"
+      }
+      
+    }*/
 
-  onDetail() {
-    console.log("Detail")
-
-    if (document.getElementById("map-page").style.height == "100%") {
-
-      document.getElementById("map-page").style.height = "80%"
-    } else {
-
-      document.getElementById("map-page").style.height = "100%"
-    }
+  async onDetail() {
+    const modal = await this.modalController.create({
+      component: MapModalPage,
+      componentProps: {
+        'point': this.pointB
+      }
+    });
+    return await modal.present();
   }
+
+
+  async onAzioniRapide() {
+    const modal = await this.modalController.create({
+      component: MapModalModalitaPage
+    });
+    return await modal.present();
+  }
+
 
 
   onContract() {
     if (this.step == 1) {
-      if (document.getElementById("map-searchA").style.height == "fit-content" && document.getElementById("map-searchB").style.height == "fit-content") {
-
-        document.getElementById("map-searchA").style.height = "0%"
-        document.getElementById("map-searchA").style.visibility = "hidden"
+      if (document.getElementById("map-search").style.height == "fit-content" && document.getElementById("map-searchB").style.height == "fit-content") {
+        document.getElementById("map-search").style.padding = "0%"
+        document.getElementById("map-search").style.height = "0%"
+        document.getElementById("map-search").style.visibility = "hidden"
 
         document.getElementById("map-searchB").style.height = "0%"
         document.getElementById("map-searchB").style.visibility = "hidden"
       } else {
-
-        document.getElementById("map-searchA").style.height = "fit-content"
-        document.getElementById("map-searchA").style.visibility = "visible"
+        document.getElementById("map-search").style.padding = "3% 3% 1% 3%"
+        document.getElementById("map-search").style.height = "fit-content"
+        document.getElementById("map-search").style.visibility = "visible"
         document.getElementById("map-searchB").style.height = "fit-content"
         document.getElementById("map-searchB").style.visibility = "visible"
       }
@@ -197,7 +242,6 @@ export class MapPage {
         document.getElementById("map-modalita").style.visibility = "visible"
       }
     }
-    console.log("contract")
   }
 
   initMap() {
@@ -486,7 +530,6 @@ export class MapPage {
         }
       })));
       if (this.pointsPath[0] && this.pointsPath[1]) {
-        console.log("height")
         document.getElementById("map-page").style.height = "55%"
         this.map.fitBounds([
           [this.pointsPath[0].lat, this.pointsPath[0].lng],

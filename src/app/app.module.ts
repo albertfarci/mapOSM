@@ -26,6 +26,8 @@ import { PreferitiService } from './shared/services/preferiti.service';
 import { DettaglioPreferitoService } from './shared/services/dettaglioPreferito.service';
 import { GeoLocationService } from './shared/services/geoLocation.service';
 import { StorageService } from './shared/services/storage.service';
+import { CurrentPointService } from './shared/services/current-points.service';
+import { CurrentStepService } from './shared/services/current-step.services';
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,6 +40,8 @@ import { StorageService } from './shared/services/storage.service';
     StatusBar,
     SplashScreen,
     PathService,
+    CurrentPointService,
+    CurrentStepService,
     StorageService,
     FilterListService,
     DettaglioPreferitoService,

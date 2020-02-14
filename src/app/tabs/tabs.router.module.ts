@@ -48,6 +48,16 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'search/:id',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../map-search/map-search.module').then(m => m.MapSearchPageModule)
+          }
+        ]
+      },
+      {
         path: 'pathId',
         children: [
           {

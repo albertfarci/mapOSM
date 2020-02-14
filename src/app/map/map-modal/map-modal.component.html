@@ -1,0 +1,26 @@
+<ion-header translucent>
+    <ion-toolbar>
+        <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">Close</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+    <ion-card>
+        <img *ngIf="!point.img" src="/assets/bb/icon3-m.png" alt="" />
+        <img *ngIf="point.img" class="image_poi" src="{{point.img}}" alt="" />
+        <ion-card-header>
+            <ion-card-title>{{point.title }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <p>Abstract</p>
+            <p style="font-weight: bold;">{{point.abstract}}</p>
+
+            <ion-button (click)="onNavigate()">
+                <ion-icon slot="start" name="locate"></ion-icon>
+                Percorsi
+            </ion-button>
+        </ion-card-content>
+    </ion-card>
+
+</ion-content>

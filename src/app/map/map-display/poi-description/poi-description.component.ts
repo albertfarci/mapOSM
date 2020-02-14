@@ -16,7 +16,6 @@ export class PoiDescriptionComponent implements OnInit {
   ngOnInit() { }
 
   ngOnChanges() {
-    console.log(this.pointDetail)
 
   }
 

@@ -20,16 +20,27 @@
 }
 
 .rowSearch{
-    height: 55px;
+    height: fit-content;
     position: relative;
     width: 100%;
-    padding-top: 3%;
-    padding-bottom: 3%;
     border-bottom: 0.5px solid lightslategrey;
-    background: white
+    background: white;
+    border-radius: 4px
 }
 
 .gridSearch{
+    background: rgb(245,245,245);
+    padding:0px;
+    height: 100%;
+}
+
+.inputSearch{
+    background: white;
+    border-radius: 3px;
     box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
-    background: #4285F4
+}
+
+.image_poi{
+    height: 100%;
+    width: 100%;
 }

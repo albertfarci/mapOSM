@@ -9,17 +9,22 @@ import { PoiService } from 'src/app/shared/services/poi.service';
 export class MapSearchComponent implements OnInit {
 
   @Output() poi = new EventEmitter<any>();
+  @Output() back = new EventEmitter<any>();
+
   start = []
   searchInput: string
 
   constructor(
     private poiService: PoiService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.searchInput = ""
+    this.start = []
+  }
 
   onSearchByKeyword(event: any) {
 
-    console.log(this.searchInput)
+    /*
     if (!event.detail) {
       this.start = []
       document.getElementById("map-page").style.height = "100%"
@@ -37,18 +42,32 @@ export class MapSearchComponent implements OnInit {
         .map(x => {
           if (x.label.includes(this.searchInput)) this.start.push(x)
         })
-    }
+    }*/
+    this.start = []
+    JSON.parse(this.poiService.getMonuments())
+      .default
+      .map(x => {
+        if (x.label.includes(this.searchInput)) this.start.push(x)
+      })
+
+    JSON.parse(this.poiService.getArcheoSites())
+      .default
+      .map(x => {
+        if (x.label.includes(this.searchInput)) this.start.push(x)
+      })
 
   }
 
   onSearchByKeywordCancel(event) {
-    console.log(event)
+    this.start = []
+    this.back.emit()
   }
 
 
   selectPOI(poi) {
+    this.searchInput = poi.label
     this.poi.emit(poi);
-    document.getElementById("map-page").style.height = "100%"
+    //document.getElementById("map-page").style.height = "100%"
     this.start = []
   }
 }

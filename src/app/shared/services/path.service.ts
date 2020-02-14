@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Path } from '../models/path.model';
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject, ReplaySubject } from 'rxjs';
 
 @Injectable()
 export class PathService {
 
   geometryPath: []
 
+  private readonly selectedPathSource = new BehaviorSubject<Array<any>>(null)
+  selectedPath = this.selectedPathSource.asObservable()
+
+  tmpSelectedPath: Array<any> = []
   constructor(private http: HttpClient) { }
 
   getPath(pointStart, pointEnd, filter) {
@@ -44,5 +48,23 @@ export class PathService {
 
   }
 
+  addSelectedPath(path) {
+    this.tmpSelectedPath.push(path)
+    this.selectedPathSource.next(this.tmpSelectedPath)
+  }
+
+  removeSelectedPath(path) {
+    this.tmpSelectedPath = this.tmpSelectedPath.filter(x => x != path)
+    this.selectedPathSource.next(this.tmpSelectedPath)
+  }
+
+  setToNullSelectedPath() {
+    this.tmpSelectedPath = []
+    this.selectedPathSource.next(this.tmpSelectedPath)
+  }
+
+  getSelectedPath() {
+    return this.tmpSelectedPath
+  }
 
 }

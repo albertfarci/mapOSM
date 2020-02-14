@@ -111,7 +111,10 @@ export class PathIdPage {
 
                     this.pointsPath[0] = {
                       latitudine: JSON.parse(tableSelect.rows.item(i).coordinates)[0].lat,
-                      longitudine: JSON.parse(tableSelect.rows.item(i).coordinates)[0].lng
+                      longitudine: JSON.parse(tableSelect.rows.item(i).coordinates)[0].lng,
+                      title: "",
+                      abstract: "",
+                      img: ""
                     }
 
                     this.markerA = marker([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], { icon: this.icons.puntoA })
@@ -119,7 +122,10 @@ export class PathIdPage {
 
                     this.pointsPath[1] = {
                       latitudine: JSON.parse(tableSelect.rows.item(i).coordinates)[1].lat,
-                      longitudine: JSON.parse(tableSelect.rows.item(i).coordinates)[1].lng
+                      longitudine: JSON.parse(tableSelect.rows.item(i).coordinates)[1].lng,
+                      title: "",
+                      abstract: "",
+                      img: ""
                     }
                     this.layerGroup.addLayer(marker([this.pointsPath[1].latitudine, this.pointsPath[1].longitudine], { icon: this.icons.puntoB }));
 

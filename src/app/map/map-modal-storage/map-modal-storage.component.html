@@ -1,0 +1,31 @@
+<ion-header translucent>
+    <ion-toolbar>
+        <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">Close</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>QUANDO FARE IL PERCORSO</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <p>Descrizione</p>
+            <h3 style="font-weight: bold;">Decidi tu quando fare il percorso.</h3>
+
+            <p>Selezionando un orario riceverai una notifica 10 minuti prima della partenza</p>
+
+            <ion-item>
+                <ion-label>Scegli l'ora</ion-label>
+                <ion-datetime [(ngModel)]="timeSelected" displayFormat="h:mm A" minuteValues="0,30"
+                    (ionChange)="setTimeAlert()"> </ion-datetime>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="savePathNavigate()">
+        <ion-fab-button>
+            <ion-icon name="alarm"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>

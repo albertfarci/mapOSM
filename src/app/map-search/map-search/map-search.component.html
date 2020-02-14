@@ -1,0 +1,64 @@
+<ion-content fullscreen>
+  <ion-grid class="gridSearch">
+    <ion-row>
+      <ion-searchbar mode="md" #searchbar showCancelButton="true" placeholder="Trova un luogo" [(ngModel)]="searchInput"
+        (ionInput)="onSearchByKeyword($event)" (ionCancel)="onSearchByKeywordCancel($event)" debounce="300">
+      </ion-searchbar>
+
+    </ion-row>
+    <ion-row *ngIf="start" style="margin: 0 3%">
+      <ion-item *ngFor="let poi of start; let i = index;" style="    width: 100%;">
+        <ion-thumbnail slot="start">
+          <img *ngIf="!poi.image" src="/assets/bb/icon3-m.png" alt="" />
+          <img *ngIf="poi.image" class="image_poi" src="{{poi.image}}" alt="" />
+        </ion-thumbnail>
+        <ion-label (click)="selectPOI(poi)">
+          <h3 style="font-weight: bold;">{{poi | searchLabel}}</h3>
+          <p>Cordinate</p>
+          <p style="font-weight: bold;">{{poi.lat}},{{poi.long}}</p>
+        </ion-label>
+      </ion-item>
+      <!--
+<ion-item nowrap class="rowSearch" *ngFor="let poi of start; let i = index;">
+        <ion-row style="height: 100%" (click)="selectPOI(poi)">
+          <ion-col size="3" style="height: 100%" class="path">
+            
+
+          </ion-col>
+          <ion-col size="9" style="height: fit-content; color: #212121;
+          font-size: 14px;
+          line-height: 20px">
+            <ion-row style="height: 50%">
+              <ion-col size="12">
+                <ion-row>
+                  <ion-row style="    font-weight: bold;">
+                    <span>{{poi | searchLabel}}</span>
+                  </ion-row>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+            <ion-row style="height: 50%">
+              <ion-col size="3">
+                <ion-row>
+                  <span>P: </span>
+                </ion-row>
+              </ion-col>
+              <ion-col size="9">
+                <ion-row>
+                  <ion-row style="    font-weight: bold;">
+                    <span>{{poi.lat}},{{poi.long}}</span>
+                  </ion-row>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+      </ion-item>
+      -->
+
+
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
