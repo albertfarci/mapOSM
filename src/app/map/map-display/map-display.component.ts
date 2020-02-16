@@ -79,6 +79,7 @@ export class MapDisplayComponent implements OnInit {
     this.currentPointsService.currentPointA.subscribe(
       (data) => {
         if (data) {
+          this.pathService.setToNullSelectedPath()
           this.pointA = data
           this.addPointA()
         }
@@ -89,6 +90,7 @@ export class MapDisplayComponent implements OnInit {
     this.currentPointsService.currentPointB.subscribe(
       (data) => {
         if (data) {
+          this.pathService.setToNullSelectedPath()
           this.pointB = data
           this.addPointB()
         }
