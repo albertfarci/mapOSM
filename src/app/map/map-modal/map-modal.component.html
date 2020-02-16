@@ -13,13 +13,30 @@
             <ion-card-title>{{point.title }}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-            <p>Abstract</p>
-            <p style="font-weight: bold;">{{point.abstract}}</p>
+            <ion-grid>
+                <ion-row>
+                    <p>Abstract</p>
+                    <p style="font-weight: bold;">{{point.abstract}}</p>
+                </ion-row>
+                <ion-row>
+                    <ion-col size="6">
+                        <p>Cordinate</p>
+                        <p style="font-weight: bold;">{{point.latitudine}}, {{point.longitudine}}</p>
+                    </ion-col>
 
-            <ion-button (click)="onNavigate()">
-                <ion-icon slot="start" name="locate"></ion-icon>
-                Percorsi
-            </ion-button>
+                    <ion-col size="6">
+                        <ion-button (click)="onNavigate()">
+
+                            <img src="//maps.gstatic.com/mapfiles/maps_lite/images/2x/directions_white_20dp.png"
+                                alt="" />
+                            Indicazioni
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+
+
+
         </ion-card-content>
     </ion-card>
 

@@ -82,6 +82,8 @@ export class MapDisplayComponent implements OnInit {
           this.pointA = data
           this.addPointA()
         }
+
+        this.addControls()
       }
     )
     this.currentPointsService.currentPointB.subscribe(
@@ -90,6 +92,8 @@ export class MapDisplayComponent implements OnInit {
           this.pointB = data
           this.addPointB()
         }
+
+        this.addControls()
 
       }
     )
@@ -289,11 +293,13 @@ export class MapDisplayComponent implements OnInit {
   setPointB(item: Point) {
     if (!this.pointsPath[1]) {
 
-      L.marker([item.latitudine, item.longitudine], { title: "Punto B", icon: this.icons.puntoB }).on('click', (x => {
+      L.marker([item.latitudine, item.longitudine], { title: "Punto B", icon: this.icons.puntoB })
+        .on('click', (x => {
 
-        this.detail.emit()
-        this.pointDetail = this.pointsPath[1]
-      })).addTo(this.map)
+          this.detail.emit()
+          this.pointDetail = this.pointsPath[1]
+        })).addTo(this.map)
+
 
 
     } else {
@@ -307,9 +313,12 @@ export class MapDisplayComponent implements OnInit {
         }
       }
     }
-
+    L.popup()
+      .setLatLng([item.latitudine, item.longitudine])
+      .setContent('<h3>Tap sul segnaposto per i dettagli</h3>')
+      .openOn(this.map);
     this.pointsPath[1] = item
-    this.map.setView([this.pointsPath[1].latitudine, this.pointsPath[1].longitudine], 18)
+    this.map.setView([this.pointsPath[1].latitudine, this.pointsPath[1].longitudine], 16)
 
     this.addControls()
   }
@@ -328,7 +337,7 @@ export class MapDisplayComponent implements OnInit {
       }
     }
     this.pointsPath[0] = item
-    this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 18)
+    this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 16)
 
     this.addControls()
   }

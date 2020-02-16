@@ -106,9 +106,13 @@ export class MapPage {
       )
       this.currentStepService.currentStep.subscribe(
         (data) => {
+
+          this.step = data
           if (data != 1) {
-            this.step = data
             document.getElementById("row-map-display").style.height = "90%"
+          }
+          if (data == 1) {
+            document.getElementById("row-map-display").style.height = "80%"
           }
         }
       )
@@ -157,6 +161,15 @@ export class MapPage {
   //selezionato punto A
   onPointSelectedA(e) {
     this.pointA = e
+  }
+
+  backButton() {
+    this.currentStepService.setStep(1).then(
+      (success) => {
+
+        console.log("Back")
+      }
+    )
   }
 
   //selezionato punto B

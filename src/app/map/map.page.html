@@ -1,3 +1,19 @@
+<ion-header>
+    <ion-toolbar>
+
+        <ion-buttons *ngIf="step==2" slot="start">
+            <ion-button (click)="backButton()">
+                Back
+                <ion-icon slot="start" src="../assets/release1/chevron-back.svg"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title style="
+        text-align: center; 
+    font-weight: bold;">Crea il percorso
+        </ion-title>
+    </ion-toolbar>
+
+</ion-header>
 <ion-content>
     <ion-grid class="gridMap" style="height: 100%;">
         <ion-row *ngIf="step==1" class="containerSearch">
@@ -37,9 +53,10 @@
             <ion-col style="width: 100%;
                 font-size: 14px;
             height: 48px;
-            padding: 12px 12px 56px;" size="10"> Tocca per visualizzare le azioni rapide</ion-col>
+            padding: 12px 12px 56px;
+            background: rgb(245,245,245);" size="10"> Tocca per visualizzare le azioni rapide</ion-col>
             <ion-col>
-                <ion-icon src="../assets/release1/chevron-up.svg" size="large"></ion-icon>
+                <ion-icon style="width: 100%" src="../assets/release1/chevron-up.svg" size="large"></ion-icon>
             </ion-col>
         </ion-row>
 
