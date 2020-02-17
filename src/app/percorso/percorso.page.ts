@@ -5,26 +5,25 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 
 @Component({
-    selector: 'app-percorso',
-    templateUrl: 'percorso.page.html'
-  })
-  export class PercorsoPage {
+  selector: 'app-percorso',
+  templateUrl: 'percorso.page.html'
+})
+export class PercorsoPage {
 
   pathsSaved: any[];
-      constructor(
-        public route: ActivatedRoute,
-        public plt: Platform,
-        private sqlite: SQLite,
-        private toast: Toast
-        ){
-        this.route.params.subscribe(params => {
-          console.log(params.id)
-          params.id; // --> Name must match wanted parameter
-        });
-      }
+  constructor(
+    public route: ActivatedRoute,
+    public plt: Platform,
+    private sqlite: SQLite,
+    private toast: Toast
+  ) {
+    this.route.params.subscribe(params => {
+      params.id; // --> Name must match wanted parameter
+    });
+  }
 
-      
-  ionViewDidEnter(){
+
+  ionViewDidEnter() {
 
     this.plt.ready().then(() => {
       this.pathsSaved = []
@@ -33,25 +32,25 @@ import { Toast } from '@ionic-native/toast/ngx';
         location: 'default'
       })
         .then((db: SQLiteObject) => {
-          
-          db.executeSql(`select * from paths`,[])
-          .then((tableSelect)=>{
-            
-            if (tableSelect.rows.length > 0) {
-              
-              for (var i = 0; i < tableSelect.rows.length; i++) {
-                
-                this.pathsSaved.push(tableSelect.rows.item(i))
+
+          db.executeSql(`select * from paths`, [])
+            .then((tableSelect) => {
+
+              if (tableSelect.rows.length > 0) {
+
+                for (var i = 0; i < tableSelect.rows.length; i++) {
+
+                  this.pathsSaved.push(tableSelect.rows.item(i))
+                }
               }
-            }
-            
-          })
-          .catch((e) => {
-            this.toast.show(JSON.stringify(e), '3000', 'center').subscribe(
-              toast => {
-                console.log(toast);
+
             })
-          })
+            .catch((e) => {
+              this.toast.show(JSON.stringify(e), '3000', 'center').subscribe(
+                toast => {
+                  console.log(toast);
+                })
+            })
         })
     });
   }

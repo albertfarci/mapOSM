@@ -30,7 +30,8 @@ export class MapModalStoragePage {
         private sqlite: SQLite,
         private toast: Toast,
         private localNotifications: LocalNotifications,
-        private currentPointsService: CurrentPointService) {
+        private currentPointsService: CurrentPointService,
+        public pathService: PathService) {
 
         this.currentPointsService.currentPointA.subscribe(
             (data) => {
@@ -62,7 +63,6 @@ export class MapModalStoragePage {
 
 
     savePathNavigate() {
-        console.log(this.path)
         this.sqlite.create({
             name: 'filters.db',
             location: 'default'
@@ -109,6 +109,7 @@ export class MapModalStoragePage {
                                         });
                                     }
                                 }
+                                this.pathService.addSavedPath(this.path)
                                 this.closeModal()
 
                             })

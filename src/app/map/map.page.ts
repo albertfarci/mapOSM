@@ -167,7 +167,6 @@ export class MapPage {
     this.currentStepService.setStep(1).then(
       (success) => {
 
-        console.log("Back")
       }
     )
   }

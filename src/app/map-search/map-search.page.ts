@@ -49,7 +49,6 @@ export class MapSearchPage {
         }
 
         var tmpState: any = this.routerState
-        console.log(tmpState)
         if (tmpState == "A") {
             this.currentPointService.setPointA(tmpPoint).then(
                 (data) => {
@@ -57,7 +56,6 @@ export class MapSearchPage {
                 }
             )
         } else {
-            console.log(tmpPoint)
             this.currentPointService.setPointB(tmpPoint).then(
                 (data) => {
                     this.router.navigateByUrl('/tabs/map')

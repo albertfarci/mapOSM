@@ -280,7 +280,6 @@ export class FilterListService {
                         x.modalita_figlio.map(x => {
                             x.modalita_figlio.map(x => {
                                 if (x.valore == value) {
-                                    console.log(x.nome)
                                     x.spunta = true
                                 }
                                 return x
@@ -305,7 +304,6 @@ export class FilterListService {
                             x.modalita_figlio.map(modalita => {
 
                                 if (modalita.valore == value) {
-                                    console.log(modalita)
                                     modalita.spunta = false
                                 }
                                 return modalita

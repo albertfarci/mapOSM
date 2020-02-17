@@ -106,8 +106,6 @@ export class GeoLocationService {
     showLocation(position) {
         var latitude = position.coords.latitude;
         var longitude = position.coords.longitude;
-        //alert("Latitude : " + latitude + " Longitude: " + longitude);
-        console.log(latitude, longitude)
     }
 
     errorHandler(err) {

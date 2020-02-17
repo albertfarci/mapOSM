@@ -12,9 +12,8 @@ export class TabsPage {
 
   constructor(
     public router: Router,
-    public preferitiService: PreferitiService) {}
-  goToPreferiti(){
-    console.log("Vuoto")
+    public preferitiService: PreferitiService) { }
+  goToPreferiti() {
     this.preferitiService.setPeriti(null)
     this.router.navigate(["/tabs/path"]);
   }

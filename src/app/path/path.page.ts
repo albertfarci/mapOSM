@@ -71,7 +71,6 @@ export class PathPage {
   }
 
   filterBicycle() {
-    console.log("bici")
   }
 
 

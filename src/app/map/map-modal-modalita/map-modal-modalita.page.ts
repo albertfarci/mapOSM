@@ -61,7 +61,42 @@ export class MapModalModalitaPage {
         )
 
 
+
         // componentProps can also be accessed at construction time using NavParams
+    }
+
+    ionViewDidEnter() {
+        this.pathService.selectedPath.subscribe(
+            (data) => {
+                console.log(data)
+                if (data) {
+                    data.map(data => {
+                        document.querySelectorAll("ion-icon[name='eye']")
+                            .forEach(x => {
+
+                                if (data.valore == x.id) x.setAttribute("style", "color: blue")
+                            })
+                    })
+                }
+
+            }
+        )
+
+        this.pathService.savedPath.subscribe(
+            (data) => {
+                console.log(data)
+                if (data) {
+                    data.map(data => {
+                        document.querySelectorAll("ion-icon[name='heart']")
+                            .forEach(x => {
+
+                                if (data.valore == x.id) x.setAttribute("style", "color: red")
+                            })
+                    })
+                }
+
+            }
+        )
     }
 
 

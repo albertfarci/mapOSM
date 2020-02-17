@@ -313,12 +313,9 @@ export class PathIdPage {
         }
       )
 
-    console.log(this.start)
-
   }
 
   getPath(start?: Point, end?: Point) {
-    console.log(start)
     var point = start.latitudine + "," + start.longitudine
     //var point = "39.21477,9.11289"
     if (end) {

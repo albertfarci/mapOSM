@@ -185,7 +185,6 @@ export class MapDisplayComponent implements OnInit {
 
 
         this.pathFilter.map(x => {
-          console.log(x)
           if (x.spunta) {
 
             this.pathService.getPath(pointStart, pointEnd, x.valore)

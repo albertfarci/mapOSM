@@ -11,11 +11,14 @@ export class PathService {
   private readonly selectedPathSource = new BehaviorSubject<Array<any>>(null)
   selectedPath = this.selectedPathSource.asObservable()
 
+  private readonly savedPathSource = new BehaviorSubject<Array<any>>(null)
+  savedPath = this.savedPathSource.asObservable()
+
   tmpSelectedPath: Array<any> = []
+  tmpSavedPath: Array<any> = []
   constructor(private http: HttpClient) { }
 
   getPath(pointStart, pointEnd, filter) {
-    console.log(filter)
     return this.http.get<any>(`https://dss03.crs4.it/v1/requestTrip/31-12-2001/` + pointStart + '/' + pointEnd + '/' + filter)
   }
 
@@ -51,6 +54,11 @@ export class PathService {
   addSelectedPath(path) {
     this.tmpSelectedPath.push(path)
     this.selectedPathSource.next(this.tmpSelectedPath)
+  }
+
+  addSavedPath(path) {
+    this.tmpSavedPath.push(path)
+    this.savedPathSource.next(this.tmpSelectedPath)
   }
 
   removeSelectedPath(path) {

@@ -4,9 +4,8 @@ import { Injectable } from '@angular/core';
 export class PreferitiService {
 
     preferito;
-    setPeriti(item){
-        this.preferito=item
-        console.log(this.preferito)
+    setPeriti(item) {
+        this.preferito = item
     }
 
 }

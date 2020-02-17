@@ -14,7 +14,6 @@ export class CurrentStepService {
     setStep(step: number): Promise<boolean> {
         return new Promise((resolve, reject) => {
 
-            console.log(step)
             this.sourceStep.next(step)
             resolve(true)
         })
