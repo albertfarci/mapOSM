@@ -84,7 +84,6 @@ export class MapDisplayComponent implements OnInit {
           this.addPointA()
         }
 
-        this.addControls()
       }
     )
     this.currentPointsService.currentPointB.subscribe(
@@ -95,7 +94,6 @@ export class MapDisplayComponent implements OnInit {
           this.addPointB()
         }
 
-        this.addControls()
 
       }
     )
@@ -321,7 +319,7 @@ export class MapDisplayComponent implements OnInit {
     this.pointsPath[1] = item
     this.map.setView([this.pointsPath[1].latitudine, this.pointsPath[1].longitudine], 16)
 
-    this.addControls()
+    //this.addControls()
   }
 
   setPointA(item: Point) {
@@ -340,7 +338,7 @@ export class MapDisplayComponent implements OnInit {
     this.pointsPath[0] = item
     this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 16)
 
-    this.addControls()
+    //this.addControls()
   }
 
   addControls() {
