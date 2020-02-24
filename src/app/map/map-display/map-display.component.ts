@@ -64,6 +64,7 @@ export class MapDisplayComponent implements OnInit {
   }
 
   constructor(
+    public plt: Platform,
     public geoLocationService: GeoLocationService,
     public pathService: PathService,
     private currentPointsService: CurrentPointService,
@@ -71,11 +72,7 @@ export class MapDisplayComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    if (this.map) {
-      this.map.removeLayer(this.layerGroup);
-      this.map.remove()
-    }
+    console.log("inter")
     this.currentPointsService.currentPointA.subscribe(
       (data) => {
         if (data) {
@@ -130,7 +127,7 @@ export class MapDisplayComponent implements OnInit {
     //L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
 
-    setTimeout(() => { this.map.invalidateSize(true) }, 1000);
+    setTimeout(() => { this.map.invalidateSize() }, 1000);
 
     this.layerGroup = new LayerGroup();
     this.layerGroup.addTo(this.map);
@@ -140,8 +137,6 @@ export class MapDisplayComponent implements OnInit {
     this.map.on('click', (e) => {
       this.onMapClick(e)
     });
-
-
 
 
   }
@@ -161,19 +156,17 @@ export class MapDisplayComponent implements OnInit {
   }
 
   addPaths() {
-    if (this.pathFilter.length == 0) {
-      this.pathToDisplay = []
-      if (this.map) {
-        for (const property in this.map._layers) {
-          if (this.map._layers[property].options) {
-            if (this.map._layers[property].options.style) {
-              this.map.removeLayer(this.map._layers[property])
-            }
+    if (this.map) {
+      for (const property in this.map._layers) {
+        if (this.map._layers[property].options) {
+          if (this.map._layers[property].options.style) {
+            this.map.removeLayer(this.map._layers[property])
           }
         }
       }
-
     }
+
+
     if (this.pathFilter.length > 0) {
       if (this.pointsPath[0] && this.pointsPath[1]) {
 
@@ -188,6 +181,7 @@ export class MapDisplayComponent implements OnInit {
             this.pathService.getPath(pointStart, pointEnd, x.valore)
               .subscribe(
                 posts => {
+                  console.log(posts)
                   let newGeometry = posts.geometry.replace("[", "");
                   newGeometry = newGeometry.replace("]", "");
                   newGeometry = newGeometry.replace(/ /g, "|");
@@ -290,14 +284,23 @@ export class MapDisplayComponent implements OnInit {
   }
 
   setPointB(item: Point) {
+    var customPopup = "<div>Tap sul segnaposto per i dettagli</div><br/>";
+
+    // specify popup options 
+    var customOptions =
+    {
+      'maxWidth': '500',
+      'className': 'custom'
+    }
     if (!this.pointsPath[1]) {
 
       L.marker([item.latitudine, item.longitudine], { title: "Punto B", icon: this.icons.puntoB })
+        .bindPopup(customPopup, customOptions)
         .on('click', (x => {
 
           this.detail.emit()
           this.pointDetail = this.pointsPath[1]
-        })).addTo(this.map)
+        })).addTo(this.map).openPopup()
 
 
 
@@ -306,16 +309,12 @@ export class MapDisplayComponent implements OnInit {
         if (this.map._layers[property].options && this.map._layers[property].options.title) {
           if (this.map._layers[property].options.title == "Punto B") {
 
-            this.map._layers[property].setLatLng([item.latitudine, item.longitudine]).addTo(this.map)
+            this.map._layers[property].setLatLng([item.latitudine, item.longitudine]).bindPopup(customPopup, customOptions).openPopup().addTo(this.map)
 
           }
         }
       }
     }
-    L.popup()
-      .setLatLng([item.latitudine, item.longitudine])
-      .setContent('<h3>Tap sul segnaposto per i dettagli</h3>')
-      .openOn(this.map);
     this.pointsPath[1] = item
     this.map.setView([this.pointsPath[1].latitudine, this.pointsPath[1].longitudine], 16)
 

@@ -62,6 +62,8 @@ export class PathService {
   }
 
   removeSelectedPath(path) {
+    console.log(path)
+    console.log(this.tmpSelectedPath.filter(x => x != path))
     this.tmpSelectedPath = this.tmpSelectedPath.filter(x => x != path)
     this.selectedPathSource.next(this.tmpSelectedPath)
   }
