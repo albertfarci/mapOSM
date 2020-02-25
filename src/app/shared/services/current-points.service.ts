@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Point } from '../models/point.model';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import deepEqual from 'deep-equal';
+import { FilterListService } from './filters.service';
 
 @Injectable()
 export class CurrentPointService {
@@ -22,18 +23,16 @@ export class CurrentPointService {
             filter(Boolean)
         ) as Observable<Point>
 
-    constructor() { }
+    constructor(private filterListService: FilterListService) { }
 
     setPointA(point: Point): Promise<boolean> {
         return new Promise((resolve, reject) => {
-
             this.sourcePointA.next(point)
             resolve(true)
         })
     }
     setPointB(point: Point) {
         return new Promise((resolve, reject) => {
-
             this.sourcePointB.next(point)
             resolve(true)
         })

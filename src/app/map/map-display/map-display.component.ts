@@ -19,7 +19,6 @@ import { FilterListService } from 'src/app/shared/services/filters.service';
 })
 export class MapDisplayComponent implements OnInit {
 
-  @Input() pointOfInterest: []
   @Input() pointPath: any
   @Input() pathFilter: any = null
   @Output() navigate = new EventEmitter<any>();

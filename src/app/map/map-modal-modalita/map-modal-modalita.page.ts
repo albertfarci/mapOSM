@@ -46,6 +46,7 @@ export class MapModalModalitaPage {
         )
         this.filterListService.filterList.subscribe(
             (data) => {
+                console.log(data)
                 this.paths = data
             }
         )
@@ -68,23 +69,24 @@ export class MapModalModalitaPage {
     ionViewDidEnter() {
         this.pathService.selectedPath.subscribe(
             (data) => {
-                console.log(data)
                 if (data) {
-                    data.map(data => {
-                        document.querySelectorAll("ion-icon[name='eye']")
-                            .forEach(x => {
+                    if (data.length) {
+                        data.map(data => {
+                            document.querySelectorAll("ion-icon[name='eye']")
+                                .forEach(x => {
 
-                                if (data.valore == x.id) x.setAttribute("style", "color: blue")
-                            })
-                    })
+                                    if (data.valore == x.id) x.setAttribute("style", "color: blue")
+                                })
+                        })
+                    } else {
+                        console.log("eye vuoto")
+                    }
                 }
-
             }
         )
 
         this.pathService.savedPath.subscribe(
             (data) => {
-                console.log(data)
                 if (data) {
                     data.map(data => {
                         document.querySelectorAll("ion-icon[name='heart']")
@@ -93,6 +95,9 @@ export class MapModalModalitaPage {
                                 if (data.valore == x.id) x.setAttribute("style", "color: red")
                             })
                     })
+                } else {
+
+                    console.log("heart vuoto")
                 }
 
             }
@@ -202,6 +207,8 @@ export class MapModalModalitaPage {
     }
 
     getEnabled() {
+
+        console.log(this.paths.filter(x => x.spunta))
 
         return this.paths.filter(x => x.spunta)
             .map(x => { return x.modalita_figlio })[0]

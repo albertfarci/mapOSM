@@ -31,11 +31,7 @@ export class PathPage {
     private filterListService: FilterListService,
     private toast: Toast
   ) {
-  }
 
-
-
-  ionViewDidEnter() {
 
     this.pathsSaved = []
 
@@ -44,22 +40,8 @@ export class PathPage {
         this.paths = data
       }
     )
-    /*
-    if (this.preferitiService.preferito.value) {
-      switch (this.preferitiService.preferito.value) {
-        case 2:
-          // code block
-          this.filterBicycle()
-          break;
-        case 4:
-          //this.filterCar()
-          break;
-        case 8:
-          //this.filterTourist()
-          break;
-      }
-    }*/
   }
+
   optionsEnabled(): boolean {
     return this.paths.filter(x => x.spunta).length > 0
   }

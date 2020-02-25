@@ -45,7 +45,7 @@
         </ion-row>
         <ion-row id="row-map-display" style="height: 80%;     ">
             <app-map-display style="width: 100%;" (navigate)="onNavigate($event)" (detail)="onDetail()"
-                (location)="onPointSelectedA($event)" [pointOfInterest]="pointsOfInterest" [pathFilter]="pathFilter">
+                (location)="onPointSelectedA($event)" [pathFilter]="pathFilter">
             </app-map-display>
         </ion-row>
         <ion-row *ngIf="step==2" style="height: 10%;" (click)="onAzioniRapide()">
