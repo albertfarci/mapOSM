@@ -175,9 +175,9 @@ export class MapDisplayComponent implements OnInit {
 
 
         this.pathFilter.map(x => {
-          if (x.spunta) {
+          if (x.filter.spunta) {
 
-            this.pathService.getPath(pointStart, pointEnd, x.valore)
+            this.pathService.getPath(pointStart, pointEnd, x.filter.valore)
               .subscribe(
                 posts => {
                   console.log(posts)
@@ -208,24 +208,24 @@ export class MapDisplayComponent implements OnInit {
                   let PointList1Dim = newPointList.split(",");
 
 
-                  if (x.nome == "Sicuro") var myStyle = {
+                  if (x.filter.nome == "Sicuro") var myStyle = {
                     "color": "blue",
                     "weight": 5,
                     "opacity": 0.65
                   };
-                  if (x.nome == "Veloce") var myStyle = {
+                  if (x.filter.nome == "Veloce") var myStyle = {
                     "color": "red",
                     "weight": 5,
                     "opacity": 0.65
                   };
-                  if (x.nome == "Ecosostenibile") var myStyle = {
+                  if (x.filter.nome == "Ecosostenibile") var myStyle = {
                     "color": "green",
                     "weight": 5,
                     "opacity": 0.65
                   };
 
                   this.pathToDisplay.push({
-                    "filter": x,
+                    "filter": x.filter,
                     "type": "LineString",
                     "coordinates": geometryArray2Dim,
                     "icon": x.icon,
@@ -233,11 +233,11 @@ export class MapDisplayComponent implements OnInit {
                     "distance": posts.distance,
                     "style": myStyle
                   })
-
+                  console.log(x)
                   this.layerGroup.addLayer(geoJSON({
                     "type": "LineString",
                     "coordinates": geometryArray2Dim,
-                  }, { style: myStyle }).bindPopup('<img src="' + x.icon + '"><h5>' + x.nome + ' </h5><h5>' + this.timeConverter(posts.duration) + ' </h5><h5>' + this.distanceConverter(posts.distance) + ' </h5>'));
+                  }, { style: myStyle }).bindPopup('<img src="' + x.icon + '"><h5>' + x.filter.nome + ' </h5><h5>' + this.timeConverter(posts.duration) + ' </h5><h5>' + this.distanceConverter(posts.distance) + ' </h5>'));
 
                 },
                 error => {
@@ -282,19 +282,16 @@ export class MapDisplayComponent implements OnInit {
     }
   }
 
-  setPointB(item: Point) {
-    var customPopup = "<div>Tap sul segnaposto per i dettagli</div><br/>";
 
-    // specify popup options 
-    var customOptions =
-    {
-      'maxWidth': '500',
-      'className': 'custom'
-    }
+
+  setPointB(item: Point) {
+    console.log(item)
+    var customPopup = '<div style="width: 100%"><img src="' + item.img + '"><h5>Punto B</h5>' + item.latitudine + ' , ' + item.longitudine + '<h5>Tap sul segnaposto per i dettagli</h5></div>';
+
     if (!this.pointsPath[1]) {
 
       L.marker([item.latitudine, item.longitudine], { title: "Punto B", icon: this.icons.puntoB })
-        .bindPopup(customPopup, customOptions)
+        .bindPopup(customPopup)
         .on('click', (x => {
 
           this.detail.emit()
@@ -308,15 +305,28 @@ export class MapDisplayComponent implements OnInit {
         if (this.map._layers[property].options && this.map._layers[property].options.title) {
           if (this.map._layers[property].options.title == "Punto B") {
 
-            this.map._layers[property].setLatLng([item.latitudine, item.longitudine]).bindPopup(customPopup, customOptions).openPopup().addTo(this.map)
+            this.map._layers[property].setLatLng([item.latitudine, item.longitudine]).bindPopup(customPopup).openPopup().addTo(this.map)
 
           }
         }
       }
     }
     this.pointsPath[1] = item
-    this.map.setView([this.pointsPath[1].latitudine, this.pointsPath[1].longitudine], 16)
 
+    console.log(!!this.pointsPath[0])
+    console.log(!!this.pointsPath[1])
+
+    if (!!this.pointsPath[1] && !!this.pointsPath[0]) {
+
+
+      this.map.fitBounds([
+        [this.pointsPath[1].latitudine, this.pointsPath[1].longitudine],
+        [this.pointsPath[0].latitudine, this.pointsPath[0].longitudine]
+      ], { padding: [50, 50] })
+
+    } else {
+      this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 16)
+    }
     //this.addControls()
   }
 
@@ -334,7 +344,21 @@ export class MapDisplayComponent implements OnInit {
       }
     }
     this.pointsPath[0] = item
-    this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 16)
+
+    console.log(!!this.pointsPath[0])
+    console.log(!!this.pointsPath[1])
+
+    if (!!this.pointsPath[1] && !!this.pointsPath[0]) {
+
+
+      this.map.fitBounds([
+        [this.pointsPath[1].latitudine, this.pointsPath[1].longitudine],
+        [this.pointsPath[0].latitudine, this.pointsPath[0].longitudine]
+      ], { padding: [50, 50] })
+
+    } else {
+      this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 16)
+    }
 
     //this.addControls()
   }

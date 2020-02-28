@@ -12,7 +12,7 @@
 </ion-header>
 <ion-content fullscreen>
     <ion-row>
-        <ion-col *ngFor="let path of paths">
+        <ion-col *ngFor="let path of paths" size="4" style="text-align: center;">
             <ion-button id="walk" shape="round" [color]="path.color" (click)="filterFirstLevel(path.nome)">
                 <ion-icon [name]="path.icon" size="large"></ion-icon>
             </ion-button>
@@ -20,7 +20,7 @@
         </ion-col>
     </ion-row>
     <ion-row *ngIf="optionsFilter">
-        <ion-col *ngFor="let button of getEnabled()">
+        <ion-col *ngFor="let button of getEnabled()" style="text-align: center;">
             <ion-button *ngIf="button.nome" [color]="button.color" [disabled]="button.spunta"
                 (click)="setEnableButtonSecondLevel(button.nome)">
                 <ion-icon [src]="button.icon"></ion-icon>
@@ -28,25 +28,27 @@
         </ion-col>
     </ion-row>
     <ion-item *ngFor="let path of pathToDisplay; let i = index;" style="    width: 100%;">
-        <ion-row>
-            <ion-thumbnail slot="start">
-                <img style="height:50px" src="../../{{path.icon}}" alt="" />
-            </ion-thumbnail>
-            <ion-label>
-                <h3 style="font-weight: bold;">{{path.filter.nome}}</h3>
-                <p>Durata</p>
-                <h3 style="font-weight: bold;">{{path.duration | timeConverter}}</h3>
-                <p>Durata</p>
-                <h3 style="font-weight: bold;">{{path.distance | distanceConverter}}</h3>
-            </ion-label>
+        <ion-row style="width:60%">
+            <ion-item>
+                <ion-thumbnail style="height:100%" slot="start">
+                    <img src="../../{{path.icon}}" alt="" />
+                </ion-thumbnail>
+                <ion-label>
+                    <span style="font-size: 18px;font-weight: bold;">{{path.filter.nome}}</span>
+                    <p>Durata</p>
+                    <span style="font-weight: bold;">{{path.duration | timeConverter}}</span>
+                    <p>Distanza</p>
+                    <span style="font-weight: bold;">{{path.distance | distanceConverter}}</span>
+                </ion-label>
+            </ion-item>
         </ion-row>
 
         <ion-row>
-            <ion-col style="font-size: xx-large; color: grey;" size="12">
-                <ion-icon id="{{path.filter.valore}}" name="eye" (click)="showNavigate(path.filter)"></ion-icon>
+            <ion-col style="font-size: xx-large; color: grey;" size="6">
+                <ion-icon id="{{path.filter.valore}}" name="eye" (click)="showNavigate(path)"></ion-icon>
             </ion-col>
-            <ion-col style="font-size: xx-large; color: grey;" size="12">
-                <ion-icon id="{{path.filter.valore}}" name="heart" (click)="openStorageModal(path.filter)">
+            <ion-col style="font-size: xx-large; color: grey;" size="6">
+                <ion-icon id="{{path.filter.valore}}" name="heart" (click)="openStorageModal(path)">
                 </ion-icon>
             </ion-col>
         </ion-row>

@@ -7,6 +7,7 @@ import { Point } from '../shared/models/point.model';
 import { MapModalPage } from './map-modal/map-modal.page';
 import { CurrentStepService } from '../shared/services/current-step.services';
 import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.page';
+import { PathService } from '../shared/services/path.service';
 
 
 
@@ -39,8 +40,15 @@ export class MapPage {
     public alertCtrl: AlertController,
     private currentPointService: CurrentPointService,
     private currentStepService: CurrentStepService,
-    public modalController: ModalController) {
+    public modalController: ModalController,
+    public pathService: PathService) {
 
+    this.filterListService.filterList.subscribe(
+      (data) => {
+        console.log(data)
+        this.paths = data
+      }
+    )
   }
 
   ionViewDidEnter() {
@@ -124,6 +132,85 @@ export class MapPage {
     if (this.step == 1) {
       this.step = 2
     }
+  }
+
+  filterFirstLevel(value) {
+    this.pathFilter = []
+    this.paths
+      .map(x => {
+        if (x.nome == value) {
+
+          if (x.spunta) {
+
+            this.filterListService.setFalseSpunta(value).then(
+              () => {
+                this.optionsFilter = false
+                this.optionsEnabled()
+              }
+            )
+          } else {
+
+            this.optionsFilter = true
+            this.filterListService.setAllFalseSpunta()
+              .then(
+                () => {
+                  this.filterListService.setSecondLevelFalseSpunta()
+                    .then(
+                      () => {
+                        this.filterListService.setTrueSpunta(value).then(
+                          () => {
+                            this.setEnableButton()
+                            this.setDisableButton()
+                            if (x.nome == "Auto") {
+
+                              this.filterListService.setCurrentFilter(x.modalita_figlio[0])
+
+                            }
+                          }
+                        )
+                      })
+                }
+              )
+
+          }
+        }
+      })
+  }
+
+
+  getEnabled() {
+
+    return this.paths.filter(x => x.spunta)
+      .map(x => { return x.modalita_figlio })[0]
+      .map(x => {
+        return x
+      })
+
+  }
+
+
+  optionsEnabled(): boolean {
+    return this.paths.filter(x => x.spunta).length > 0
+  }
+
+  setEnableButton() {
+
+    this.paths
+      .filter(x => x.spunta)
+      .map(x => {
+        x.color = "secondary"
+      })
+  }
+
+
+  setDisableButton() {
+    this.paths
+      .filter(x => !x.spunta)
+      .map(x => {
+        x.color = "light"
+      })
+    this.filterListService.setToNullCurrentFilter()
+    this.pathService.setToNullSelectedPath()
   }
 
   async onDetail() {

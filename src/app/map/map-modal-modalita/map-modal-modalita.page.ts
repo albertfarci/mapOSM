@@ -75,7 +75,7 @@ export class MapModalModalitaPage {
                             document.querySelectorAll("ion-icon[name='eye']")
                                 .forEach(x => {
 
-                                    if (data.valore == x.id) x.setAttribute("style", "color: blue")
+                                    if (data.filter.valore == x.id) x.setAttribute("style", "color: blue")
                                 })
                         })
                     } else {
@@ -92,7 +92,7 @@ export class MapModalModalitaPage {
                         document.querySelectorAll("ion-icon[name='heart']")
                             .forEach(x => {
 
-                                if (data.valore == x.id) x.setAttribute("style", "color: red")
+                                if (data.filter.valore == x.id) x.setAttribute("style", "color: red")
                             })
                     })
                 } else {
@@ -208,8 +208,6 @@ export class MapModalModalitaPage {
 
     getEnabled() {
 
-        console.log(this.paths.filter(x => x.spunta))
-
         return this.paths.filter(x => x.spunta)
             .map(x => { return x.modalita_figlio })[0]
             .map(x => {
@@ -247,6 +245,7 @@ export class MapModalModalitaPage {
             this.pathService.getPath(pointStart, pointEnd, x.valore)
                 .subscribe(
                     posts => {
+                        console.log(value)
                         this.pathToDisplay.push({
                             "filter": x,
                             "icon": value.icon,
@@ -263,11 +262,12 @@ export class MapModalModalitaPage {
     }
 
     showNavigate(path) {
-        if (this.pathService.getSelectedPath().filter(x => x == path).length > 0) {
-            document.getElementById(path.valore).style.color = "grey"
+        console.log(path)
+        if (this.pathService.getSelectedPath().filter(x => x.filter == path.filter).length > 0) {
+            document.getElementById(path.filter.valore).style.color = "grey"
             this.pathService.removeSelectedPath(path)
         } else {
-            document.getElementById(path.valore).style.color = "blue"
+            document.getElementById(path.filter.valore).style.color = "blue"
             this.pathService.addSelectedPath(path)
         }
 
