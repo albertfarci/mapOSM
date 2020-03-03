@@ -58,7 +58,7 @@
 
             <ion-col *ngFor="let path of paths" size="3" style="text-align: center;">
                 <ion-button id="walk" shape="round" [color]="path.color" (click)="filterFirstLevel(path.nome)">
-                    <ion-icon [name]="path.icon" size="large"></ion-icon>
+                    <ion-icon [name]="path.icon"></ion-icon>
                 </ion-button>
 
             </ion-col>

@@ -102,6 +102,8 @@ export class MapModalModalitaPage {
 
             }
         )
+
+
     }
 
 
@@ -109,6 +111,20 @@ export class MapModalModalitaPage {
         this.modalCtrl.dismiss();
     }
 
+    getSomeClass(name) {
+        console.log(name)
+        if (name == "Sicuro") return "blue";
+        if (name == "Veloce") return "red";
+        if (name == "Ecosostenibile") return "green"
+        document.querySelectorAll("ion-row")
+            .forEach(x => {
+                /*
+                    if (x.id == "Sicuro") x.setAttribute("style", "color: blue; weight: 5; opacity: 0.65");
+                    if (x.id == "Veloce") x.setAttribute("style", "color: red; weight: 5; opacity: 0.65");
+                    if (x.id == "Ecosostenibile") x.setAttribute("style", "color: green; weight: 5; opacity: 0.65");
+*/
+            })
+    }
 
     optionsEnabled(): boolean {
         return this.paths.filter(x => x.spunta).length > 0

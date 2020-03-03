@@ -33,7 +33,22 @@ export class CurrentPointService {
     }
     setPointB(point: Point) {
         return new Promise((resolve, reject) => {
+            console.log(point)
             this.sourcePointB.next(point)
+            resolve(true)
+        })
+    }
+
+    deletePointA() {
+        return new Promise((resolve, reject) => {
+            this.sourcePointB.next({ latitudine: "", longitudine: "", title: "" } as Point)
+            resolve(true)
+        })
+    }
+
+    deletePointB() {
+        return new Promise((resolve, reject) => {
+            this.sourcePointB.next({ latitudine: "", longitudine: "", title: "" } as Point)
             resolve(true)
         })
     }

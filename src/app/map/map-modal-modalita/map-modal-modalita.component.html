@@ -28,30 +28,37 @@
         </ion-col>
     </ion-row>
     <ion-item *ngFor="let path of pathToDisplay; let i = index;" style="    width: 100%;">
-        <ion-row style="width:60%">
-            <ion-item>
-                <ion-thumbnail style="height:100%" slot="start">
-                    <img src="../../{{path.icon}}" alt="" />
-                </ion-thumbnail>
-                <ion-label>
-                    <span style="font-size: 18px;font-weight: bold;">{{path.filter.nome}}</span>
-                    <p>Durata</p>
-                    <span style="font-weight: bold;">{{path.duration | timeConverter}}</span>
-                    <p>Distanza</p>
-                    <span style="font-weight: bold;">{{path.distance | distanceConverter}}</span>
-                </ion-label>
-            </ion-item>
-        </ion-row>
+        <ion-grid>
+            <ion-row [ngClass]="getSomeClass(path.filter.nome)">
+                <span style="font-size: 18px;font-weight: bold;">{{path.filter.nome}}</span>
+            </ion-row>
+            <ion-row style="width:100%">
+                <ion-item style="width:100%">
+                    <ion-thumbnail style="height:100%" slot="start">
+                        <img src="../../{{path.icon}}" alt="" />
+                    </ion-thumbnail>
+                    <ion-label style="
+                    border-left: 3px solid rebeccapurple;
+                    padding: 0 0 0 9%;">
+                        <p>Durata</p>
+                        <span style="font-weight: bold;">{{path.duration | timeConverter}}</span>
+                        <p>Distanza</p>
+                        <span style="font-weight: bold;">{{path.distance | distanceConverter}}</span>
+                    </ion-label>
+                </ion-item>
+            </ion-row>
 
-        <ion-row>
-            <ion-col style="font-size: xx-large; color: grey;" size="6">
-                <ion-icon id="{{path.filter.valore}}" name="eye" (click)="showNavigate(path)"></ion-icon>
-            </ion-col>
-            <ion-col style="font-size: xx-large; color: grey;" size="6">
-                <ion-icon id="{{path.filter.valore}}" name="heart" (click)="openStorageModal(path)">
-                </ion-icon>
-            </ion-col>
-        </ion-row>
+            <ion-row style="text-align:center;">
+                <ion-col style=" font-size: xx-large; color: grey;" size="6">
+                    <ion-icon id="{{path.filter.valore}}" name="eye" (click)="showNavigate(path)"></ion-icon>
+                </ion-col>
+                <ion-col style="font-size: xx-large; color: grey;" size="6">
+                    <ion-icon id="{{path.filter.valore}}" name="heart" (click)="openStorageModal(path)">
+                    </ion-icon>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
 
     </ion-item>
 </ion-content>

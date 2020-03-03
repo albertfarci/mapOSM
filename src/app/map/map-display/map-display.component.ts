@@ -11,6 +11,7 @@ import { Platform } from '@ionic/angular';
 import { CurrentPointService } from 'src/app/shared/services/current-points.service';
 import { Point } from 'src/app/shared/models/point.model';
 import { FilterListService } from 'src/app/shared/services/filters.service';
+import { CurrentStepService } from 'src/app/shared/services/current-step.services';
 
 @Component({
   selector: 'app-map-display',
@@ -67,7 +68,9 @@ export class MapDisplayComponent implements OnInit {
     public geoLocationService: GeoLocationService,
     public pathService: PathService,
     private currentPointsService: CurrentPointService,
-    public filterListService: FilterListService) {
+    public filterListService: FilterListService,
+
+    private currentStepService: CurrentStepService) {
   }
 
   ngOnInit() {
@@ -75,9 +78,23 @@ export class MapDisplayComponent implements OnInit {
     this.currentPointsService.currentPointA.subscribe(
       (data) => {
         if (data) {
-          this.pathService.setToNullSelectedPath()
-          this.pointA = data
-          this.addPointA()
+          if (data.latitudine != "" && data.longitudine != "") {
+
+            this.pathService.setToNullSelectedPath()
+            this.pointA = data
+            this.addPointA()
+          } else {
+            for (const property in this.map._layers) {
+              if (this.map._layers[property].options && this.map._layers[property].options.title) {
+                if (this.map._layers[property].options.title == "Punto A") {
+                  console.log(this.map._layers[property])
+                  this.pointsPath[0] = null
+                  this.map.removeLayer(this.map._layers[property])
+
+                }
+              }
+            }
+          }
         }
 
       }
@@ -85,9 +102,25 @@ export class MapDisplayComponent implements OnInit {
     this.currentPointsService.currentPointB.subscribe(
       (data) => {
         if (data) {
-          this.pathService.setToNullSelectedPath()
-          this.pointB = data
-          this.addPointB()
+          console.log(data)
+          if (data.latitudine != "" && data.longitudine != "") {
+
+            this.pathService.setToNullSelectedPath()
+            this.pointB = data
+            this.addPointB()
+          } else {
+            console.log("rimuovi")
+            for (const property in this.map._layers) {
+              if (this.map._layers[property].options && this.map._layers[property].options.title) {
+                if (this.map._layers[property].options.title == "Punto B") {
+                  console.log(this.map._layers[property])
+                  this.pointsPath[1] = null
+                  this.map.removeLayer(this.map._layers[property])
+
+                }
+              }
+            }
+          }
         }
 
 
@@ -132,6 +165,7 @@ export class MapDisplayComponent implements OnInit {
     this.layerGroup.addTo(this.map);
 
     this.addGeolocationButton()
+    this.addResetPoints()
 
     this.map.on('click', (e) => {
       this.onMapClick(e)
@@ -142,7 +176,7 @@ export class MapDisplayComponent implements OnInit {
 
   addPointB() {
     if (this.layerGroup) {
-
+      console.log(this.pointB)
       this.setPointB(this.pointB)
     }
   }
@@ -378,10 +412,13 @@ export class MapDisplayComponent implements OnInit {
 
   onMapClick(e) {
     let tpmPoint = { latitudine: e.latlng.lat, longitudine: e.latlng.lng, title: e.latlng.lat + " , " + e.latlng.lng, img: "", abstract: "" }
+    console.log(tpmPoint)
     if (!this.pointsPath[0]) {
+      console.log(tpmPoint)
       this.currentPointsService.setPointA(tpmPoint)
       //this.setPointA(tpmPoint)
     } else if (!this.pointsPath[1]) {
+      console.log(tpmPoint)
       this.currentPointsService.setPointB(tpmPoint)
       //this.setPointB(tpmPoint)
     }
@@ -393,6 +430,31 @@ export class MapDisplayComponent implements OnInit {
     if (!document.getElementById("locate")) {
       L.easyButton('<div > <ion-icon name="locate" id="locate"></ion-icon> </div>', () => {
         this.getLocationCoordinates()
+
+      }, { "title": "locate" }).addTo(this.map);
+    }
+
+
+  }
+
+  addResetPoints() {
+
+    if (!document.getElementById("close")) {
+      L.easyButton('<div > <ion-icon name="close" id="close"></ion-icon> </div>', () => {
+
+        if (!!this.pointsPath[1] && !!this.pointsPath[0]) {
+
+          this.currentPointsService.setPointA({ latitudine: "", longitudine: "", title: "Da dove vuoi partire", img: "", abstract: "" })
+
+          this.currentPointsService.setPointB({ latitudine: "", longitudine: "", title: "Dove vuoi arrivare", img: "", abstract: "" })
+
+          this.pathService.setToNullSelectedPath()
+          this.currentStepService.setStep(1).then(
+            (success) => {
+            }
+          )
+          console.log("rimuovi tutti i ounti")
+        }
 
       }, { "title": "locate" }).addTo(this.map);
     }

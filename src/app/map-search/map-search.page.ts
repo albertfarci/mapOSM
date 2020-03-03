@@ -33,6 +33,7 @@ export class MapSearchPage {
 
     onPointSelected(e) {
         var title: string
+        console.log(e)
 
         if (e.label) {
             title = e.label
