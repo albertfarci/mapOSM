@@ -357,8 +357,12 @@ export class FilterListService {
             this.filterListSource.next(
                 tmp
                     .map(x => {
-                        if (x.spunta)
+                        console.log(x.spunta)
+                        if (x.spunta) {
+
+                            x.color = 'light'
                             x.spunta = false
+                        }
                         return x
                     })
             )

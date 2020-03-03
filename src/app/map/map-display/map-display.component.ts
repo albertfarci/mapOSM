@@ -74,7 +74,6 @@ export class MapDisplayComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("inter")
     this.currentPointsService.currentPointA.subscribe(
       (data) => {
         if (data) {
@@ -87,7 +86,6 @@ export class MapDisplayComponent implements OnInit {
             for (const property in this.map._layers) {
               if (this.map._layers[property].options && this.map._layers[property].options.title) {
                 if (this.map._layers[property].options.title == "Punto A") {
-                  console.log(this.map._layers[property])
                   this.pointsPath[0] = null
                   this.map.removeLayer(this.map._layers[property])
 
@@ -102,18 +100,15 @@ export class MapDisplayComponent implements OnInit {
     this.currentPointsService.currentPointB.subscribe(
       (data) => {
         if (data) {
-          console.log(data)
           if (data.latitudine != "" && data.longitudine != "") {
 
             this.pathService.setToNullSelectedPath()
             this.pointB = data
             this.addPointB()
           } else {
-            console.log("rimuovi")
             for (const property in this.map._layers) {
               if (this.map._layers[property].options && this.map._layers[property].options.title) {
                 if (this.map._layers[property].options.title == "Punto B") {
-                  console.log(this.map._layers[property])
                   this.pointsPath[1] = null
                   this.map.removeLayer(this.map._layers[property])
 
@@ -176,7 +171,6 @@ export class MapDisplayComponent implements OnInit {
 
   addPointB() {
     if (this.layerGroup) {
-      console.log(this.pointB)
       this.setPointB(this.pointB)
     }
   }
@@ -214,7 +208,6 @@ export class MapDisplayComponent implements OnInit {
             this.pathService.getPath(pointStart, pointEnd, x.filter.valore)
               .subscribe(
                 posts => {
-                  console.log(posts)
                   let newGeometry = posts.geometry.replace("[", "");
                   newGeometry = newGeometry.replace("]", "");
                   newGeometry = newGeometry.replace(/ /g, "|");
@@ -267,7 +260,6 @@ export class MapDisplayComponent implements OnInit {
                     "distance": posts.distance,
                     "style": myStyle
                   })
-                  console.log(x)
                   this.layerGroup.addLayer(geoJSON({
                     "type": "LineString",
                     "coordinates": geometryArray2Dim,
@@ -319,7 +311,6 @@ export class MapDisplayComponent implements OnInit {
 
 
   setPointB(item: Point) {
-    console.log(item)
     var customPopup = '<div style="width: 100%"><img src="' + item.img + '"><h5>Punto B</h5>' + item.latitudine + ' , ' + item.longitudine + '<h5>Tap sul segnaposto per i dettagli</h5></div>';
 
     if (!this.pointsPath[1]) {
@@ -347,8 +338,6 @@ export class MapDisplayComponent implements OnInit {
     }
     this.pointsPath[1] = item
 
-    console.log(!!this.pointsPath[0])
-    console.log(!!this.pointsPath[1])
 
     if (!!this.pointsPath[1] && !!this.pointsPath[0]) {
 
@@ -378,10 +367,6 @@ export class MapDisplayComponent implements OnInit {
       }
     }
     this.pointsPath[0] = item
-
-    console.log(!!this.pointsPath[0])
-    console.log(!!this.pointsPath[1])
-
     if (!!this.pointsPath[1] && !!this.pointsPath[0]) {
 
 
@@ -412,13 +397,11 @@ export class MapDisplayComponent implements OnInit {
 
   onMapClick(e) {
     let tpmPoint = { latitudine: e.latlng.lat, longitudine: e.latlng.lng, title: e.latlng.lat + " , " + e.latlng.lng, img: "", abstract: "" }
-    console.log(tpmPoint)
+
     if (!this.pointsPath[0]) {
-      console.log(tpmPoint)
       this.currentPointsService.setPointA(tpmPoint)
       //this.setPointA(tpmPoint)
     } else if (!this.pointsPath[1]) {
-      console.log(tpmPoint)
       this.currentPointsService.setPointB(tpmPoint)
       //this.setPointB(tpmPoint)
     }
@@ -451,9 +434,12 @@ export class MapDisplayComponent implements OnInit {
           this.pathService.setToNullSelectedPath()
           this.currentStepService.setStep(1).then(
             (success) => {
+
+              this.filterListService.setToNullCurrentFilter()
+              this.filterListService.setAllFalseSpunta()
             }
           )
-          console.log("rimuovi tutti i ounti")
+
         }
 
       }, { "title": "locate" }).addTo(this.map);

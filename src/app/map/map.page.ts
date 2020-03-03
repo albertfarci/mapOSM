@@ -45,7 +45,6 @@ export class MapPage {
 
     this.filterListService.filterList.subscribe(
       (data) => {
-        console.log(data)
         this.paths = data
       }
     )

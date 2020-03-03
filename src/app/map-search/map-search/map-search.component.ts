@@ -36,7 +36,6 @@ export class MapSearchComponent implements OnInit {
         resp => {
           //this.poi.emit({ latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente", img: "", abstract: "" });
           this.selectPOI({ lat: resp.latitudine, long: resp.longitudine, label: "Posizione corrente", img: "", abstract: "" })
-          console.log({ latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente", img: "", abstract: "" })
           //this.currentPointsService.setPointA({ latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente", img: "", abstract: "" })
           //this.setPointA({ latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente" })
 

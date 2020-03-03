@@ -46,7 +46,6 @@ export class MapModalModalitaPage {
         )
         this.filterListService.filterList.subscribe(
             (data) => {
-                console.log(data)
                 this.paths = data
             }
         )
@@ -78,8 +77,6 @@ export class MapModalModalitaPage {
                                     if (data.filter.valore == x.id) x.setAttribute("style", "color: blue")
                                 })
                         })
-                    } else {
-                        console.log("eye vuoto")
                     }
                 }
             }
@@ -95,9 +92,6 @@ export class MapModalModalitaPage {
                                 if (data.filter.valore == x.id) x.setAttribute("style", "color: red")
                             })
                     })
-                } else {
-
-                    console.log("heart vuoto")
                 }
 
             }
@@ -112,7 +106,6 @@ export class MapModalModalitaPage {
     }
 
     getSomeClass(name) {
-        console.log(name)
         if (name == "Sicuro") return "blue";
         if (name == "Veloce") return "red";
         if (name == "Ecosostenibile") return "green"
@@ -261,7 +254,6 @@ export class MapModalModalitaPage {
             this.pathService.getPath(pointStart, pointEnd, x.valore)
                 .subscribe(
                     posts => {
-                        console.log(value)
                         this.pathToDisplay.push({
                             "filter": x,
                             "icon": value.icon,
@@ -278,7 +270,6 @@ export class MapModalModalitaPage {
     }
 
     showNavigate(path) {
-        console.log(path)
         if (this.pathService.getSelectedPath().filter(x => x.filter == path.filter).length > 0) {
             document.getElementById(path.filter.valore).style.color = "grey"
             this.pathService.removeSelectedPath(path)

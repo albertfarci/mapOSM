@@ -33,7 +33,6 @@ export class CurrentPointService {
     }
     setPointB(point: Point) {
         return new Promise((resolve, reject) => {
-            console.log(point)
             this.sourcePointB.next(point)
             resolve(true)
         })
