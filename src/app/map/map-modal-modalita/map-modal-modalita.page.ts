@@ -97,6 +97,10 @@ export class MapModalModalitaPage {
             }
         )
 
+        if (!!this.getEnabled()) {
+
+            this.optionsFilter = true
+        }
 
     }
 

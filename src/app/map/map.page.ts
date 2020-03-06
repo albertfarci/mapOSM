@@ -213,13 +213,18 @@ export class MapPage {
   }
 
   async onDetail() {
+    /*
     const modal = await this.modalController.create({
       component: MapModalPage,
       componentProps: {
         'point': this.pointB
       }
     });
-    return await modal.present();
+    return await modal.present();*/
+    this.currentStepService.setStep(2).then(
+      (success) => {
+      }
+    )
   }
 
 
