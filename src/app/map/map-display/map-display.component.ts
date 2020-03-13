@@ -31,6 +31,7 @@ export class MapDisplayComponent implements OnInit {
   pointA: any
   pointB: any
   pathToDisplay = []
+  currentStep
 
   private map: Map
   paths = []
@@ -131,6 +132,15 @@ export class MapDisplayComponent implements OnInit {
         this.addPaths()
       }
     )
+
+
+    this.currentStepService.currentStep.subscribe(
+      (data) => {
+        this.currentStep = data
+
+
+      }
+    )
     /*
       this.filterListService.currentFilter.subscribe(
         (data) => {
@@ -163,7 +173,10 @@ export class MapDisplayComponent implements OnInit {
     this.addResetPoints()
 
     this.map.on('click', (e) => {
-      this.onMapClick(e)
+
+      if (this.currentStep == 3) {
+        this.onMapClick(e)
+      }
     });
 
 
@@ -400,9 +413,12 @@ export class MapDisplayComponent implements OnInit {
 
     if (!this.pointsPath[0]) {
       this.currentPointsService.setPointA(tpmPoint)
+      this.currentStepService.setStep(1)
       //this.setPointA(tpmPoint)
     } else if (!this.pointsPath[1]) {
       this.currentPointsService.setPointB(tpmPoint)
+
+      this.currentStepService.setStep(1)
       //this.setPointB(tpmPoint)
     }
 

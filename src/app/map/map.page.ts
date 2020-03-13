@@ -53,6 +53,11 @@ export class MapPage {
   ionViewDidEnter() {
 
     this.plt.ready().then(() => {
+
+
+      document.getElementById('interactive');
+      document.getElementById('load').style.visibility = "hidden";
+
       this.currentPointService.currentPointA.subscribe(
         (data) => {
           if (data) this.pointA = data
@@ -65,14 +70,14 @@ export class MapPage {
       )
       this.currentStepService.currentStep.subscribe(
         (data) => {
-
+          console.log(data)
           this.step = data
-          if (data != 1) {
+          /*if (data != 1) {
             document.getElementById("row-map-display").style.height = "90%"
           }
           if (data == 1) {
             document.getElementById("row-map-display").style.height = "80%"
-          }
+          }*/
         }
       )
       /*
@@ -100,6 +105,18 @@ export class MapPage {
     });
   }
 
+  remove(removeItem) {
+    console.log(removeItem)
+    if (removeItem == "A") {
+      this.currentPointService.deletePointA()
+    } else {
+      this.currentPointService.deletePointB()
+    }
+
+    this.filterListService.setToNullCurrentFilter()
+    this.pathService.setToNullSelectedPath()
+  }
+
   onInputSearch(input) {
     //this.router.navigateByUrl('/tabs/search', { state: input })
     this.router.navigate(['/tabs/search', input]);
@@ -120,6 +137,7 @@ export class MapPage {
 
   //selezionato punto B
   onPointSelectedB(e) {
+    console.log("selected")
     this.pointB = e
     this.onDetail()
   }
@@ -221,6 +239,7 @@ export class MapPage {
       }
     });
     return await modal.present();*/
+    console.log("select")
     this.currentStepService.setStep(2).then(
       (success) => {
       }

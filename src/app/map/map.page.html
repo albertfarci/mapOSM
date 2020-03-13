@@ -1,8 +1,10 @@
-<ion-header>
+<!--<ion-header>
+-->
+<!--
     <ion-toolbar>
 
         <ion-buttons *ngIf="step==2" slot="start">
-            <ion-button (click)="backButton()">
+            <ion-button  >
                 Back
                 <ion-icon slot="start" src="../assets/release1/chevron-back.svg"></ion-icon>
             </ion-button>
@@ -11,44 +13,75 @@
         text-align: center; 
     font-weight: bold;">Crea il percorso
         </ion-title>
-    </ion-toolbar>
+    </ion-toolbar>-->
 
-</ion-header>
-<ion-content>
-    <ion-grid class="gridMap" style="height: 100%;">
-        <ion-row *ngIf="step==1" class="containerSearch">
-            <ion-row class="rowSearch">
-                <ion-col size="2">
-                    <div style=" text-align: center">
-                        <ion-icon src="../assets/release1/Oval.svg" size="large"></ion-icon>
-                    </div>
-                </ion-col>
-                <ion-col style="height: 100%;">
-                    <ion-input style="height: 100%;" class="inputSearch" clearInput [(ngModel)]="pointA.title"
-                        (click)="onInputSearch('A')" placeholder="Trova un luogo">
-                    </ion-input>
-                </ion-col>
-            </ion-row>
+<!--Page Title & Icons Start-->
+<div class="header-icons-container position-relative text-center" *ngIf="step!=3">
+    <span class="float-left back-to-map " *ngIf="step==2">
+        <div (click)="backButton()">
+            <img src="../../assets/icons/back.svg" alt="Back Icon">
+        </div>
+    </span>
+    <span class="title">Crea il percorso</span>
+</div>
 
-            <ion-row class="rowSearch">
-                <ion-col size="2">
-                    <div style=" text-align: center">
-                        <ion-icon src="../assets/release1/OvalBlack.svg" size="large"></ion-icon>
-                    </div>
-                </ion-col>
-                <ion-col style="height: 100%;">
-                    <ion-input style="height: 100%;" class="inputSearch" (click)="onInputSearch('B')" clearInput
-                        [(ngModel)]="pointB.title" placeholder="Trova un luogo">
-                    </ion-input>
-                </ion-col>
-            </ion-row>
-        </ion-row>
-        <ion-row id="row-map-display" style="height: 80%;     ">
-            <app-map-display style="width: 100%;" (navigate)="onNavigate($event)" (detail)="onDetail()"
-                (location)="onPointSelectedA($event)" [pathFilter]="pathFilter">
-            </app-map-display>
-        </ion-row>
-        <ion-row *ngIf="step==2" style="height: 10%;" (click)="onAzioniRapide()">
+<div class="header-icons-container position-relative text-center" *ngIf="step==3">
+    <span class="float-left back-to-map " *ngIf="step==3">
+        <div (click)="backButton()">
+            <img src="../../assets/icons/back.svg" alt="Back Icon">
+        </div>
+    </span>
+    <span class="title">Scegli il punto sulla mappa</span>
+</div>
+<!--</ion-header>
+-->
+
+
+<!--Loading Container Start-->
+<div id="load" class="loading-overlay display-flex flex-column justify-content-center align-items-center">
+    <div class="primary-color font-28 fas fa-spinner fa-spin"></div>
+</div>
+<!--Loading Container End-->
+
+
+<div class="row h-100">
+    <div class="col-xs-12 col-sm-12 remaining-height">
+
+        <!--Page Title & Icons End-->
+
+        <div class="margin-top-10 height-auto" id="origin-input-container" *ngIf="step==1">
+            <div class="w-100 map-input-container map-input-container-top">
+                <span class="map-input-icon"><img src="../../assets/release1/Oval.svg"> </span>
+                <div class="map-input display-flex">
+                    <input (click)="onInputSearch('A')" id="origin-input" class="controls flex-1"
+                        [(ngModel)]="pointA.title" type="text" placeholder="Enter an origin location">
+                    <span (click)="remove('A')" class="remove">
+                        <img src="../../assets/icons/cross-light.svg" alt="Remove Icon Light Color">
+                    </span>
+                </div>
+            </div>
+            <div class="w-100 map-input-container map-input-container-bottom">
+                <span class="map-input-icon"><img src="../../assets/release1/OvalBlack.svg"
+                        alt="Current Location Icon"></span>
+                <div class="map-input display-flex">
+                    <input (click)="onInputSearch('B')" id="destination-input" [(ngModel)]="pointB.title"
+                        class="controls flex-1" type="text" placeholder="Enter a destination location">
+                    <span (click)="remove('B')" class="remove">
+                        <img src="../../assets/icons/cross-light.svg" alt="Remove Icon Light Color">
+                    </span>
+                </div>
+                <span class="dotted-line-index"></span>
+            </div>
+        </div>
+
+
+        <!--Google Maps Start-->
+        <app-map-display style="height: 100%;" (navigate)="onNavigate($event)" (detail)="onDetail()"
+            (location)="onPointSelectedA($event)" [pathFilter]="pathFilter">
+        </app-map-display>
+
+        <ion-row *ngIf="step==2" style="height: 10%; 
+        background-color: #3F7288;" (click)="onAzioniRapide()">
             <!--
             <ion-col style="width: 100%;
                 font-size: 14px;
@@ -67,6 +100,10 @@
                 <ion-icon style="width: 100%" src="../assets/release1/chevron-up.svg" size="large"></ion-icon>
             </ion-col>
         </ion-row>
+    </div>
 
-    </ion-grid>
-</ion-content>
+    <!--Google Maps End-->
+
+    <!--Modal End-->
+
+</div>

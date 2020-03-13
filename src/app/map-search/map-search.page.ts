@@ -48,6 +48,7 @@ export class MapSearchPage {
             abstract: e.abstract
         }
 
+
         var tmpState: any = this.routerState
         if (tmpState == "A") {
             this.currentPointService.setPointA(tmpPoint).then(

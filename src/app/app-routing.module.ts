@@ -5,10 +5,6 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
-  },
-  {
-    path: 'prenotazione/:id',
-    loadChildren: () => import('./percorso/percorso.module').then(m => m.PercorsoPageModule)
   }
 ];
 @NgModule({

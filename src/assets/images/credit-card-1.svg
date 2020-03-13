@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="372" height="240.869" viewBox="0 0 372 240.869">
+  <defs>
+    <linearGradient id="linear-gradient" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#9025fc"/>
+      <stop offset="1" stop-color="#1308fe"/>
+    </linearGradient>
+    <filter id="Mask" x="0" y="0" width="372" height="240.869" filterUnits="userSpaceOnUse">
+      <feOffset dy="10" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feFlood flood-opacity="0.102"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-2" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0"/>
+      <stop offset="1" stop-color="#ffd300"/>
+    </linearGradient>
+    <filter id="Mask-2" x="0" y="0" width="372" height="240.869" filterUnits="userSpaceOnUse">
+      <feOffset dy="10" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="10" result="blur-2"/>
+      <feFlood flood-opacity="0.102"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-path">
+      <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Mask)">
+        <rect id="Mask-3" data-name="Mask" width="312" height="180.87" rx="5" fill="url(#linear-gradient)"/>
+      </g>
+    </clipPath>
+  </defs>
+  <g id="Visa_Card" data-name="Visa Card" transform="translate(30 20)">
+    <g id="Bg">
+      <g transform="matrix(1, 0, 0, 1, -30, -20)" filter="url(#Mask-2)">
+        <rect id="Mask-4" data-name="Mask" width="312" height="180.87" rx="5" transform="translate(30 20)" fill="url(#linear-gradient-2)"/>
+      </g>
+      <g id="Bg-2" data-name="Bg" clip-path="url(#clip-path)">
+        <rect id="Rectangle_8" data-name="Rectangle 8" width="108.522" height="18.087" transform="translate(202.574 17.049) rotate(-45)" fill="#433900" opacity="0.3"/>
+        <g id="Rectangle_7" data-name="Rectangle 7" transform="translate(342.177 25.923) rotate(45)" fill="none" stroke="#a59472" stroke-miterlimit="10" stroke-width="20" opacity="0.3">
+          <rect width="90.435" height="90.435" stroke="none"/>
+          <rect x="10" y="10" width="70.435" height="70.435" fill="none"/>
+        </g>
+        <g id="Rectangle_6" data-name="Rectangle 6" transform="translate(156.452 132.035)" fill="none" stroke="#433900" stroke-miterlimit="10" stroke-width="20" opacity="0.3">
+          <rect width="135.652" height="135.652" rx="67.826" stroke="none"/>
+          <rect x="10" y="10" width="115.652" height="115.652" rx="57.826" fill="none"/>
+        </g>
+      </g>
+    </g>
+    <text id="_3384_4003_4885_2334" data-name="3384 4003 4885 2334" transform="translate(27.13 64.209)" fill="#fff" font-size="18" font-family="Roboto-Bold, Roboto" font-weight="700" letter-spacing="0.125em"><tspan x="0" y="19">3384 4003 4885 2334</tspan></text>
+    <text id="CARD_HOLDER" data-name="CARD HOLDER" transform="translate(27.13 113.426)" fill="#fff" font-size="4" font-family="Roboto-Bold, Roboto" font-weight="700" letter-spacing="0.286em"><tspan x="0" y="0">CARD HOLDER</tspan></text>
+    <text id="EXP_DATE" data-name="EXP DATE" transform="translate(174.539 113.426)" fill="#fff" font-size="4" font-family="Roboto-Bold, Roboto" font-weight="700" letter-spacing="0.286em"><tspan x="0" y="0">EXP DATE</tspan></text>
+    <text id="Marius_Møller" data-name="Marius Møller" transform="translate(27.13 144.13)" fill="#fff" font-size="12" font-family="Roboto-Regular, Roboto" letter-spacing="-0.031em"><tspan x="0" y="0">Marius Møller</tspan></text>
+    <text id="_19_05" data-name="19/05" transform="translate(174.539 144.13)" fill="#fff" font-size="12" font-family="Roboto-Regular, Roboto" letter-spacing="-0.031em"><tspan x="0" y="0">19/05</tspan></text>
+    <g id="Visa_Logo" data-name="Visa Logo" transform="translate(27.13 27.631)">
+      <path id="Shape" d="M24.757,13.316a11.145,11.145,0,0,1-3.918-.687l.495-2.888.453.206a7.366,7.366,0,0,0,3.311.676c1.005,0,2.092-.394,2.1-1.26.007-.563-.454-.967-1.823-1.6-1.333-.617-3.1-1.652-3.079-3.506C22.317,1.751,24.76,0,28.24,0a9.059,9.059,0,0,1,3.15.542l-.476,2.8L30.6,3.189a6.447,6.447,0,0,0-2.516-.495h-.116c-1.385,0-2.015.575-2.015,1.109-.007.606.746,1,1.975,1.6,2.031.917,2.97,2.03,2.955,3.5C30.855,11.586,28.451,13.316,24.757,13.316Zm9.569-.186H30.634l5.22-11.824A1.746,1.746,0,0,1,37.7.235h2.716l2.845,12.893H40s-.021-.095-.054-.243c-.132-.605-.3-1.38-.375-1.69h-.046l-1.729,0H35.065c-.157.4-.737,1.933-.739,1.938Zm3.152-8.184-.011.027c-.259.67-1.154,2.974-1.39,3.579H39l-.1-.463-.118-.54-.131-.6-.118-.537-.062-.285-.2-.918-.022-.1V5.1L38.2,4.889v0l-.009-.04,0-.018-.237-1.113-.18.474-.12.312-.04.1-.02.05-.014.037-.029.075c-.048.126-.068.178-.068.183Zm-18.84,8.177H15.123l2.2-12.9h3.518l-2.2,12.9Zm-12-.007h0L3.493,2.358A13.784,13.784,0,0,1,8.364,7.706l.367,1.328,3.444-8.8,3.724,0L10.362,13.111ZM8.21,6.85A9.755,9.755,0,0,0,5.261,2.881,13.158,13.158,0,0,0,0,.369L.046.111H5.5c.867.033,1.354.365,1.533,1.048L8.212,6.849Z" transform="translate(0 0)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

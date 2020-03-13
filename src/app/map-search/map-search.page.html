@@ -1,11 +1,16 @@
-<ion-header>
-    <ion-toolbar>
+<!--Page Title & Icons Start-->
+<div class="header-icons-container position-relative text-center">
+    <span class="float-left back-to-map hidden">
+        <img src="../../assets/icons/back.svg" alt="Back Icon">
+    </span>
+    <span class="title">Set Address</span>
+</div>
 
-        <ion-title style="
-        text-align: center; 
-    font-weight: bold;
-    color: #4285F4;">Trova un luogo</ion-title>
-    </ion-toolbar>
+<div class="row h-100">
+    <div class="col-xs-12 col-sm-12 remaining-height">
 
-</ion-header>
-<app-map-search style="height: 100%" (poi)="onPointSelected($event)" (back)="onBackTap()"></app-map-search>
+
+        <app-map-search style="height: 100%" (poi)="onPointSelected($event)" (back)="onBackTap()"></app-map-search>
+    </div>
+
+</div>

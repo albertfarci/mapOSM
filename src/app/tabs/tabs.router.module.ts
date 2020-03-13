@@ -8,16 +8,6 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'profilo',
-        children: [
-          {
-            path: '',
-            loadChildren: () =>
-              import('../profilo/profilo.module').then(m => m.ProfiloPageModule)
-          }
-        ]
-      },
-      {
         path: 'home',
         children: [
           {
@@ -64,16 +54,6 @@ const routes: Routes = [
             path: '',
             loadChildren: () =>
               import('../pathId/pathId.module').then(m => m.PathIdPageModule)
-          }
-        ]
-      },
-      {
-        path: 'pois_view',
-        children: [
-          {
-            path: '',
-            loadChildren: () =>
-              import('../pois_view/pois_view.module').then(m => m.PoisViewPageModule)
           }
         ]
       },

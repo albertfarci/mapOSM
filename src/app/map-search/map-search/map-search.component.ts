@@ -2,6 +2,8 @@ import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/cor
 import { PoiService } from 'src/app/shared/services/poi.service';
 import { GeoLocationService } from 'src/app/shared/services/geoLocation.service';
 import { IonSearchbar } from '@ionic/angular';
+import { CurrentStepService } from 'src/app/shared/services/current-step.services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-map-search',
@@ -18,9 +20,10 @@ export class MapSearchComponent implements OnInit {
   start = []
   searchInput: string
 
-  constructor(
+  constructor(private router: Router,
     private poiService: PoiService,
-    public geoLocationService: GeoLocationService) { }
+    public geoLocationService: GeoLocationService,
+    private currentStepService: CurrentStepService) { }
 
   ngOnInit() {
     this.searchInput = ""
@@ -91,8 +94,9 @@ export class MapSearchComponent implements OnInit {
 
       this.poi.emit(poi);
     } else {
-
+      this.currentStepService.setStep(3)
       this.poi.emit({ lat: "", long: "", label: "", img: "", abstract: "" });
+      this.router.navigateByUrl('/tabs/map')
     }
     //document.getElementById("map-page").style.height = "100%"
     this.start = []

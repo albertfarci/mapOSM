@@ -39,9 +39,6 @@
                 "input": "src/global.scss"
               },
               {
-                "input": "./node_modules/leaflet/dist/leaflet.css"
-              },
-              {
                 "input": "node_modules/leaflet-easybutton/src/easy-button.css"
               },
               {
@@ -51,7 +48,11 @@
             "scripts": [
               "./node_modules/leaflet/dist/leaflet.js",
               "node_modules/leaflet-easybutton/src/easy-button.js",
-              "node_modules/leaflet-search/src/leaflet-search.js"
+              "node_modules/leaflet-search/src/leaflet-search.js",
+              "src/assets/js/jquery-3.4.1.js",
+              "src/assets/js/popper.min.js",
+              "src/assets/js/bootstrap.min.js",
+              "src/assets/js/main.js"
             ]
           },
           "configurations": {
