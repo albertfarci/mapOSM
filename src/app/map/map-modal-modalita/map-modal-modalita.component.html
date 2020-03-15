@@ -1,11 +1,17 @@
 <ion-header translucent>
     <ion-toolbar>
-        <ion-col size="10"> <span class="title" style="margin-left: 3%;">Indicazioni stradali</span></ion-col>
-        <ion-buttons slot="end">
+        <div class="header-icons-container position-relative text-center" *ngIf="step!=3">
 
-            <ion-icon (click)="closeModal()" src="../../assets/release1/chevron-down.svg" size="large">
-            </ion-icon>
-        </ion-buttons>
+            <ion-row>
+
+                <ion-col size="9"> <span class="title" style="margin-left: 3%;">Indicazioni stradali</span></ion-col>
+                <ion-col size="3">
+
+                    <ion-icon (click)="closeModal()" src="../../assets/release1/chevron-down.svg" size="large">
+                    </ion-icon>
+                </ion-col>
+            </ion-row>
+        </div>
     </ion-toolbar>
 </ion-header>
 
@@ -37,7 +43,9 @@
                     <!--History Item Container Start-->
                     <div class="history-items-container history-items-padding ">
 
-                        <div class="history-item">
+                        <div class="history-item" style="box-shadow: 18px 10px 15px #0000001a;
+                        border-bottom: 4px solid #3F7288;
+                        border-top: 4px solid #3F7288;">
 
 
                             <!--Address Container Start-->
@@ -69,7 +77,7 @@
 
                         <div *ngFor="let path of pathToDisplay; let i = index;"
                             class="all-wide-container trip-history-driver-container">
-                            <div class="balance-card-container">
+                            <div style="    box-shadow: 18px 10px 20px #0000001a; border-bottom: 4px solid #3F7288;">
                                 <ion-row [ngClass]="getSomeClass(path.filter.nome)">
                                     <span
                                         style="font-size: 18px;font-weight: bold; margin-left: 3%;">{{path.filter.nome}}</span>

@@ -1,41 +1,26 @@
-<!--<ion-header>
--->
-<!--
+<ion-header>
     <ion-toolbar>
-
-        <ion-buttons *ngIf="step==2" slot="start">
-            <ion-button  >
-                Back
-                <ion-icon slot="start" src="../assets/release1/chevron-back.svg"></ion-icon>
-            </ion-button>
-        </ion-buttons>
-        <ion-title style="
-        text-align: center; 
-    font-weight: bold;">Crea il percorso
-        </ion-title>
-    </ion-toolbar>-->
-
-<!--Page Title & Icons Start-->
-<div class="header-icons-container position-relative text-center" *ngIf="step!=3">
-    <span class="float-left back-to-map " *ngIf="step==2">
-        <div (click)="backButton()">
-            <img src="../../assets/icons/back.svg" alt="Back Icon">
+        <!--Page Title & Icons Start-->
+        <div class="header-icons-container position-relative text-center" *ngIf="step!=3">
+            <span class="float-left back-to-map " *ngIf="step==2">
+                <div (click)="backButton()">
+                    <img src="../../assets/icons/back.svg" alt="Back Icon">
+                </div>
+            </span>
+            <span class="title">Crea il percorso</span>
         </div>
-    </span>
-    <span class="title">Crea il percorso</span>
-</div>
 
-<div class="header-icons-container position-relative text-center" *ngIf="step==3">
-    <span class="float-left back-to-map " *ngIf="step==3">
-        <div (click)="backButton()">
-            <img src="../../assets/icons/back.svg" alt="Back Icon">
+        <div class="header-icons-container position-relative text-center" *ngIf="step==3">
+            <span class="float-left back-to-map " *ngIf="step==3">
+                <div (click)="backButton()">
+                    <img src="../../assets/icons/back.svg" alt="Back Icon">
+                </div>
+            </span>
+            <span class="title">Scegli il punto sulla mappa</span>
         </div>
-    </span>
-    <span class="title">Scegli il punto sulla mappa</span>
-</div>
-<!--</ion-header>
--->
+    </ion-toolbar>
 
+</ion-header>
 
 <!--Loading Container Start-->
 <div id="load" class="loading-overlay display-flex flex-column justify-content-center align-items-center">
@@ -54,7 +39,7 @@
                 <span class="map-input-icon"><img src="../../assets/release1/Oval.svg"> </span>
                 <div class="map-input display-flex">
                     <input (click)="onInputSearch('A')" id="origin-input" class="controls flex-1"
-                        [(ngModel)]="pointA.title" type="text" placeholder="Enter an origin location">
+                        [(ngModel)]="pointA.title" type="text" placeholder="Da dove vuoi partire">
                     <span (click)="remove('A')" class="remove">
                         <img src="../../assets/icons/cross-light.svg" alt="Remove Icon Light Color">
                     </span>
@@ -65,7 +50,7 @@
                         alt="Current Location Icon"></span>
                 <div class="map-input display-flex">
                     <input (click)="onInputSearch('B')" id="destination-input" [(ngModel)]="pointB.title"
-                        class="controls flex-1" type="text" placeholder="Enter a destination location">
+                        class="controls flex-1" type="text" placeholder="Dove vuoi arrivare">
                     <span (click)="remove('B')" class="remove">
                         <img src="../../assets/icons/cross-light.svg" alt="Remove Icon Light Color">
                     </span>

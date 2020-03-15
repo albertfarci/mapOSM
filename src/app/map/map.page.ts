@@ -21,8 +21,8 @@ export class MapPage {
 
   //refactor
   step = 1
-  pointA: Point = { title: "Da dove vuoi partire", latitudine: "", longitudine: "", abstract: "", img: null }
-  pointB: Point = { title: "Dove vuoi arrivare", latitudine: "", longitudine: "", abstract: "", img: null }
+  pointA: Point = { title: "", latitudine: "", longitudine: "", abstract: "", img: null }
+  pointB: Point = { title: "", latitudine: "", longitudine: "", abstract: "", img: null }
 
   //
   paths
