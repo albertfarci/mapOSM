@@ -20,16 +20,14 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <style type="text/css">
-    body {
-      padding-top: constant(safe-area-inset-top);
-      padding-top: env(safe-area-inset-top);
-      padding-top: constant(safe-area-inset-bottom);
-      padding-top: env(safe-area-inset-bottom);
+    .body {
+      padding: constant(safe-area-inset-top) constant(safe-area-inset-right) constant(safe-area-inset-bottom) constant(safe-area-inset-left);
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
   </style>
 </head>
 
-<body>
+<body class="body">
   <app-root></app-root>
 </body>
 
