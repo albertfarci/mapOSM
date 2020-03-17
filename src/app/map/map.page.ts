@@ -54,10 +54,6 @@ export class MapPage {
 
     this.plt.ready().then(() => {
 
-
-      document.getElementById('interactive');
-      document.getElementById('load').style.visibility = "hidden";
-
       this.currentPointService.currentPointA.subscribe(
         (data) => {
           if (data) this.pointA = data
@@ -72,12 +68,15 @@ export class MapPage {
         (data) => {
           console.log(data)
           this.step = data
-          /*if (data != 1) {
-            document.getElementById("row-map-display").style.height = "90%"
+          if (data == 2) {
+            document.getElementById("row-map-display").style.height = "85%"
+          }
+          if (data == 3) {
+            document.getElementById("row-map-display").style.height = "100%"
           }
           if (data == 1) {
             document.getElementById("row-map-display").style.height = "80%"
-          }*/
+          }
         }
       )
       /*

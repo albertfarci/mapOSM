@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <!--Page Title & Icons Start-->
+
         <div class="header-icons-container position-relative text-center" *ngIf="step!=3">
             <span class="float-left back-to-map " *ngIf="step==2">
                 <div (click)="backButton()">
@@ -21,51 +21,43 @@
     </ion-toolbar>
 
 </ion-header>
-
-<!--Loading Container Start-->
-<div id="load" class="loading-overlay display-flex flex-column justify-content-center align-items-center">
-    <div class="primary-color font-28 fas fa-spinner fa-spin"></div>
-</div>
-<!--Loading Container End-->
-
-
-<div class="row h-100">
-    <div class="col-xs-12 col-sm-12 remaining-height">
-
-        <!--Page Title & Icons End-->
-
-        <div class="margin-top-10 height-auto" id="origin-input-container" *ngIf="step==1">
-            <div class="w-100 map-input-container map-input-container-top">
-                <span class="map-input-icon"><img src="../../assets/release1/Oval.svg"> </span>
-                <div class="map-input display-flex">
-                    <input (click)="onInputSearch('A')" id="origin-input" class="controls flex-1"
-                        [(ngModel)]="pointA.title" type="text" placeholder="Da dove vuoi partire">
-                    <span (click)="remove('A')" class="remove">
-                        <img src="../../assets/icons/cross-light.svg" alt="Remove Icon Light Color">
-                    </span>
+<ion-content>
+    <ion-grid class="gridMap" style="height: 100%;">
+        <ion-row *ngIf="step==1" class="containerSearch">
+            <ion-row class="rowSearch">
+                <div class="w-100 map-input-container map-input-container-top">
+                    <span class="map-input-icon"><img src="../../assets/release1/Oval.svg"> </span>
+                    <div class="map-input display-flex">
+                        <input (click)="onInputSearch('A')" id="origin-input" class="controls flex-1"
+                            [(ngModel)]="pointA.title" type="text" placeholder="Da dove vuoi partire">
+                        <span (click)="remove('A')" class="remove">
+                            <img src="../../assets/icons/cross-light.svg" alt="Remove Icon Light Color">
+                        </span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-100 map-input-container map-input-container-bottom">
-                <span class="map-input-icon"><img src="../../assets/release1/OvalBlack.svg"
-                        alt="Current Location Icon"></span>
-                <div class="map-input display-flex">
-                    <input (click)="onInputSearch('B')" id="destination-input" [(ngModel)]="pointB.title"
-                        class="controls flex-1" type="text" placeholder="Dove vuoi arrivare">
-                    <span (click)="remove('B')" class="remove">
-                        <img src="../../assets/icons/cross-light.svg" alt="Remove Icon Light Color">
-                    </span>
+            </ion-row>
+
+            <ion-row class="rowSearch">
+                <div class="w-100 map-input-container map-input-container-bottom">
+                    <span class="map-input-icon"><img src="../../assets/release1/OvalBlack.svg"
+                            alt="Current Location Icon"></span>
+                    <div class="map-input display-flex">
+                        <input (click)="onInputSearch('B')" id="destination-input" [(ngModel)]="pointB.title"
+                            class="controls flex-1" type="text" placeholder="Dove vuoi arrivare">
+                        <span (click)="remove('B')" class="remove">
+                            <img src="../../assets/icons/cross-light.svg" alt="Remove Icon Light Color">
+                        </span>
+                    </div>
+                    <span class="dotted-line-index"></span>
                 </div>
-                <span class="dotted-line-index"></span>
-            </div>
-        </div>
-
-
-        <!--Google Maps Start-->
-        <app-map-display style="height: 100%;" (navigate)="onNavigate($event)" (detail)="onDetail()"
-            (location)="onPointSelectedA($event)" [pathFilter]="pathFilter">
-        </app-map-display>
-
-        <ion-row *ngIf="step==2" style="height: 10%; 
+            </ion-row>
+        </ion-row>
+        <ion-row id="row-map-display">
+            <app-map-display style="width: 100%;" (navigate)="onNavigate($event)" (detail)="onDetail()"
+                (location)="onPointSelectedA($event)" [pathFilter]="pathFilter">
+            </app-map-display>
+        </ion-row>
+        <ion-row *ngIf="step==2" style="height: 15%;
         background-color: #3F7288;" (click)="onAzioniRapide()">
             <!--
             <ion-col style="width: 100%;
@@ -73,22 +65,20 @@
             height: 48px;
             padding: 12px 12px 56px;
             background: rgb(245,245,245);" size="10"> Tocca per visualizzare le azioni rapide</ion-col>-->
+            <ion-row style="width: 100%">
+                <ion-col *ngFor=" let path of paths" size="3" style="text-align: center;">
+                    <ion-button id="walk" shape="round" [color]="path.color" (click)="filterFirstLevel(path.nome)">
+                        <ion-icon [name]="path.icon"></ion-icon>
+                    </ion-button>
 
-            <ion-col *ngFor="let path of paths" size="3" style="text-align: center;">
-                <ion-button id="walk" shape="round" [color]="path.color" (click)="filterFirstLevel(path.nome)">
-                    <ion-icon [name]="path.icon"></ion-icon>
-                </ion-button>
+                </ion-col>
 
-            </ion-col>
+                <ion-col size="3">
+                    <ion-icon style="width: 100%" src="../assets/release1/chevron-up.svg" size="large"></ion-icon>
+                </ion-col>
+            </ion-row>
 
-            <ion-col size="3">
-                <ion-icon style="width: 100%" src="../assets/release1/chevron-up.svg" size="large"></ion-icon>
-            </ion-col>
         </ion-row>
-    </div>
 
-    <!--Google Maps End-->
-
-    <!--Modal End-->
-
-</div>
+    </ion-grid>
+</ion-content>
