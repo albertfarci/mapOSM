@@ -66,10 +66,9 @@ export class MapPage {
       )
       this.currentStepService.currentStep.subscribe(
         (data) => {
-          console.log(data)
           this.step = data
           if (data == 2) {
-            document.getElementById("row-map-display").style.height = "85%"
+            document.getElementById("row-map-display").style.height = "88%"
           }
           if (data == 3) {
             document.getElementById("row-map-display").style.height = "100%"
@@ -105,7 +104,6 @@ export class MapPage {
   }
 
   remove(removeItem) {
-    console.log(removeItem)
     if (removeItem == "A") {
       this.currentPointService.deletePointA()
     } else {
@@ -136,7 +134,6 @@ export class MapPage {
 
   //selezionato punto B
   onPointSelectedB(e) {
-    console.log("selected")
     this.pointB = e
     this.onDetail()
   }
@@ -238,7 +235,6 @@ export class MapPage {
       }
     });
     return await modal.present();*/
-    console.log("select")
     this.currentStepService.setStep(2).then(
       (success) => {
       }

@@ -7,6 +7,7 @@ import { PathService } from 'src/app/shared/services/path.service';
 import { CurrentPointService } from 'src/app/shared/services/current-points.service';
 import { post } from 'selenium-webdriver/http';
 import { MapModalStoragePage } from '../map-modal-storage/map-modal-storage.page';
+import { MapModalNavigationPage } from '../map-modal-storage/map-modal-navigation/map-modal-navigation.page';
 
 @Component({
     selector: 'map-modal-modalita-page',
@@ -105,8 +106,18 @@ export class MapModalModalitaPage {
     }
 
 
-    closeModal() {
+    async closeModal(path) {
         this.modalCtrl.dismiss();
+
+        const modal = await this.modalCtrl.create({
+            component: MapModalNavigationPage,
+            componentProps: {
+                'path': path,
+            },
+            cssClass: 'my-custom-modal-css',
+            backdropDismiss: true
+        });
+        return await modal.present();
     }
 
     getSomeClass(name) {
@@ -284,7 +295,10 @@ export class MapModalModalitaPage {
 
     }
 
+
+
     async openStorageModal(path) {
+        this.closeModal(path)
         const modal = await this.modalCtrl.create({
             component: MapModalStoragePage,
             componentProps: {

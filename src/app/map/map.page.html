@@ -57,7 +57,7 @@
                 (location)="onPointSelectedA($event)" [pathFilter]="pathFilter">
             </app-map-display>
         </ion-row>
-        <ion-row *ngIf="step==2" style="height: 15%;
+        <ion-row *ngIf="step==2" style="height: 12%;
         background-color: #3F7288;" (click)="onAzioniRapide()">
             <!--
             <ion-col style="width: 100%;
@@ -65,10 +65,15 @@
             height: 48px;
             padding: 12px 12px 56px;
             background: rgb(245,245,245);" size="10"> Tocca per visualizzare le azioni rapide</ion-col>-->
-            <ion-row style="width: 100%">
-                <ion-col *ngFor=" let path of paths" size="3" style="text-align: center;">
-                    <ion-button id="walk" shape="round" [color]="path.color" (click)="filterFirstLevel(path.nome)">
-                        <ion-icon [name]="path.icon"></ion-icon>
+            <ion-row style="width: 100%;  
+            height: 100%; ">
+                <ion-col style="
+                height: 100%;
+                width: 100%;" *ngFor=" let path of paths" size="3" style="text-align: center;">
+                    <ion-button style="
+                    width: 100%; height: 80%; " id="walk" shape="round" [color]="path.color"
+                        (click)="filterFirstLevel(path.nome)">
+                        <ion-icon [name]="path.icon" size="large"></ion-icon>
                     </ion-button>
 
                 </ion-col>
