@@ -48,7 +48,7 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'pathId',
+        path: 'pathId/:id',
         children: [
           {
             path: '',

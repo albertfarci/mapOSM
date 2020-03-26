@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Map, LeafIcon, tileLayer, marker, icon, polyline, geoJSON, removeLayers, LayerGroup } from 'leaflet';
-import { Platform } from '@ionic/angular';
+import { Platform, ModalController } from '@ionic/angular';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 import { PathService } from '../shared/services/path.service';
@@ -10,6 +10,8 @@ import { GeoLocationService } from '../shared/services/geoLocation.service';
 import L from 'leaflet'
 import "leaflet-easybutton"
 import { Point } from '../shared/models/point.model';
+import { CurrentPointService } from '../shared/services/current-points.service';
+import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.page';
 
 @Component({
   selector: 'app-pathId',
@@ -26,6 +28,16 @@ export class PathIdPage {
     puntoB: icon({
       iconUrl: '/assets/release1/OvalBlack.svg',
       iconSize: [25, 25],
+      popupAnchor: [0, -20]
+    }),
+    shadowPC: icon({
+      iconUrl: '/assets/release1/Ellipse25.svg',
+      iconSize: [50, 50],
+      popupAnchor: [0, -20]
+    }),
+    pointPC: icon({
+      iconUrl: '/assets/release1/posizioneCorrente.svg',
+      iconSize: [50, 50],
       popupAnchor: [0, -20]
     }),
     monument: icon({
@@ -64,94 +76,231 @@ export class PathIdPage {
   layerGroup
   markerA
   map: Map
+
+
+  //refactor
+  pointA: Point
+  pointB: Point
+  observerIdRouter
+  routerState
+
   constructor(
     public plt: Platform,
     public router: Router,
     public pathService: PathService,
     public geoLocationService: GeoLocationService,
     public dettaglioPreferitoService: DettaglioPreferitoService,
-    private sqlite: SQLite,
-    private toast: Toast,
+    private currentPointService: CurrentPointService,
+    private _Activatedroute: ActivatedRoute,
+    public modalController: ModalController
+
   ) {
   }
 
-  ionViewWillLeave() {
 
-    this.navigazioneAttiva = true
-    clearInterval(this.tracker)
+  ionViewDidEnter() {
+
+    this.currentPointService.currentPointB.subscribe(
+      (data) => {
+        if (data) this.pointB = data
+
+        //this.getPath()
+      }
+    )
+    this.observerIdRouter = this._Activatedroute.paramMap.subscribe(params => {
+      if (params) {
+        this.routerState = params.get("id")
+      }
+    });
+
+    this.pathService.poisNearToPoint.subscribe(
+      (data) => {
+        console.log(data)
+        if (data) this.start = data
+      }
+    )
+    this.initMap()
   }
-  ionViewWillEnter() {
 
-    this.plt.ready().then(() => {
+  ionViewDidLeave() {
 
-      if (this.map) {
-        this.map.removeLayer(this.layerGroup);
-        this.map.remove()
+    this.observerIdRouter.unsubscribe()
+  }
+
+  initMap() {
+
+    if (!this.map) {
+
+      this.map = new Map('map-pathId').setView([39.21834898953833, 9.1126227435], 12.5);
+      //L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
+
+      setTimeout(() => {
+        this.map.invalidateSize()
+        this.getLocationCoordinates()
+
+        this.tracker = setInterval(() => {
+
+          this.startTracking();
+        }, 3000);
+      }, 2000);
+
+      this.layerGroup = new LayerGroup();
+      this.layerGroup.addTo(this.map);
+    }
+
+
+  }
+
+  displayPointA() {
+    if (this.pointA) {
+
+      for (const property in this.map._layers) {
+        if (this.map._layers[property].options && this.map._layers[property].options.title) {
+          if (this.map._layers[property].options.title == "Punto A") {
+            this.map._layers[property].setLatLng([this.pointA.latitudine, this.pointA.longitudine]).addTo(this.map)
+          }
+        }
       }
 
-      this.navigazioneAttiva = true
+      L.marker([this.pointA.latitudine, this.pointA.longitudine], { title: "Punto A", icon: this.icons.puntoA }).addTo(this.map)
 
-      this.initMap()
-
-
-      this.sqlite.create({
-        name: 'filters.db',
-        location: 'default'
-      })
-        .then((db: SQLiteObject) => {
-
-          db.executeSql(`select * from paths`, [])
-            .then((tableSelect) => {
-
-              if (tableSelect.rows.length > 0) {
-                for (var i = 0; i < tableSelect.rows.length; i++) {
+      this.map.setView([this.pointA.latitudine, this.pointA.longitudine], 16)
 
 
-                  if (tableSelect.rows.item(i).rowid == this.dettaglioPreferitoService.dettaglioPreferito.id) {
+    }
 
-                    this.pointsPath[0] = {
-                      latitudine: JSON.parse(tableSelect.rows.item(i).coordinates)[0].lat,
-                      longitudine: JSON.parse(tableSelect.rows.item(i).coordinates)[0].lng,
-                      title: "",
-                      abstract: "",
-                      img: ""
-                    }
+  }
 
-                    this.markerA = marker([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], { icon: this.icons.puntoA })
-                    this.layerGroup.addLayer(this.markerA);
+  displayPointB() {
 
-                    this.pointsPath[1] = {
-                      latitudine: JSON.parse(tableSelect.rows.item(i).coordinates)[1].lat,
-                      longitudine: JSON.parse(tableSelect.rows.item(i).coordinates)[1].lng,
-                      title: "",
-                      abstract: "",
-                      img: ""
-                    }
-                    this.layerGroup.addLayer(marker([this.pointsPath[1].latitudine, this.pointsPath[1].longitudine], { icon: this.icons.puntoB }));
+    console.log("display B")
+    if (this.pointB) {
 
-                    this.currentFilter = JSON.parse(tableSelect.rows.item(i).filter)
+      for (const property in this.map._layers) {
+        if (this.map._layers[property].options && this.map._layers[property].options.title) {
+          if (this.map._layers[property].options.title == "Punto B") {
+            this.map._layers[property].setLatLng([this.pointB.latitudine, this.pointB.longitudine]).addTo(this.map)
+          }
+        }
+      }
+      L.marker([this.pointB.latitudine, this.pointB.longitudine], { title: "Punto B", icon: this.icons.puntoB }).addTo(this.map)
 
-                  }
+      this.map.setView([this.pointB.latitudine, this.pointB.longitudine], 16)
+    }
 
+  }
+
+  getPath() {
+    /*
+    
+        */
+    if (this.pointA && this.pointB) {
+
+      this.map.fitBounds([
+        [this.pointB.latitudine, this.pointB.longitudine],
+        [this.pointA.latitudine, this.pointA.longitudine]
+      ], { padding: [50, 50] })
+
+      if (this.map) {
+        for (const property in this.map._layers) {
+          if (this.map._layers[property].options) {
+            if (this.map._layers[property].options.style) {
+              this.map.removeLayer(this.map._layers[property])
+            }
+          }
+        }
+      }
+
+      var point = this.pointA.latitudine + "," + this.pointA.longitudine
+      //var point = "39.21477,9.11289"
+      var pointEnd = this.pointB.latitudine + "," + this.pointB.longitudine
+      this.pathService.getPath(point, pointEnd, this.routerState)
+        //this.pathService.getPath(point, pointEnd, 27)
+        .subscribe(
+          posts => {
+            let myStyle = {
+              color: 'red',
+              dashArray: "5 10",
+              weight: 7,
+              opacity: 0.65,
+            };
+
+            this.pathService.calculateGeometry(posts)
+              .subscribe(
+                geometryArray2Dim => {
+                  this.layerGroup.addLayer(geoJSON({
+                    "type": "LineString",
+                    "coordinates": geometryArray2Dim,
+                    //}).bindPopup('<h1>'+this.currentFilter.name+'</h1>'));
+                  }, { style: myStyle }).bindPopup('<h1>Car</h1>'));
                 }
+              )
+
+          });
+
+    }
+  }
+
+  startTracking() {
+    console.log("startTracking()")
+    //this.geoLocationService.checkGPSPermission()
+    this.geoLocationService.getLocationCoordinates()
+      .subscribe(
+        resp => {
+
+          for (const property in this.map._layers) {
+            if (this.map._layers[property].options && this.map._layers[property].options.title) {
+              if (this.map._layers[property].options.title == "PC" || this.map._layers[property].options.title == "Shadow") {
+                this.map.removeLayer(this.map._layers[property])
 
               }
-            })
-            .catch((e) => {
-              this.toast.show(JSON.stringify(e), '3000', 'center').subscribe(
-                toast => {
-                  console.log(toast);
-                })
-            })
+            }
+          }
+
+          L.marker([resp.latitudine, resp.longitudine], { title: "PC", icon: this.icons.pointPC }).addTo(this.map)
+          L.marker([resp.latitudine, resp.longitudine], { title: "Shadow", icon: this.icons.shadowPC }).addTo(this.map)
+
+          this.map.setView([resp.latitudine, resp.longitudine], 16);
+
+          this.getPoiNearToPoint(resp)
+          //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
+          //this.getPath(resp)
         })
+
+
+  }
+
+
+  getPoiNearToPoint(currentPoint: Point) {
+
+    this.pathService.getAllPOIsNearToPoint(currentPoint);
+
+  }
+
+  getLocationCoordinates() {
+    this.geoLocationService.getLocationCoordinates()
+      .subscribe(
+        resp => {
+
+          this.pointA = { latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente", abstract: "", img: "" }
+
+          this.getPath()
+          this.displayPointA()
+          this.displayPointB()
+        }
+      )
+  }
+
+
+  async onAzioniRapide() {
+    const modal = await this.modalController.create({
+      component: MapModalModalitaPage
     });
+    return await modal.present();
   }
 
-  displayPointOnMap() {
-
-  }
-
-
+  /*
   initMap() {
     this.map = new Map('map-pathId').setView([39.21834898953833, 9.1126227435], 12.5);
 
@@ -374,6 +523,6 @@ export class PathIdPage {
     }, 1000);
 
 
-  }
+  }*/
 
 }   

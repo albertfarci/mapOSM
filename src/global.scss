@@ -29,3 +29,7 @@
 @import "assets/css/fontawesome.css";
 @import "assets/css/styles.css";
 
+.my-custom-modal-css .modal-wrapper {
+    top: 50%;
+    position: absolute; 
+ }
