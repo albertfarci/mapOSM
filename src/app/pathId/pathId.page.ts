@@ -119,11 +119,13 @@ export class PathIdPage {
         if (data) this.start = data
       }
     )
+
+    this.geoLocationService.checkGPSPermission()
     this.initMap()
   }
 
   ionViewDidLeave() {
-
+    clearInterval(this.tracker)
     this.observerIdRouter.unsubscribe()
   }
 
@@ -244,7 +246,6 @@ export class PathIdPage {
 
   startTracking() {
     console.log("startTracking()")
-    //this.geoLocationService.checkGPSPermission()
     this.geoLocationService.getLocationCoordinates()
       .subscribe(
         resp => {
@@ -279,6 +280,7 @@ export class PathIdPage {
   }
 
   getLocationCoordinates() {
+
     this.geoLocationService.getLocationCoordinates()
       .subscribe(
         resp => {

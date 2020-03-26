@@ -8,6 +8,8 @@ import { MapModalPage } from './map-modal/map-modal.page';
 import { CurrentStepService } from '../shared/services/current-step.services';
 import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.page';
 import { PathService } from '../shared/services/path.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 
@@ -23,6 +25,8 @@ export class MapPage {
   step = 1
   pointA: Point = { title: "", latitudine: "", longitudine: "", abstract: "", img: null }
   pointB: Point = { title: "", latitudine: "", longitudine: "", abstract: "", img: null }
+
+  unsubscribe$ = new Subject()
 
   //
   paths
@@ -54,30 +58,34 @@ export class MapPage {
 
     this.plt.ready().then(() => {
 
-      this.currentPointService.currentPointA.subscribe(
-        (data) => {
-          if (data) this.pointA = data
-        }
-      )
-      this.currentPointService.currentPointB.subscribe(
-        (data) => {
-          if (data) this.pointB = data
-        }
-      )
-      this.currentStepService.currentStep.subscribe(
-        (data) => {
-          this.step = data
-          if (data == 2) {
-            document.getElementById("row-map-display").style.height = "88%"
+      this.currentPointService.currentPointA
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          (data) => {
+            if (data) this.pointA = data
           }
-          if (data == 3) {
-            document.getElementById("row-map-display").style.height = "100%"
+        )
+      this.currentPointService.currentPointB
+        .pipe(takeUntil(this.unsubscribe$)).subscribe(
+          (data) => {
+            if (data) this.pointB = data
           }
-          if (data == 1) {
-            document.getElementById("row-map-display").style.height = "80%"
+        )
+      this.currentStepService.currentStep
+        .pipe(takeUntil(this.unsubscribe$)).subscribe(
+          (data) => {
+            this.step = data
+            if (data == 2) {
+              document.getElementById("row-map-display").style.height = "88%"
+            }
+            if (data == 3) {
+              document.getElementById("row-map-display").style.height = "100%"
+            }
+            if (data == 1) {
+              document.getElementById("row-map-display").style.height = "80%"
+            }
           }
-        }
-      )
+        )
       /*
    this.sqlite.create({
     name: 'filters.db',
@@ -93,11 +101,12 @@ export class MapPage {
       })
     })*/
 
-      this.filterListService.filterList.subscribe(
-        (data) => {
-          this.paths = data
-        }
-      )
+      this.filterListService.filterList
+        .pipe(takeUntil(this.unsubscribe$)).subscribe(
+          (data) => {
+            this.paths = data
+          }
+        )
 
 
     });
@@ -249,5 +258,9 @@ export class MapPage {
     return await modal.present();
   }
 
+  ionViewDidLeave() {
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
+  }
 
 }

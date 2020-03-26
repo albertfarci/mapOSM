@@ -11,6 +11,8 @@ import { Toast } from '@ionic-native/toast/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { MapModalNavigationPage } from './map-modal-navigation/map-modal-navigation.page';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'map-modal-storage-page',
@@ -27,6 +29,7 @@ export class MapModalStoragePage {
     timeSelected: any
     isSetAlertSelectedItem: boolean = false
 
+    unsubscribe$ = new Subject()
     constructor(navParams: NavParams,
         private modalCtrl: ModalController,
         private currenteCtrl: ModalController,
@@ -37,22 +40,24 @@ export class MapModalStoragePage {
         public pathService: PathService,
         public router: Router) {
 
-        this.currentPointsService.currentPointA.subscribe(
-            (data) => {
-                if (data) {
-                    this.pointPath[0] = data
+        this.currentPointsService.currentPointA
+            .pipe(takeUntil(this.unsubscribe$)).subscribe(
+                (data) => {
+                    if (data) {
+                        this.pointPath[0] = data
+
+                    }
+                }
+            )
+        this.currentPointsService.currentPointB
+            .pipe(takeUntil(this.unsubscribe$)).subscribe(
+                (data) => {
+                    if (data) {
+                        this.pointPath[1] = data
+                    }
 
                 }
-            }
-        )
-        this.currentPointsService.currentPointB.subscribe(
-            (data) => {
-                if (data) {
-                    this.pointPath[1] = data
-                }
-
-            }
-        )
+            )
         // componentProps can also be accessed at construction time using NavParams
     }
 

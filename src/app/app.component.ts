@@ -35,6 +35,16 @@ export class AppComponent {
         this.router.navigate(['/tabs/map']);
       }
 
+      if (window.location.pathname == "/tabs/home") {
+        this.router.navigate(['/tabs/home']);
+
+      }
+
+
+      if (window.location.pathname.includes("/tabs/pathId")) {
+        this.router.navigate(['/tabs/home']);
+      }
+
     })
   }
 }

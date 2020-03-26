@@ -8,6 +8,8 @@ import { CurrentPointService } from 'src/app/shared/services/current-points.serv
 import { post } from 'selenium-webdriver/http';
 import { MapModalStoragePage } from '../map-modal-storage/map-modal-storage.page';
 import { MapModalNavigationPage } from '../map-modal-storage/map-modal-navigation/map-modal-navigation.page';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'map-modal-modalita-page',
@@ -24,42 +26,48 @@ export class MapModalModalitaPage {
     paths
     optionsFilter: boolean = false;
 
+    unsubscribe$ = new Subject()
+
     constructor(navParams: NavParams,
         private modalCtrl: ModalController,
         public filterListService: FilterListService,
         public pathService: PathService,
         private currentPointsService: CurrentPointService) {
 
-        this.currentPointsService.currentPointA.subscribe(
-            (data) => {
-                if (data) {
-                    this.pointA = data
+        this.currentPointsService.currentPointA
+            .pipe(takeUntil(this.unsubscribe$)).subscribe(
+                (data) => {
+                    if (data) {
+                        this.pointA = data
+                    }
                 }
-            }
-        )
-        this.currentPointsService.currentPointB.subscribe(
-            (data) => {
-                if (data) {
-                    this.pointB = data
-                }
+            )
+        this.currentPointsService.currentPointB
+            .pipe(takeUntil(this.unsubscribe$)).subscribe(
+                (data) => {
+                    if (data) {
+                        this.pointB = data
+                    }
 
-            }
-        )
-        this.filterListService.filterList.subscribe(
-            (data) => {
-                this.paths = data
-            }
-        )
-        this.filterListService.currentFilter.subscribe(
-            (data) => {
-
-                if (data) {
-                    this.optionsFilter = true
-                    //this.pathToDisplay = data
-                    this.getPaths(data)
                 }
-            }
-        )
+            )
+        this.filterListService.filterList
+            .pipe(takeUntil(this.unsubscribe$)).subscribe(
+                (data) => {
+                    this.paths = data
+                }
+            )
+        this.filterListService.currentFilter
+            .pipe(takeUntil(this.unsubscribe$)).subscribe(
+                (data) => {
+
+                    if (data) {
+                        this.optionsFilter = true
+                        //this.pathToDisplay = data
+                        this.getPaths(data)
+                    }
+                }
+            )
 
 
 
@@ -67,36 +75,38 @@ export class MapModalModalitaPage {
     }
 
     ionViewDidEnter() {
-        this.pathService.selectedPath.subscribe(
-            (data) => {
-                if (data) {
-                    if (data.length) {
+        this.pathService.selectedPath
+            .pipe(takeUntil(this.unsubscribe$)).subscribe(
+                (data) => {
+                    if (data) {
+                        if (data.length) {
+                            data.map(data => {
+                                document.querySelectorAll("ion-icon[name='eye']")
+                                    .forEach(x => {
+
+                                        if (data.filter.valore == x.id) x.setAttribute("style", "color: blue")
+                                    })
+                            })
+                        }
+                    }
+                }
+            )
+
+        this.pathService.savedPath
+            .pipe(takeUntil(this.unsubscribe$)).subscribe(
+                (data) => {
+                    if (data) {
                         data.map(data => {
-                            document.querySelectorAll("ion-icon[name='eye']")
+                            document.querySelectorAll("ion-icon[name='heart']")
                                 .forEach(x => {
 
-                                    if (data.filter.valore == x.id) x.setAttribute("style", "color: blue")
+                                    if (data.filter.valore == x.id) x.setAttribute("style", "color: red")
                                 })
                         })
                     }
+
                 }
-            }
-        )
-
-        this.pathService.savedPath.subscribe(
-            (data) => {
-                if (data) {
-                    data.map(data => {
-                        document.querySelectorAll("ion-icon[name='heart']")
-                            .forEach(x => {
-
-                                if (data.filter.valore == x.id) x.setAttribute("style", "color: red")
-                            })
-                    })
-                }
-
-            }
-        )
+            )
 
         if (!!this.getEnabled()) {
 
@@ -302,7 +312,10 @@ export class MapModalModalitaPage {
 
     }
 
-
+    ionViewDidLeave() {
+        this.unsubscribe$.next()
+        this.unsubscribe$.complete()
+    }
 
 
 
