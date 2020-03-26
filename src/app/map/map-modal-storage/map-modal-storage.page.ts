@@ -9,8 +9,6 @@ import { post } from 'selenium-webdriver/http';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-import { MapModalNavigationPage } from './map-modal-navigation/map-modal-navigation.page';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'map-modal-storage-page',
@@ -29,13 +27,11 @@ export class MapModalStoragePage {
 
     constructor(navParams: NavParams,
         private modalCtrl: ModalController,
-        private currenteCtrl: ModalController,
         private sqlite: SQLite,
         private toast: Toast,
         private localNotifications: LocalNotifications,
         private currentPointsService: CurrentPointService,
-        public pathService: PathService,
-        public router: Router) {
+        public pathService: PathService) {
 
         this.currentPointsService.currentPointA.subscribe(
             (data) => {
@@ -58,8 +54,7 @@ export class MapModalStoragePage {
 
 
     closeModal() {
-        console.log("close")
-        this.currenteCtrl.dismiss();
+        this.modalCtrl.dismiss();
     }
 
     setTimeAlert() {
@@ -68,7 +63,6 @@ export class MapModalStoragePage {
 
 
     savePathNavigate() {
-        /*
         this.sqlite.create({
             name: 'filters.db',
             location: 'default'
@@ -116,10 +110,9 @@ export class MapModalStoragePage {
                                     }
                                 }
                                 this.pathService.addSavedPath(this.path)
-                                //this.closeModal()
-                                this.openStorageModal()
+                                this.closeModal()
+
                             })
-                            
                     })
                     .catch((e) => {
                         this.toast.show("Something went wrong", '3000', 'center').subscribe(
@@ -127,23 +120,6 @@ export class MapModalStoragePage {
                                 console.log(toast);
                             })
                     })
-            })*/
-
-        this.closeModal()
-    }
-
-
-    async openStorageModal() {
-        console.log(this.path)
-        const modal = await this.modalCtrl.create({
-            component: MapModalNavigationPage,
-            componentProps: {
-                'path': this.path,
-            },
-            cssClass: 'my-custom-modal-css',
-            backdropDismiss: true
-        });
-        return await modal.present();
-
+            })
     }
 }

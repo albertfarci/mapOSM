@@ -357,6 +357,7 @@ export class FilterListService {
             this.filterListSource.next(
                 tmp
                     .map(x => {
+                        console.log(x.spunta)
                         if (x.spunta) {
 
                             x.color = 'light'

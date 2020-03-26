@@ -27,14 +27,12 @@ export class CurrentPointService {
 
     setPointA(point: Point): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            console.log(point)
             this.sourcePointA.next(point)
             resolve(true)
         })
     }
     setPointB(point: Point) {
         return new Promise((resolve, reject) => {
-            console.log(point)
             this.sourcePointB.next(point)
             resolve(true)
         })

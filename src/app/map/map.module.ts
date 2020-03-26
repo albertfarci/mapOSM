@@ -14,7 +14,6 @@ import { PathService } from '../shared/services/path.service';
 import { MapModalPage } from './map-modal/map-modal.page';
 import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.page';
 import { MapModalStoragePage } from './map-modal-storage/map-modal-storage.page';
-import { MapModalNavigationPage } from './map-modal-storage/map-modal-navigation/map-modal-navigation.page';
 
 @NgModule({
   imports: [
@@ -25,8 +24,8 @@ import { MapModalNavigationPage } from './map-modal-storage/map-modal-navigation
     ReactiveFormsModule,
     RouterModule.forChild([{ path: '', component: MapPage }]),
   ],
-  entryComponents: [MapModalPage, MapModalModalitaPage, MapModalStoragePage, MapModalNavigationPage],
+  entryComponents: [MapModalPage, MapModalModalitaPage, MapModalStoragePage],
   providers: [PathService],
-  declarations: [MapPage, MapDisplayComponent, PoiDescriptionComponent, MapModalPage, MapModalStoragePage, MapModalModalitaPage, MapModalNavigationPage]
+  declarations: [MapPage, MapDisplayComponent, PoiDescriptionComponent, MapModalPage, MapModalStoragePage, MapModalModalitaPage]
 })
 export class MapPageModule { }

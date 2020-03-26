@@ -14,9 +14,6 @@ export class PathService {
   private readonly savedPathSource = new BehaviorSubject<Array<any>>(null)
   savedPath = this.savedPathSource.asObservable()
 
-  private readonly poisNearToPointSource = new BehaviorSubject<Array<any>>(null)
-  poisNearToPoint = this.poisNearToPointSource.asObservable()
-
   tmpSelectedPath: Array<any> = []
   tmpSavedPath: Array<any> = []
   constructor(private http: HttpClient) { }
@@ -25,13 +22,8 @@ export class PathService {
     return this.http.get<any>(`https://dss03.crs4.it/v1/requestTrip/31-12-2001/` + pointStart + '/' + pointEnd + '/' + filter)
   }
 
-  getAllPOIsNearToPoint(currentPoint) {
-    this.http.get<any>(`https://dss03.crs4.it/v1/requestTrip/info/?lat=` + currentPoint.latitudine + `&lon=` + currentPoint.longitudine + '&distance=100&type=1,2,3,4')
-      .subscribe(
-        (data) => {
-          this.poisNearToPointSource.next(data);
-        }
-      )
+  getPOIsNearToPoint(currentPoint, filter) {
+    return this.http.get<any>(`https://dss03.crs4.it/v1/requestTrip/info/?lat=` + currentPoint.latitudine + `&lon=` + currentPoint.longitudine + '&distance=100&type=' + filter)
   }
 
   calculateGeometry(arrayGeometry): Observable<any> {
