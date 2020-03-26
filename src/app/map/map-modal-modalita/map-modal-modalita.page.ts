@@ -55,7 +55,7 @@ export class MapModalModalitaPage {
 
                 if (data) {
                     this.optionsFilter = true
-                    this.pathToDisplay = data
+                    //this.pathToDisplay = data
                     this.getPaths(data)
                 }
             }
@@ -106,18 +106,9 @@ export class MapModalModalitaPage {
     }
 
 
-    async closeModal(path) {
+    async closeModal(path?) {
         this.modalCtrl.dismiss();
 
-        const modal = await this.modalCtrl.create({
-            component: MapModalNavigationPage,
-            componentProps: {
-                'path': path,
-            },
-            cssClass: 'my-custom-modal-css',
-            backdropDismiss: true
-        });
-        return await modal.present();
     }
 
     getSomeClass(name) {
@@ -298,7 +289,7 @@ export class MapModalModalitaPage {
 
 
     async openStorageModal(path) {
-        this.closeModal(path)
+        this.closeModal()
         const modal = await this.modalCtrl.create({
             component: MapModalStoragePage,
             componentProps: {

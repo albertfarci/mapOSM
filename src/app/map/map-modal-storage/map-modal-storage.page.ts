@@ -129,12 +129,14 @@ export class MapModalStoragePage {
                     })
             })*/
 
-        this.closeModal()
+        this.openStorageModal()
     }
 
 
     async openStorageModal() {
         console.log(this.path)
+
+        this.closeModal()
         const modal = await this.modalCtrl.create({
             component: MapModalNavigationPage,
             componentProps: {
@@ -144,6 +146,5 @@ export class MapModalStoragePage {
             backdropDismiss: true
         });
         return await modal.present();
-
     }
 }
