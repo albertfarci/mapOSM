@@ -35,7 +35,7 @@ export class AppComponent {
         this.router.navigate(['/tabs/map']);
       }
 
-      if (window.location.pathname == "/tabs/home") {
+      if (window.location.pathname == "/tabs/map") {
         this.router.navigate(['/tabs/home']);
 
       }
