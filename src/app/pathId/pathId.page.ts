@@ -83,6 +83,7 @@ export class PathIdPage {
   pointB: Point
   observerIdRouter
   routerState
+  togglePoisNearToMe: boolean = true
 
   constructor(
     public plt: Platform,
@@ -140,7 +141,7 @@ export class PathIdPage {
       setTimeout(() => {
         this.map.invalidateSize()
         this.getLocationCoordinates()
-
+        this.addPOINearToMeButton()
         this.tracker = setInterval(() => {
 
           this.startTracking();
@@ -152,6 +153,24 @@ export class PathIdPage {
     }
 
 
+  }
+
+
+  addPOINearToMeButton() {
+
+    if (!document.getElementById("trail-sign")) {
+      L.easyButton('<div ><ion-icon name="trail-sign"></ion-icon></div>', () => {
+        this.displayPOINearToMe()
+
+      }, { "title": "trail-sign" }).addTo(this.map);
+    }
+
+
+  }
+
+
+  displayPOINearToMe() {
+    this.togglePoisNearToMe = !this.togglePoisNearToMe
   }
 
   displayPointA() {
@@ -264,7 +283,10 @@ export class PathIdPage {
 
           this.map.setView([resp.latitudine, resp.longitudine], 16);
 
-          this.getPoiNearToPoint(resp)
+          console.log(this.togglePoisNearToMe)
+          if (this.togglePoisNearToMe) {
+            this.getPoiNearToPoint(resp)
+          }
           //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
           //this.getPath(resp)
         })
