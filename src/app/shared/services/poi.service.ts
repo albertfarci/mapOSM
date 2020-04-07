@@ -4,29 +4,33 @@ import * as archeoSites from "../../../assets/jsonData/archeoSites.json";
 import * as gardens from "../../../assets/jsonData/gardens.json";
 import * as museums from "../../../assets/jsonData/museums.json";
 import * as restaurants from "../../../assets/jsonData/restaurants.json";
+import * as allPois from "../../../assets/jsonData/ristotrantiShoppingMonumentiMusei.json";
 
 
 @Injectable()
 export class PoiService {
 
-    getMonuments(){
+    getMonuments() {
         return JSON.stringify(monuments)
     }
 
-    getArcheoSites(){
+    getArcheoSites() {
         return JSON.stringify(archeoSites)
     }
 
-    getGardens(){
+    getGardens() {
         return JSON.stringify(gardens)
     }
 
-    getMuseums(){
+    getMuseums() {
         return JSON.stringify(museums)
     }
 
-    getRestaurants(){
+    getRestaurants() {
         return JSON.stringify(restaurants)
     }
 
+    getAllPois() {
+        return JSON.stringify(allPois)
+    }
 }

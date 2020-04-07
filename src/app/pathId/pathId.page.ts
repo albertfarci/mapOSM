@@ -12,6 +12,7 @@ import "leaflet-easybutton"
 import { Point } from '../shared/models/point.model';
 import { CurrentPointService } from '../shared/services/current-points.service';
 import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.page';
+import { PoiService } from '../shared/services/poi.service';
 
 @Component({
   selector: 'app-pathId',
@@ -93,7 +94,8 @@ export class PathIdPage {
     public dettaglioPreferitoService: DettaglioPreferitoService,
     private currentPointService: CurrentPointService,
     private _Activatedroute: ActivatedRoute,
-    public modalController: ModalController
+    public modalController: ModalController,
+    private poiService: PoiService
 
   ) {
   }
@@ -145,7 +147,7 @@ export class PathIdPage {
         this.tracker = setInterval(() => {
 
           this.startTracking();
-        }, 3000);
+        }, 5000);
       }, 2000);
 
       this.layerGroup = new LayerGroup();
@@ -162,6 +164,8 @@ export class PathIdPage {
       L.easyButton('<div ><ion-icon name="trail-sign"></ion-icon></div>', () => {
         this.displayPOINearToMe()
 
+
+
       }, { "title": "trail-sign" }).addTo(this.map);
     }
 
@@ -171,6 +175,29 @@ export class PathIdPage {
 
   displayPOINearToMe() {
     this.togglePoisNearToMe = !this.togglePoisNearToMe
+
+    if (this.togglePoisNearToMe) {
+      const allPoisthis = this.poiService.getAllPois()
+
+      JSON.parse(allPoisthis).default.rows.map(
+        x => {
+          console.log(x)
+          L.marker([x.lat, x.lon], { title: "Pois", icon: this.icons.greenIcon }).addTo(this.map)
+        }
+      )
+      //console.log(JSON.parse(allPoisthis).default.rows)
+    } else {
+      console.log("remove")
+      for (const property in this.map._layers) {
+        if (this.map._layers[property].options && this.map._layers[property].options.title) {
+          if (this.map._layers[property].options.title == "Pois") {
+
+            this.map.removeLayer(this.map._layers[property])
+          }
+        }
+      }
+    }
+
   }
 
   displayPointA() {
@@ -284,7 +311,7 @@ export class PathIdPage {
           this.map.setView([resp.latitudine, resp.longitudine], 16);
 
           console.log(this.togglePoisNearToMe)
-          if (this.togglePoisNearToMe) {
+          if (this.togglePoisNearToMe == false) {
             this.getPoiNearToPoint(resp)
           }
           //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
