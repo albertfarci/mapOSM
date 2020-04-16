@@ -62,7 +62,7 @@
             </app-map-display>
         </ion-row>
         <ion-row *ngIf="step==2" style="height: 12%;
-        background-color: #3F7288;" (click)="onAzioniRapide()">
+        background-color: #3F7288;">
             <!--
             <ion-col style="width: 100%;
                 font-size: 14px;
@@ -82,7 +82,7 @@
 
                 </ion-col>
 
-                <ion-col size="3">
+                <ion-col size="3" (click)="onAzioniRapide()">
                     <ion-icon style="width: 100%" src="../assets/release1/chevron-up.svg" size="large"></ion-icon>
                 </ion-col>
             </ion-row>

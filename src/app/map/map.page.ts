@@ -175,6 +175,8 @@ export class MapPage {
               () => {
                 this.optionsFilter = false
                 this.optionsEnabled()
+
+                this.setDisableButton()
               }
             )
           } else {
@@ -195,6 +197,7 @@ export class MapPage {
                               this.filterListService.setCurrentFilter(x.modalita_figlio[0])
 
                             }
+                            this.onAzioniRapide()
                           }
                         )
                       })
