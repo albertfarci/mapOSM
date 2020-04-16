@@ -28,22 +28,26 @@
                 <div class="w-100 map-input-container map-input-container-top">
                     <span class="map-input-icon"><img src="../../assets/release1/Oval.svg"> </span>
                     <div class="map-input display-flex">
-                        <input (click)="onInputSearch('A')" id="origin-input" class="controls flex-1"
-                            [(ngModel)]="pointA.title" type="text" placeholder="Da dove vuoi partire">
+                        <span (click)="onInputSearch('A')" style="
+                        font-size: 15px;
+                        flex: 1;">{{pointA.title}}</span>
                         <span (click)="remove('A')" class="remove">
                             <img src="../../assets/icons/cross-light.svg" alt="Remove Icon Light Color">
                         </span>
+
                     </div>
                 </div>
             </ion-row>
-
+            <!--
+                
+            -->
             <ion-row class="rowSearch">
                 <div class="w-100 map-input-container map-input-container-bottom">
-                    <span class="map-input-icon"><img src="../../assets/release1/OvalBlack.svg"
-                            alt="Current Location Icon"></span>
+                    <span class="map-input-icon"><img src="../../assets/release1/OvalBlack.svg"></span>
                     <div class="map-input display-flex">
-                        <input (click)="onInputSearch('B')" id="destination-input" [(ngModel)]="pointB.title"
-                            class="controls flex-1" type="text" placeholder="Dove vuoi arrivare">
+                        <span (click)="onInputSearch('B')" style="
+                        font-size: 15px;
+                        flex: 1;">{{pointB.title}}</span>
                         <span (click)="remove('B')" class="remove">
                             <img src="../../assets/icons/cross-light.svg" alt="Remove Icon Light Color">
                         </span>

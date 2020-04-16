@@ -42,14 +42,14 @@ export class CurrentPointService {
 
     deletePointA() {
         return new Promise((resolve, reject) => {
-            this.sourcePointA.next({ latitudine: "", longitudine: "", title: "" } as Point)
+            this.sourcePointA.next({ latitudine: "", longitudine: "", title: "Da dove vuoi partire" } as Point)
             resolve(true)
         })
     }
 
     deletePointB() {
         return new Promise((resolve, reject) => {
-            this.sourcePointB.next({ latitudine: "", longitudine: "", title: "" } as Point)
+            this.sourcePointB.next({ latitudine: "", longitudine: "", title: "Dove vuoi arrivare" } as Point)
             resolve(true)
         })
     }

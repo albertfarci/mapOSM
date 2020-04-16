@@ -23,8 +23,8 @@ export class MapPage {
 
   //refactor
   step = 1
-  pointA: Point = { title: "", latitudine: "", longitudine: "", abstract: "", img: null }
-  pointB: Point = { title: "", latitudine: "", longitudine: "", abstract: "", img: null }
+  pointA: Point = { title: "Da dove vuoi partire", latitudine: "", longitudine: "", abstract: "", img: null }
+  pointB: Point = { title: "Dove vuoi arrivare", latitudine: "", longitudine: "", abstract: "", img: null }
 
   unsubscribe$ = new Subject()
 
@@ -125,6 +125,13 @@ export class MapPage {
 
   onInputSearch(input) {
     //this.router.navigateByUrl('/tabs/search', { state: input })
+    console.log(input)
+    this.router.navigate(['/tabs/search', input]);
+  }
+
+  onInputSearchB(input) {
+    //this.router.navigateByUrl('/tabs/search', { state: input })
+    console.log(input)
     this.router.navigate(['/tabs/search', input]);
   }
 
