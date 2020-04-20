@@ -79,13 +79,16 @@ export class PathIdPage {
   markerA
   map: Map
 
-
+  allPoisthis
   //refactor
   pointA: Point
   pointB: Point
   observerIdRouter
   routerState
-  togglePoisNearToMe: boolean = true
+  toggleRestaurantNearToMe: boolean = true
+  toggleMonumentsNearToMe: boolean = true
+  toggleMuseumsNearToMe: boolean = true
+  toggleShopsNearToMe: boolean = true
 
   constructor(
     public plt: Platform,
@@ -103,6 +106,8 @@ export class PathIdPage {
 
 
   ionViewDidEnter() {
+
+    this.allPoisthis = this.poiService.getAllPois()
 
     this.currentPointService.currentPointB.subscribe(
       (data) => {
@@ -144,7 +149,7 @@ export class PathIdPage {
       setTimeout(() => {
         this.map.invalidateSize()
         this.getLocationCoordinates()
-        this.addPOINearToMeButton()
+        this.addButtonOverMap()
         this.tracker = setInterval(() => {
 
           this.startTracking();
@@ -155,22 +160,128 @@ export class PathIdPage {
       this.layerGroup.addTo(this.map);
     }
 
+  }
+
+  addButtonOverMap() {
+
+    this.addMonumentsNearToMeButton();
+    this.addMuseumsNearToMeButton();
+    this.addRestaurantNearToMeButton();
+    this.addShopsNearToMeButton();
 
   }
 
-
-  addPOINearToMeButton() {
+  addRestaurantNearToMeButton() {
 
     if (!document.getElementById("trail-sign")) {
-      L.easyButton('<div ><ion-icon name="trail-sign"></ion-icon></div>', () => {
-        this.displayPOINearToMe()
+      L.easyButton('<div ><ion-icon src="/assets/release1/restaurant.svg"></ion-icon></div>', () => {
 
+        this.toggleRestaurantNearToMe = !this.toggleRestaurantNearToMe
+
+        if (this.toggleRestaurantNearToMe) {
+
+          JSON.parse(this.allPoisthis).default.rows
+            .filter(
+              x => x.poi_subtype == "restaurant"
+            )
+            .map(
+              x => {
+                console.log(x)
+                L.marker([x.lat, x.lon], { title: "Pois", icon: this.icons.greenIcon }).addTo(this.map)
+              }
+            )
+
+        } else {
+          for (const property in this.map._layers) {
+            if (this.map._layers[property].options && this.map._layers[property].options.title) {
+              if (this.map._layers[property].options.title == "Pois") {
+
+                this.map.removeLayer(this.map._layers[property])
+              }
+            }
+          }
+        }
+
+      }, { "title": "trail-sign" }).addTo(this.map);
+    }
+  }
+
+  addMonumentsNearToMeButton() {
+
+    if (!document.getElementById("trail-sign")) {
+      L.easyButton('<div ><ion-icon src="/assets/release1/monument.svg"></ion-icon></div>', () => {
 
 
       }, { "title": "trail-sign" }).addTo(this.map);
     }
+  }
 
+  addMuseumsNearToMeButton() {
 
+    if (!document.getElementById("trail-sign")) {
+      L.easyButton('<div ><ion-icon src="/assets/release1/museum.svg"></ion-icon></div>', () => {
+        this.toggleMuseumsNearToMe = !this.toggleMuseumsNearToMe
+
+        if (this.toggleMuseumsNearToMe) {
+
+          JSON.parse(this.allPoisthis).default.rows
+            .filter(
+              x => x.poi_subtype == "museum"
+            )
+            .map(
+              x => {
+                console.log(x)
+                L.marker([x.lat, x.lon], { title: "Pois", icon: this.icons.greenIcon }).addTo(this.map)
+              }
+            )
+
+        } else {
+          for (const property in this.map._layers) {
+            if (this.map._layers[property].options && this.map._layers[property].options.title) {
+              if (this.map._layers[property].options.title == "Pois") {
+
+                this.map.removeLayer(this.map._layers[property])
+              }
+            }
+          }
+        }
+
+      }, { "title": "trail-sign" }).addTo(this.map);
+    }
+  }
+
+  addShopsNearToMeButton() {
+
+    if (!document.getElementById("trail-sign")) {
+      L.easyButton('<div ><ion-icon src="/assets/release1/SHOPPING.svg"></ion-icon></div>', () => {
+        this.toggleShopsNearToMe = !this.toggleShopsNearToMe
+
+        if (this.toggleShopsNearToMe) {
+
+          JSON.parse(this.allPoisthis).default.rows
+            .filter(
+              x => x.poi_type == "shop"
+            )
+            .map(
+              x => {
+                console.log(x)
+                L.marker([x.lat, x.lon], { title: "Pois", icon: this.icons.greenIcon }).addTo(this.map)
+              }
+            )
+
+        } else {
+          for (const property in this.map._layers) {
+            if (this.map._layers[property].options && this.map._layers[property].options.title) {
+              if (this.map._layers[property].options.title == "Pois") {
+
+                this.map.removeLayer(this.map._layers[property])
+              }
+            }
+          }
+        }
+
+      }, { "title": "trail-sign" }).addTo(this.map);
+    }
   }
 
 
@@ -312,9 +423,11 @@ export class PathIdPage {
           this.map.setView([resp.latitudine, resp.longitudine], 16);
 
           console.log(this.togglePoisNearToMe)
+          /** 
           if (this.togglePoisNearToMe == false) {
             this.getPoiNearToPoint(resp)
           }
+          */
           //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
           //this.getPath(resp)
         })
