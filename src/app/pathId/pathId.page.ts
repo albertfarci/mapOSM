@@ -13,6 +13,7 @@ import { Point } from '../shared/models/point.model';
 import { CurrentPointService } from '../shared/services/current-points.service';
 import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.page';
 import { PoiService } from '../shared/services/poi.service';
+import { MapModalStartPage } from './map-modal-start/map-modal-start.page';
 
 @Component({
   selector: 'app-pathId',
@@ -215,7 +216,7 @@ export class PathIdPage {
 
       this.map.setView([this.pointA.latitudine, this.pointA.longitudine], 16)
 
-
+      this.onStartNavigaitonPopup()
     }
 
   }
@@ -347,6 +348,15 @@ export class PathIdPage {
   async onAzioniRapide() {
     const modal = await this.modalController.create({
       component: MapModalModalitaPage
+    });
+    return await modal.present();
+  }
+
+
+  async onStartNavigaitonPopup() {
+    const modal = await this.modalController.create({
+      component: MapModalStartPage,
+      cssClass: 'my-custom-modal-css'
     });
     return await modal.present();
   }

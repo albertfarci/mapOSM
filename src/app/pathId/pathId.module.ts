@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PathIdPage } from './pathId.page';
 import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.page';
+import { MapModalStartPage } from './map-modal-start/map-modal-start.page';
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.pa
     FormsModule,
     RouterModule.forChild([{ path: '', component: PathIdPage }])
   ],
-  entryComponents: [MapModalModalitaPage],
-  declarations: [PathIdPage, MapModalModalitaPage]
+  entryComponents: [MapModalModalitaPage, MapModalStartPage],
+  declarations: [PathIdPage, MapModalModalitaPage, MapModalStartPage]
 })
 export class PathIdPageModule { }

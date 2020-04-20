@@ -1,0 +1,32 @@
+<div>
+
+    <ion-header translucent>
+        <ion-toolbar>
+            <ion-buttons slot="end">
+                <ion-button (click)="closeModal()">Close</ion-button>
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-header>
+    <ion-content fullscreen>
+        <ion-grid style="
+        font-size: 24px;
+        text-align: center;">
+            <ion-row>
+                <ion-col>
+                    <ion-label>
+                        Il percorso è stato ricalcolato dalla posizione corrente
+                    </ion-label>
+                </ion-col>
+            </ion-row>
+
+            <ion-row style="margin-top: 5%;">
+                <ion-col>
+
+                    <ion-col>
+                        <ion-button (click)="closeModal()" color="primary" style="width: 60%;">Procedi</ion-button>
+                    </ion-col>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-content>
+</div>
