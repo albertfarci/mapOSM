@@ -3,7 +3,8 @@ import { PoiService } from 'src/app/shared/services/poi.service';
 import { GeoLocationService } from 'src/app/shared/services/geoLocation.service';
 import { IonSearchbar } from '@ionic/angular';
 import { CurrentStepService } from 'src/app/shared/services/current-step.services';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-map-search',
@@ -19,16 +20,36 @@ export class MapSearchComponent implements OnInit {
 
   start = []
   searchInput: string
+  routerState
+  observerIdRouter
 
   constructor(private router: Router,
     private poiService: PoiService,
     public geoLocationService: GeoLocationService,
-    private currentStepService: CurrentStepService) { }
+    private currentStepService: CurrentStepService,
+    private _Activatedroute: ActivatedRoute) { }
 
   ngOnInit() {
     this.searchInput = ""
     this.start = []
     setTimeout(() => this.searchbar.setFocus(), 500);
+
+
+    this.observerIdRouter = this._Activatedroute.paramMap.subscribe(params => {
+      if (params) {
+        if (params.get("id") == "A") {
+          this.routerState = "/assets/release1/Oval.svg"
+        } else {
+          this.routerState = "/assets/release1/OvalBlack.svg"
+        }
+
+      }
+    });
+  }
+
+
+  ngOnDestroy() {
+    this.observerIdRouter.unsubscribe()
   }
 
   getLocationCoordinates() {
@@ -66,6 +87,7 @@ export class MapSearchComponent implements OnInit {
           if (x.label.includes(this.searchInput)) this.start.push(x)
         })
     }*/
+    /*
     this.start = []
     JSON.parse(this.poiService.getMonuments())
       .default
@@ -78,7 +100,24 @@ export class MapSearchComponent implements OnInit {
       .map(x => {
         if (x.label.includes(this.searchInput)) this.start.push(x)
       })
+      */
+    console.log(event)
+    this.poiService.getPoisByString(this.searchInput).
+      subscribe(
+        data => { this.addPoistToList(data.features) }
+      )
 
+
+  }
+
+  addPoistToList = (poisList) => {
+    this.start = []
+    poisList.map(
+      x => {
+        console.log(x);
+        this.start.push(x)
+      }
+    )
   }
 
   onSearchByKeywordCancel(event) {
@@ -92,7 +131,8 @@ export class MapSearchComponent implements OnInit {
     this.searchInput = ""
     if (poi) {
 
-      this.poi.emit(poi);
+      this.poi.emit({ lat: poi.geometry.coordinates[1], long: poi.geometry.coordinates[0], label: poi.properties.name, img: "", abstract: "" })
+
     } else {
       this.currentStepService.setStep(3)
       this.poi.emit({ lat: "", long: "", label: "", img: "", abstract: "" });

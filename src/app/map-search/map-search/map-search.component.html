@@ -25,14 +25,13 @@
         </ion-label>
       </ion-item>
       <ion-item *ngFor="let poi of start; let i = index;" style="    width: 100%;">
-        <ion-thumbnail slot="start">
-          <img *ngIf="!poi.image" src="/assets/bb/icon3-m.png" alt="" />
-          <img *ngIf="poi.image" class="image_poi" src="{{poi.image}}" alt="" />
+        <ion-thumbnail slot="start" style="text-align: center;">
+          <img class="image_poi" src="{{routerState}}" alt="" />
         </ion-thumbnail>
         <ion-label (click)="selectPOI(poi)">
-          <h3 style="font-weight: bold;">{{poi | searchLabel}}</h3>
-          <p>Cordinate</p>
-          <p style="font-weight: bold;">{{poi.lat}},{{poi.long}}</p>
+          <h3 style="font-weight: bold;">{{poi.properties.name}}</h3>
+          <p style="font-weight: bold;">{{poi.properties.city}}</p>
+          <p style="font-weight: bold;">{{poi.properties.osm_value | searchLabel}}</p>
         </ion-label>
       </ion-item>
       <!--
