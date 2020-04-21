@@ -284,34 +284,6 @@ export class PathIdPage {
     }
   }
 
-
-  displayPOINearToMe() {
-    this.togglePoisNearToMe = !this.togglePoisNearToMe
-
-    if (this.togglePoisNearToMe) {
-      const allPoisthis = this.poiService.getAllPois()
-
-      JSON.parse(allPoisthis).default.rows.map(
-        x => {
-          console.log(x)
-          L.marker([x.lat, x.lon], { title: "Pois", icon: this.icons.greenIcon }).addTo(this.map)
-        }
-      )
-      //console.log(JSON.parse(allPoisthis).default.rows)
-    } else {
-      console.log("remove")
-      for (const property in this.map._layers) {
-        if (this.map._layers[property].options && this.map._layers[property].options.title) {
-          if (this.map._layers[property].options.title == "Pois") {
-
-            this.map.removeLayer(this.map._layers[property])
-          }
-        }
-      }
-    }
-
-  }
-
   displayPointA() {
     if (this.pointA) {
 
@@ -422,7 +394,6 @@ export class PathIdPage {
 
           this.map.setView([resp.latitudine, resp.longitudine], 16);
 
-          console.log(this.togglePoisNearToMe)
           /** 
           if (this.togglePoisNearToMe == false) {
             this.getPoiNearToPoint(resp)
