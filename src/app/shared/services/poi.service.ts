@@ -40,6 +40,6 @@ export class PoiService {
 
     getPoisByString(searchString: string) {
         console.log(searchString)
-        return this.http.get<any>(`http://156.148.14.188:8080/v1/requestTrip/ricerca_punti/?q=` + searchString)
+        return this.http.get<any>(`https://dss03.crs4.it/v1/requestTrip/ricerca_punti/?q=` + searchString)
     }
 }
