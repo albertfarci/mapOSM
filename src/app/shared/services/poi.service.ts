@@ -8,9 +8,14 @@ import * as allPois from "../../../assets/jsonData/ristotrantiShoppingMonumentiM
 
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class PoiService {
+
+
+    private readonly currentPOIsSource = new BehaviorSubject<any>(null)
+    currentPOIs = this.currentPOIsSource.asObservable()
 
     constructor(private http: HttpClient) { }
 
@@ -38,8 +43,11 @@ export class PoiService {
         return JSON.stringify(allPois)
     }
 
+    setCurrentPois(poiList) {
+        this.currentPOIsSource.next(poiList);
+    }
+
     getPoisByString(searchString: string) {
-        console.log(searchString)
         return this.http.get<any>(`https://dss03.crs4.it/v1/requestTrip/ricerca_punti/?q=` + searchString)
     }
 }

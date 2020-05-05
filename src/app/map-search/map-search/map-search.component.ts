@@ -38,9 +38,15 @@ export class MapSearchComponent implements OnInit {
     this.observerIdRouter = this._Activatedroute.paramMap.subscribe(params => {
       if (params) {
         if (params.get("id") == "A") {
-          this.routerState = "/assets/release1/Oval.svg"
+          this.routerState = {
+            icon: "/assets/release1/Oval.svg",
+            id: params.get("id")
+          }
         } else {
-          this.routerState = "/assets/release1/OvalBlack.svg"
+          this.routerState = {
+            icon: "/assets/release1/OvalBlack.svg",
+            id: params.get("id")
+          }
         }
 
       }
@@ -54,7 +60,10 @@ export class MapSearchComponent implements OnInit {
 
   getLocationCoordinates() {
 
-    this.geoLocationService.checkGPSPermission()
+    this.router.navigateByUrl('/tabs/map')
+    this.geoLocationService.getLocationCoordinatesSetup()
+    //this.geoLocationService.checkGPSPermission()
+    /*
     this.geoLocationService.getLocationCoordinates()
       .subscribe(
         resp => {
@@ -63,7 +72,7 @@ export class MapSearchComponent implements OnInit {
           //this.currentPointsService.setPointA({ latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente", img: "", abstract: "" })
           //this.setPointA({ latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente" })
 
-        })
+        })*/
   }
 
   onSearchByKeyword(event: any) {
@@ -101,7 +110,6 @@ export class MapSearchComponent implements OnInit {
         if (x.label.includes(this.searchInput)) this.start.push(x)
       })
       */
-    console.log(event)
     this.poiService.getPoisByString(this.searchInput).
       subscribe(
         data => { this.addPoistToList(data.features) }
@@ -114,7 +122,6 @@ export class MapSearchComponent implements OnInit {
     this.start = []
     poisList.map(
       x => {
-        console.log(x);
         this.start.push(x)
       }
     )

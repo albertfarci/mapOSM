@@ -12,6 +12,8 @@ import { CurrentPointService } from 'src/app/shared/services/current-points.serv
 import { Point } from 'src/app/shared/models/point.model';
 import { FilterListService } from 'src/app/shared/services/filters.service';
 import { CurrentStepService } from 'src/app/shared/services/current-step.services';
+import { Subject, ReplaySubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-map-display',
@@ -64,6 +66,9 @@ export class MapDisplayComponent implements OnInit {
     })
   }
 
+
+  unsubscribe$ = new ReplaySubject(1)
+
   constructor(
     public plt: Platform,
     public geoLocationService: GeoLocationService,
@@ -75,7 +80,7 @@ export class MapDisplayComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.currentPointsService.currentPointA.subscribe(
+    this.currentPointsService.currentPointA.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data) => {
         if (data) {
           if (data.latitudine != "" && data.longitudine != "") {
@@ -98,7 +103,7 @@ export class MapDisplayComponent implements OnInit {
 
       }
     )
-    this.currentPointsService.currentPointB.subscribe(
+    this.currentPointsService.currentPointB.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data) => {
         if (data) {
           if (data.latitudine != "" && data.longitudine != "") {
@@ -122,7 +127,7 @@ export class MapDisplayComponent implements OnInit {
 
       }
     )
-    this.pathService.selectedPath.subscribe(
+    this.pathService.selectedPath.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data) => {
         if (data) {
           this.pathFilter = data
@@ -134,50 +139,41 @@ export class MapDisplayComponent implements OnInit {
     )
 
 
-    this.currentStepService.currentStep.subscribe(
+    this.currentStepService.currentStep.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data) => {
         this.currentStep = data
 
 
       }
     )
-    /*
-      this.filterListService.currentFilter.subscribe(
-        (data) => {
-          if (data) {
-            this.pathFilter = data.modalita_figlio
-          } else {
-            this.pathFilter = []
-          }
-          this.addPaths()
-        }
-      )
-      */
     this.initMap()
   }
 
 
   initMap() {
 
-    this.map = new L.Map('map-page').setView([39.21834898953833, 9.1126227435], 16);
+    if (this.map == undefined) {
+      this.map = new L.Map('map-page').setView([39.21834898953833, 9.1126227435], 16);
 
-    //L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
+      //L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
 
-    setTimeout(() => { this.map.invalidateSize() }, 1000);
+      setTimeout(() => { this.map.invalidateSize() }, 1000);
 
-    this.layerGroup = new LayerGroup();
-    this.layerGroup.addTo(this.map);
+      this.layerGroup = new LayerGroup();
+      this.layerGroup.addTo(this.map);
 
-    this.addGeolocationButton()
-    this.addResetPoints()
+      this.addGeolocationButton()
+      this.addResetPoints()
 
-    this.map.on('click', (e) => {
+      this.map.on('click', (e) => {
 
-      if (this.currentStep == 3) {
-        this.onMapClick(e)
-      }
-    });
+        if (this.currentStep == 3) {
+          this.onMapClick(e)
+        }
+      });
+
+    }
 
 
   }
@@ -219,7 +215,7 @@ export class MapDisplayComponent implements OnInit {
           if (x.filter.spunta) {
 
             this.pathService.getPath(pointStart, pointEnd, x.filter.valore)
-              .subscribe(
+              .pipe(takeUntil(this.unsubscribe$)).subscribe(
                 posts => {
                   let newGeometry = posts.geometry.replace("[", "");
                   newGeometry = newGeometry.replace("]", "");
@@ -331,7 +327,7 @@ export class MapDisplayComponent implements OnInit {
       L.marker([item.latitudine, item.longitudine], { title: "Punto B", icon: this.icons.puntoB })
         .bindPopup(customPopup)
         .on('click', (x => {
-
+          console.log("Click")
           this.detail.emit()
           this.pointDetail = this.pointsPath[1]
         })).addTo(this.map).openPopup()
@@ -428,7 +424,10 @@ export class MapDisplayComponent implements OnInit {
 
     if (!document.getElementById("locate")) {
       L.easyButton('<div > <ion-icon name="locate" id="locate"></ion-icon> </div>', () => {
-        this.getLocationCoordinates()
+
+        this.geoLocationService.getLocationCoordinatesSetup()
+        //this.geoLocationService.checkGPSPermission()
+        //this.getLocationCoordinates()
 
       }, { "title": "locate" }).addTo(this.map);
     }
@@ -488,15 +487,19 @@ export class MapDisplayComponent implements OnInit {
 
 
     this.geoLocationService.checkGPSPermission()
-    this.geoLocationService.getLocationCoordinates()
+    /*this.geoLocationService.getLocationCoordinates()
       .subscribe(
         resp => {
           this.currentPointsService.setPointA({ latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente", img: "", abstract: "" })
           //this.setPointA({ latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente" })
 
-        })
+        })*/
   }
 
+  ngOnDestroy() {
+    this.unsubscribe$.next(true)
+    this.unsubscribe$.complete()
+  }
 
 }
 

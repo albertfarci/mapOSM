@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Path } from '../models/path.model';
 import { Observable, of, BehaviorSubject, ReplaySubject } from 'rxjs';
 
+import L from 'leaflet'
+import "leaflet-geometryutil"
+
 @Injectable()
 export class PathService {
 
@@ -83,4 +86,14 @@ export class PathService {
     return this.tmpSelectedPath
   }
 
+
+  isPointOnLine(point, path) {
+    //const current = L.latLng(point.longitudine, point.latitudine);
+    for (var i = 0; i < path.length - 1; i++) {
+      if (L.GeometryUtil.belongsSegment(L.latLng(point.longitudine, point.latitudine), L.latLng(path[i][0], path[i][1]), L.latLng(path[i + 1][0], path[i + 1][1]), 0.3)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

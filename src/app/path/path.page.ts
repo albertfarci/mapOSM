@@ -7,6 +7,8 @@ import { PreferitiService } from '../shared/services/preferiti.service';
 import { DettaglioPreferitoService } from '../shared/services/dettaglioPreferito.service';
 import { StorageService } from '../shared/services/storage.service';
 import { FilterListService } from '../shared/services/filters.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-path',
@@ -22,7 +24,7 @@ export class PathPage {
   private optionsFilter: boolean = false;
   paths: any
   pathsToDisplay: any
-
+  unsubscribe$ = new Subject()
   constructor(
     private router: Router,
     private preferitiService: PreferitiService,
@@ -35,11 +37,16 @@ export class PathPage {
 
     this.pathsSaved = []
 
-    this.filterListService.filterList.subscribe(
+    this.filterListService.filterList.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data) => {
         this.paths = data
       }
     )
+  }
+
+  ionViewDidLeave() {
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
   }
 
   optionsEnabled(): boolean {

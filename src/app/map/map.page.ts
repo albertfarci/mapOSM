@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, Platform, ModalController } from '@ionic/angular';
 import { FilterListService } from '../shared/services/filters.service';
@@ -8,8 +8,9 @@ import { MapModalPage } from './map-modal/map-modal.page';
 import { CurrentStepService } from '../shared/services/current-step.services';
 import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.page';
 import { PathService } from '../shared/services/path.service';
-import { Subject } from 'rxjs';
+import { Subject, ReplaySubject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { GeoLocationService } from '../shared/services/geoLocation.service';
 
 
 
@@ -26,7 +27,9 @@ export class MapPage {
   pointA: Point = { title: "Da dove vuoi partire", latitudine: "", longitudine: "", abstract: "", img: null }
   pointB: Point = { title: "Dove vuoi arrivare", latitudine: "", longitudine: "", abstract: "", img: null }
 
-  unsubscribe$ = new Subject()
+  private unsubscribe$: ReplaySubject<boolean> = new ReplaySubject(1);
+
+  private subscriptions: Subscription[] = []
 
   //
   paths
@@ -45,71 +48,90 @@ export class MapPage {
     private currentPointService: CurrentPointService,
     private currentStepService: CurrentStepService,
     public modalController: ModalController,
+    public geoLocationService: GeoLocationService,
     public pathService: PathService) {
 
-    this.filterListService.filterList.subscribe(
-      (data) => {
-        this.paths = data
-      }
+    this.subscriptions.push(
+      this.filterListService.filterList.subscribe(
+        (data) => {
+          this.paths = data
+        }
+      )
+
     )
+
+    console.log("constr")
   }
 
   ionViewDidEnter() {
-
-    this.plt.ready().then(() => {
-
+    console.log(this.unsubscribe$)
+    this.subscriptions.push(
       this.currentPointService.currentPointA
-        .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           (data) => {
+            console.log(data)
             if (data) this.pointA = data
           }
-        )
-      this.currentPointService.currentPointB
-        .pipe(takeUntil(this.unsubscribe$)).subscribe(
-          (data) => {
-            if (data) this.pointB = data
-          }
-        )
-      this.currentStepService.currentStep
-        .pipe(takeUntil(this.unsubscribe$)).subscribe(
-          (data) => {
-            this.step = data
-            if (data == 2) {
-              document.getElementById("row-map-display").style.height = "88%"
-            }
-            if (data == 3) {
-              document.getElementById("row-map-display").style.height = "100%"
-            }
-            if (data == 1) {
-              document.getElementById("row-map-display").style.height = "80%"
-            }
-          }
-        )
-      /*
-   this.sqlite.create({
-    name: 'filters.db',
-    location: 'default'
-  })
-    .then((db: SQLiteObject) => {
-      db.executeSql(`DROP TABLE paths`,[])
-      .then((tableInserted)=>{
-        this.toast.show("TABLE DROPPED", '3000', 'center').subscribe(
-          toast => {
-            console.log(toast);
-        })
-      })
-    })*/
+        ))
+    this.subscriptions.push(
+      this.currentPointService.currentPointB.subscribe(
+        (data) => {
+          if (data) this.pointB = data
+        }
+      )
 
-      this.filterListService.filterList
-        .pipe(takeUntil(this.unsubscribe$)).subscribe(
-          (data) => {
-            this.paths = data
+    )
+
+    this.subscriptions.push(
+      this.currentStepService.currentStep.subscribe(
+        (data) => {
+          this.step = data
+          if (data == 2) {
+            document.getElementById("row-map-display").style.height = "88%"
           }
-        )
+          if (data == 3) {
+            document.getElementById("row-map-display").style.height = "100%"
+          }
+          if (data == 1) {
+            document.getElementById("row-map-display").style.height = "80%"
+          }
+        }
+      )
+    )
 
+    this.subscriptions.push(
+      this.geoLocationService.currentPosition.subscribe(
+        (data) => {
+          if (data) {
+            console.log(data)
+            this.currentPointService.setPointA(data)
+          }
+        }
+      )
+    )
 
-    });
+    this.subscriptions.push(
+      this.geoLocationService.currentPosition.subscribe(
+        (data) => {
+          if (data) {
+            console.log(data)
+            this.currentPointService.setPointA(data)
+          }
+        }
+      )
+    )
+
+    this.subscriptions.push(
+      this.geoLocationService.currentPosition.subscribe(
+        (data) => {
+          if (data) {
+            console.log(data)
+            this.currentPointService.setPointA(data)
+          }
+        }
+      )
+    )
+
   }
 
   remove(removeItem) {
@@ -124,14 +146,10 @@ export class MapPage {
   }
 
   onInputSearch(input) {
-    //this.router.navigateByUrl('/tabs/search', { state: input })
-    console.log(input)
     this.router.navigate(['/tabs/search', input]);
   }
 
   onInputSearchB(input) {
-    //this.router.navigateByUrl('/tabs/search', { state: input })
-    console.log(input)
     this.router.navigate(['/tabs/search', input]);
   }
 
@@ -254,6 +272,7 @@ export class MapPage {
       }
     });
     return await modal.present();*/
+    console.log("onDetail")
     this.currentStepService.setStep(2).then(
       (success) => {
       }
@@ -268,8 +287,15 @@ export class MapPage {
     return await modal.present();
   }
 
-  ionViewDidLeave() {
-    this.unsubscribe$.next()
+  ionViewWillLeave() {
+    console.log("ionViewWillLeave")
+    this.unsubscribe$.next(true)
+    this.subscriptions.forEach(subscription => subscription.unsubscribe())
+  }
+
+  ngOnDestroy() {
+    console.log("ngOnDestroy")
+    this.unsubscribe$.next(true)
     this.unsubscribe$.complete()
   }
 

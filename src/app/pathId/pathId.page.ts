@@ -14,6 +14,9 @@ import { CurrentPointService } from '../shared/services/current-points.service';
 import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.page';
 import { PoiService } from '../shared/services/poi.service';
 import { MapModalStartPage } from './map-modal-start/map-modal-start.page';
+import { MapModalRicalcoloPage } from './map-modal-ricalcolo/map-modal-ricalcolo.page';
+import { takeUntil } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pathId',
@@ -43,22 +46,22 @@ export class PathIdPage {
       popupAnchor: [0, -20]
     }),
     monument: icon({
-      iconUrl: '/assets/release1/monument.svg',
+      iconUrl: '/assets/release1/pinMonumenti.svg',
       iconSize: [25, 25],
       popupAnchor: [0, -20]
     }),
     museum: icon({
-      iconUrl: '/assets/release1/museum.svg',
+      iconUrl: '/assets/release1/pinMusei.svg',
       iconSize: [25, 25],
       popupAnchor: [0, -20]
     }),
     restaurant: icon({
-      iconUrl: '/assets/release1/restaurant.svg',
+      iconUrl: '/assets/release1/pinRistoranti.svg',
       iconSize: [25, 25],
       popupAnchor: [0, -20]
     }),
     shop: icon({
-      iconUrl: '/assets/release1/shop.svg',
+      iconUrl: '/assets/release1/pinShopping.svg',
       iconSize: [25, 25],
       popupAnchor: [0, -20]
     }),
@@ -79,17 +82,21 @@ export class PathIdPage {
   markerA
   map: Map
 
+  path = []
   allPoisthis
   //refactor
   pointA: Point
   pointB: Point
   observerIdRouter
   routerState
-  toggleRestaurantNearToMe: boolean = true
-  toggleMonumentsNearToMe: boolean = true
-  toggleMuseumsNearToMe: boolean = true
-  toggleShopsNearToMe: boolean = true
+  toggleRestaurantNearToMe: boolean = false
+  toggleMonumentsNearToMe: boolean = false
+  toggleMuseumsNearToMe: boolean = false
+  toggleShopsNearToMe: boolean = false
 
+  unsubscribe$ = new Subject()
+
+  private subscriptions: Subscription[] = []
   constructor(
     public plt: Platform,
     public router: Router,
@@ -109,38 +116,100 @@ export class PathIdPage {
 
     this.allPoisthis = this.poiService.getAllPois()
 
-    this.currentPointService.currentPointB.subscribe(
-      (data) => {
-        if (data) this.pointB = data
 
-        //this.getPath()
-      }
+    this.subscriptions.push(
+      this.currentPointService.currentPointA.subscribe(
+        (data) => {
+          if (data) {
+            if (data != this.pointA && this.map) {
+              this.pointA = data
+              //this.onStartNavigaitonPopup()
+              this.getPath()
+            } else {
+
+              this.pointA = data
+            }
+
+          }
+
+          //if (this.pointA && this.pointB) this.getPath()
+
+          //this.getPath()
+        }
+      )
     )
-    this.observerIdRouter = this._Activatedroute.paramMap.subscribe(params => {
-      if (params) {
-        this.routerState = params.get("id")
-      }
-    });
+    this.subscriptions.push(
+      this.currentPointService.currentPointB.subscribe(
+        (data) => {
+          if (data) {
+            this.pointB = data
+          }
+          //this.getPath()
+        }
+      )
 
-    this.pathService.poisNearToPoint.subscribe(
-      (data) => {
-        console.log(data)
-        if (data) this.start = data
-      }
     )
 
-    this.geoLocationService.checkGPSPermission()
+    this.subscriptions.push(
+      this.observerIdRouter = this._Activatedroute.paramMap.subscribe(params => {
+        if (params) {
+          this.routerState = params.get("id")
+        }
+      })
+    )
+
+
+
+    this.subscriptions.push(
+      this.geoLocationService.currentPosition.subscribe(
+        resp => {
+          if (resp) {
+
+
+            if (this.map) {
+
+              for (const property in this.map._layers) {
+                if (this.map._layers[property].options && this.map._layers[property].options.title) {
+                  if (this.map._layers[property].options.title == "PC" || this.map._layers[property].options.title == "Shadow") {
+                    this.map.removeLayer(this.map._layers[property])
+
+                  }
+                }
+              }
+
+
+              L.marker([resp.latitudine, resp.longitudine], { title: "PC", icon: this.icons.pointPC }).addTo(this.map)
+              L.marker([resp.latitudine, resp.longitudine], { title: "Shadow", icon: this.icons.shadowPC }).addTo(this.map)
+
+              this.map.setView([resp.latitudine, resp.longitudine], 16);
+              if (this.path.length > 0) {
+                if (!this.pathService.isPointOnLine(resp, this.path)) {
+                  this.onRicalcoloPopup()
+                }
+              }
+            }
+          }
+        }
+      )
+    )
+
+
     this.initMap()
   }
 
   ionViewDidLeave() {
     clearInterval(this.tracker)
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
+    this.subscriptions.forEach(sub => sub.unsubscribe())
     this.observerIdRouter.unsubscribe()
   }
 
   initMap() {
 
-    if (!this.map) {
+
+
+    if (this.map == undefined) {
 
       this.map = new Map('map-pathId').setView([39.21834898953833, 9.1126227435], 12.5);
       //L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
@@ -148,12 +217,12 @@ export class PathIdPage {
 
       setTimeout(() => {
         this.map.invalidateSize()
-        this.getLocationCoordinates()
+        //this.getLocationCoordinates()
+        //this.geoLocationService.getLocationCoordinatesSetup()
+        //this.onStartNavigaitonPopup()
+        this.getPath()
+        //this.geoLocationService.checkGPSPermission()
         this.addButtonOverMap()
-        this.tracker = setInterval(() => {
-
-          this.startTracking();
-        }, 5000);
       }, 2000);
 
       this.layerGroup = new LayerGroup();
@@ -161,6 +230,7 @@ export class PathIdPage {
     }
 
   }
+
 
   addButtonOverMap() {
 
@@ -174,11 +244,13 @@ export class PathIdPage {
   addRestaurantNearToMeButton() {
 
     if (!document.getElementById("trail-sign")) {
-      L.easyButton('<div ><ion-icon src="/assets/release1/restaurant.svg"></ion-icon></div>', () => {
+      L.easyButton('<div ><ion-icon src="/assets/release1/ristoranti.svg"></ion-icon></div>', () => {
 
         this.toggleRestaurantNearToMe = !this.toggleRestaurantNearToMe
 
         if (this.toggleRestaurantNearToMe) {
+
+          const poisList = [];
 
           JSON.parse(this.allPoisthis).default.rows
             .filter(
@@ -186,15 +258,17 @@ export class PathIdPage {
             )
             .map(
               x => {
-                console.log(x)
-                L.marker([x.lat, x.lon], { title: "Pois", icon: this.icons.greenIcon }).addTo(this.map)
+                poisList.push(x)
+                L.marker([x.lat, x.lon], { title: "restaurant", icon: this.icons.restaurant }).addTo(this.map)
               }
             )
+
+          this.poiService.setCurrentPois(poisList)
 
         } else {
           for (const property in this.map._layers) {
             if (this.map._layers[property].options && this.map._layers[property].options.title) {
-              if (this.map._layers[property].options.title == "Pois") {
+              if (this.map._layers[property].options.title == "restaurant") {
 
                 this.map.removeLayer(this.map._layers[property])
               }
@@ -209,7 +283,7 @@ export class PathIdPage {
   addMonumentsNearToMeButton() {
 
     if (!document.getElementById("trail-sign")) {
-      L.easyButton('<div ><ion-icon src="/assets/release1/monument.svg"></ion-icon></div>', () => {
+      L.easyButton('<div ><ion-icon src="/assets/release1/monumenti.svg"></ion-icon></div>', () => {
 
 
       }, { "title": "trail-sign" }).addTo(this.map);
@@ -219,10 +293,12 @@ export class PathIdPage {
   addMuseumsNearToMeButton() {
 
     if (!document.getElementById("trail-sign")) {
-      L.easyButton('<div ><ion-icon src="/assets/release1/museum.svg"></ion-icon></div>', () => {
+      L.easyButton('<div ><ion-icon src="/assets/release1/MUSEI.svg"></ion-icon></div>', () => {
         this.toggleMuseumsNearToMe = !this.toggleMuseumsNearToMe
 
         if (this.toggleMuseumsNearToMe) {
+
+          const poisList = [];
 
           JSON.parse(this.allPoisthis).default.rows
             .filter(
@@ -230,15 +306,17 @@ export class PathIdPage {
             )
             .map(
               x => {
-                console.log(x)
-                L.marker([x.lat, x.lon], { title: "Pois", icon: this.icons.greenIcon }).addTo(this.map)
+                poisList.push(x)
+                L.marker([x.lat, x.lon], { title: "museum", icon: this.icons.museum }).addTo(this.map)
               }
             )
+
+          this.poiService.setCurrentPois(poisList)
 
         } else {
           for (const property in this.map._layers) {
             if (this.map._layers[property].options && this.map._layers[property].options.title) {
-              if (this.map._layers[property].options.title == "Pois") {
+              if (this.map._layers[property].options.title == "museum") {
 
                 this.map.removeLayer(this.map._layers[property])
               }
@@ -257,22 +335,23 @@ export class PathIdPage {
         this.toggleShopsNearToMe = !this.toggleShopsNearToMe
 
         if (this.toggleShopsNearToMe) {
-
+          const poisList = [];
           JSON.parse(this.allPoisthis).default.rows
             .filter(
               x => x.poi_type == "shop"
             )
             .map(
               x => {
-                console.log(x)
-                L.marker([x.lat, x.lon], { title: "Pois", icon: this.icons.greenIcon }).addTo(this.map)
+                poisList.push(x)
+                L.marker([x.lat, x.lon], { title: "shop", icon: this.icons.shop }).addTo(this.map)
               }
             )
+          this.poiService.setCurrentPois(poisList)
 
         } else {
           for (const property in this.map._layers) {
             if (this.map._layers[property].options && this.map._layers[property].options.title) {
-              if (this.map._layers[property].options.title == "Pois") {
+              if (this.map._layers[property].options.title == "shop") {
 
                 this.map.removeLayer(this.map._layers[property])
               }
@@ -284,41 +363,36 @@ export class PathIdPage {
     }
   }
 
+
   displayPointA() {
     if (this.pointA) {
 
-      for (const property in this.map._layers) {
-        if (this.map._layers[property].options && this.map._layers[property].options.title) {
-          if (this.map._layers[property].options.title == "Punto A") {
-            this.map._layers[property].setLatLng([this.pointA.latitudine, this.pointA.longitudine]).addTo(this.map)
+      if (this.map) {
+        for (const property in this.map._layers) {
+          if (this.map._layers[property].options && this.map._layers[property].options.title) {
+            if (this.map._layers[property].options.title == "Punto A") {
+
+              this.map.removeLayer(this.map._layers[property])
+            }
           }
         }
+
+        L.marker([this.pointA.latitudine, this.pointA.longitudine], { title: "Punto A", icon: this.icons.puntoA }).addTo(this.map)
+
+        //this.map.setView([this.pointA.latitudine, this.pointA.longitudine], 16)
       }
 
-      L.marker([this.pointA.latitudine, this.pointA.longitudine], { title: "Punto A", icon: this.icons.puntoA }).addTo(this.map)
-
-      this.map.setView([this.pointA.latitudine, this.pointA.longitudine], 16)
-
-      this.onStartNavigaitonPopup()
     }
 
   }
 
   displayPointB() {
 
-    console.log("display B")
     if (this.pointB) {
 
-      for (const property in this.map._layers) {
-        if (this.map._layers[property].options && this.map._layers[property].options.title) {
-          if (this.map._layers[property].options.title == "Punto B") {
-            this.map._layers[property].setLatLng([this.pointB.latitudine, this.pointB.longitudine]).addTo(this.map)
-          }
-        }
-      }
       L.marker([this.pointB.latitudine, this.pointB.longitudine], { title: "Punto B", icon: this.icons.puntoB }).addTo(this.map)
 
-      this.map.setView([this.pointB.latitudine, this.pointB.longitudine], 16)
+      //this.map.setView([this.pointB.latitudine, this.pointB.longitudine], 16)
     }
 
   }
@@ -327,12 +401,9 @@ export class PathIdPage {
     /*
     
         */
+    this.displayPointA()
+    this.displayPointB()
     if (this.pointA && this.pointB) {
-
-      this.map.fitBounds([
-        [this.pointB.latitudine, this.pointB.longitudine],
-        [this.pointA.latitudine, this.pointA.longitudine]
-      ], { padding: [50, 50] })
 
       if (this.map) {
         for (const property in this.map._layers) {
@@ -349,6 +420,7 @@ export class PathIdPage {
       var pointEnd = this.pointB.latitudine + "," + this.pointB.longitudine
       this.pathService.getPath(point, pointEnd, this.routerState)
         //this.pathService.getPath(point, pointEnd, 27)
+        .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           posts => {
             let myStyle = {
@@ -358,9 +430,12 @@ export class PathIdPage {
               opacity: 0.65,
             };
 
+
             this.pathService.calculateGeometry(posts)
+              .pipe(takeUntil(this.unsubscribe$))
               .subscribe(
                 geometryArray2Dim => {
+                  this.path = geometryArray2Dim
                   this.layerGroup.addLayer(geoJSON({
                     "type": "LineString",
                     "coordinates": geometryArray2Dim,
@@ -370,72 +445,22 @@ export class PathIdPage {
               )
 
           });
-
+      this.tracker = setInterval(() => {
+        //  this.geoLocationService.checkGPSPermission()
+        //this.geoLocationService.getLocationCoordinates()
+        this.geoLocationService.getLocationCoordinatesSetup()
+        //this.startTracking();
+      }, 5000);
     }
   }
 
-  startTracking() {
-    console.log("startTracking()")
-    this.geoLocationService.getLocationCoordinates()
-      .subscribe(
-        resp => {
-
-          for (const property in this.map._layers) {
-            if (this.map._layers[property].options && this.map._layers[property].options.title) {
-              if (this.map._layers[property].options.title == "PC" || this.map._layers[property].options.title == "Shadow") {
-                this.map.removeLayer(this.map._layers[property])
-
-              }
-            }
-          }
-
-          L.marker([resp.latitudine, resp.longitudine], { title: "PC", icon: this.icons.pointPC }).addTo(this.map)
-          L.marker([resp.latitudine, resp.longitudine], { title: "Shadow", icon: this.icons.shadowPC }).addTo(this.map)
-
-          this.map.setView([resp.latitudine, resp.longitudine], 16);
-
-          /** 
-          if (this.togglePoisNearToMe == false) {
-            this.getPoiNearToPoint(resp)
-          }
-          */
-          //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
-          //this.getPath(resp)
-        })
-
-
-  }
-
-
-  getPoiNearToPoint(currentPoint: Point) {
-
-    this.pathService.getAllPOIsNearToPoint(currentPoint);
-
-  }
-
-  getLocationCoordinates() {
-
-    this.geoLocationService.getLocationCoordinates()
-      .subscribe(
-        resp => {
-
-          this.pointA = { latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente", abstract: "", img: "" }
-
-          this.getPath()
-          this.displayPointA()
-          this.displayPointB()
-        }
-      )
-  }
-
-
-  async onAzioniRapide() {
+  async onRicalcoloPopup() {
+    this.geoLocationService.setChechRicalcolo(false)
     const modal = await this.modalController.create({
-      component: MapModalModalitaPage
+      component: MapModalRicalcoloPage
     });
     return await modal.present();
   }
-
 
   async onStartNavigaitonPopup() {
     const modal = await this.modalController.create({
@@ -444,230 +469,5 @@ export class PathIdPage {
     });
     return await modal.present();
   }
-
-  /*
-  initMap() {
-    this.map = new Map('map-pathId').setView([39.21834898953833, 9.1126227435], 12.5);
-
-    tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.map);
-
-
-
-    this.layerGroup = new LayerGroup();
-    this.layerGroup.addTo(this.map);
-
-
-    L.easyButton('<div > <ion-icon name="navigate" class="star"></ion-icon> </div>', () => {
-      //if (this.pointsPath[0] && this.pointsPath[1]) {
-      this.startTracking()
-      //}
-    }).addTo(this.map);
-
-    L.easyButton(' <ion-icon name="contract" class="star"></ion-icon>', () => {
-
-      if (document.getElementById("map-pathId").style.height == "55%") {
-        document.getElementById("map-pathId").style.height = "100%"
-      } else {
-        document.getElementById("map-pathId").style.height = "55%"
-
-      }
-    }).addTo(this.map);
-
-    this.map.invalidateSize();
-
-  }
-
-  // Methos to get device accurate coordinates using device GPS
-  getLocationCoordinates() {
-    this.geoLocationService.getLocationCoordinates()
-      .subscribe(
-        resp => {
-
-          if (this.pointsPath[0]) {
-            if (this.pointsPath[0].latitudine != resp.latitudine &&
-              this.pointsPath[0].longitudine != resp.longitudine) {
-
-              this.map.removeLayer(this.markerA)
-
-              this.markerA = marker([resp.latitudine, resp.longitudine], { icon: this.icons.puntoA })
-              this.layerGroup.addLayer(this.markerA);
-
-              this.map.setView([resp.latitudine, resp.longitudine], 16);
-              //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
-
-              this.getPoiNearToPoint(resp)
-
-              //this.getPoiNearToPoint({latitudine:"39.21477",longitudine:"9.11289" }as Point)
-
-              this.pointsPath[0] = resp
-            }
-          } else {
-            this.map.removeLayer(this.markerA)
-
-            this.markerA = marker([resp.latitudine, resp.longitudine], { icon: this.icons.puntoA })
-            this.layerGroup.addLayer(this.markerA);
-
-            this.map.setView([resp.latitudine, resp.longitudine], 16);
-            //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
-
-            this.getPoiNearToPoint(resp)
-
-
-            //Athis.getPoiNearToPoint({latitudine:"39.21477",longitudine:"9.11289" }as Point)
-
-            this.pointsPath[0] = resp
-          }
-
-
-        }
-      )
-  }
-
-  getPoiNearToPoint(currentPoint: Point) {
-
-    this.pathService.getPOIsNearToPoint(currentPoint, 1)
-      .subscribe(
-        resp => {
-          if (resp.list_nodes) {
-
-            this.start = []
-            resp.list_nodes.map(x => {
-
-              this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.greenIcon }).bindPopup('<h5>' + x.tags.name + '</h5>'));
-
-              this.start.push({
-                icon: "/assets/release1/restaurant.svg",
-                item: x
-              })
-            })
-          }
-
-        }
-      )
-
-    this.pathService.getPOIsNearToPoint(currentPoint, 2)
-      .subscribe(
-        resp => {
-          if (resp.list_nodes) {
-
-            this.start = []
-            resp.list_nodes.map(x => {
-
-              this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.greenIcon }).bindPopup('<h5>' + x.tags.name + '</h5>'));
-
-              this.start.push({
-                icon: "/assets/release1/shop.svg",
-                item: x
-              })
-            })
-          }
-
-        }
-      )
-
-    this.pathService.getPOIsNearToPoint(currentPoint, 3)
-      .subscribe(
-        resp => {
-          if (resp.list_nodes) {
-
-            this.start = []
-            resp.list_nodes.map(x => {
-
-              this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.greenIcon }).bindPopup('<h5>' + x.tags.name + '</h5>'));
-
-              this.start.push({
-                icon: "/assets/release1/museum.svg",
-                item: x
-              })
-            })
-          }
-
-        }
-      )
-
-    this.pathService.getPOIsNearToPoint(currentPoint, 4)
-      .subscribe(
-        resp => {
-          if (resp.list_nodes) {
-
-            this.start = []
-            resp.list_nodes.map(x => {
-
-              this.layerGroup.addLayer(marker([x.lat, x.lon], { icon: this.icons.greenIcon }).bindPopup('<h5>' + x.tags.name + '</h5>'));
-
-              this.start.push({
-                icon: "/assets/release1/monument.svg",
-                item: x
-              })
-            })
-          }
-
-        }
-      )
-
-  }
-
-  getPath(start?: Point, end?: Point) {
-    var point = start.latitudine + "," + start.longitudine
-    //var point = "39.21477,9.11289"
-    if (end) {
-      var pointEnd = end.latitudine + "," + end.longitudine
-    } else {
-      var pointEnd = this.pointsPath[1].latitudine + "," + this.pointsPath[1].longitudine
-    }
-    this.pathService.getPath(point, pointEnd, this.currentFilter.valore)
-      //this.pathService.getPath(point, pointEnd, 27)
-      .subscribe(
-        posts => {
-          let myStyle = {
-            color: 'red',
-            dashArray: "5 10",
-            weight: 7,
-            opacity: 0.65,
-          };
-
-          this.pathService.calculateGeometry(posts)
-            .subscribe(
-              geometryArray2Dim => {
-                this.layerGroup.addLayer(geoJSON({
-                  "type": "LineString",
-                  "coordinates": geometryArray2Dim,
-                  //}).bindPopup('<h1>'+this.currentFilter.name+'</h1>'));
-                }, { style: myStyle }).bindPopup('<h1>Car</h1>'));
-              }
-            )
-
-        });
-  }
-
-  startTracking() {
-    this.navigazioneAttiva = false
-
-    this.map.removeLayer(this.layerGroup)
-
-    this.layerGroup = new LayerGroup();
-    this.layerGroup.addTo(this.map);
-
-    //this.layerGroup.addLayer(marker([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], { icon: this.icons.puntoA }));
-    this.layerGroup.addLayer(marker([this.pointsPath[1].latitudine, this.pointsPath[1].longitudine], { icon: this.icons.puntoB }));
-
-    this.geoLocationService.checkGPSPermission()
-    this.geoLocationService.getLocationCoordinates()
-      .subscribe(
-        resp => {
-          this.markerA = marker([resp.latitudine, resp.longitudine], { icon: this.icons.puntoA })
-          this.layerGroup.addLayer(this.markerA);
-          this.map.setView([resp.latitudine, resp.longitudine], 16);
-          //this.getPath(resp,{latitudine:"39.21834898953833",longitudine:"9.1126227435" }as Point)
-          this.getPath(resp)
-        })
-    this.tracker = setInterval(() => {
-      this.getLocationCoordinates()
-    }, 1000);
-
-
-  }*/
 
 }   

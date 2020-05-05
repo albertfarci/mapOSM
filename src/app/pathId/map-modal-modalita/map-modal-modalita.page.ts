@@ -6,6 +6,7 @@ import { FilterListService } from 'src/app/shared/services/filters.service';
 import { PathService } from 'src/app/shared/services/path.service';
 import { CurrentPointService } from 'src/app/shared/services/current-points.service';
 import { post } from 'selenium-webdriver/http';
+import { PoiService } from 'src/app/shared/services/poi.service';
 @Component({
     selector: 'map-modal-modalita-page',
     templateUrl: './map-modal-modalita.component.html',
@@ -15,16 +16,15 @@ export class MapModalModalitaPage {
     // Data passed in by componentProps
     start = []
 
-    constructor(public pathService: PathService,
+    constructor(public poiService: PoiService,
         private modalCtrl: ModalController) {
 
     }
 
     ionViewDidEnter() {
 
-        this.pathService.poisNearToPoint.subscribe(
+        this.poiService.currentPOIs.subscribe(
             (data) => {
-                console.log(data)
                 if (data) this.start = data
             }
         )

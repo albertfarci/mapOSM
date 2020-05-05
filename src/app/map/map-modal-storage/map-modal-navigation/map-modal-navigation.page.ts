@@ -24,7 +24,6 @@ export class MapModalNavigationPage {
 
     ngOnInit() {
 
-        console.log(this.path)
     }
 
     closeModal() {

@@ -4,18 +4,32 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { Observable, from } from 'rxjs';
+import { Observable, from, BehaviorSubject } from 'rxjs';
 import { Point } from '../models/point.model';
-import { mergeMap, map, filter } from 'rxjs/operators';
+import { mergeMap, map, filter, distinctUntilChanged } from 'rxjs/operators';
+import { CurrentPointService } from './current-points.service';
+import deepEqual from 'deep-equal';
 @Injectable()
 export class GeoLocationService {
 
-    checkPermission: boolean
+
+    private checkRicalcoloSource: boolean = true
+
+    private readonly checkPermissionSource = new BehaviorSubject<boolean>(false)
+    checkPermission = this.checkPermissionSource.asObservable()
+
+    private readonly currentPositionSource = new BehaviorSubject<Point>(null)
+    currentPosition = this.currentPositionSource.asObservable().pipe(
+        filter(a => a != null),
+        distinctUntilChanged((a, b) => deepEqual(a, b)),
+        filter(Boolean)
+    ) as Observable<Point>
 
     constructor(
         private androidPermissions: AndroidPermissions,
         private geolocation: Geolocation,
-        private locationAccuracy: LocationAccuracy, ) { }
+        private locationAccuracy: LocationAccuracy,
+        private currentPointsService: CurrentPointService) { }
 
     //Check if application having GPS access permission  
     checkGPSPermission() {
@@ -64,8 +78,8 @@ export class GeoLocationService {
         this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
             () => {
                 // When GPS Turned ON call method to get Accurate location coordinates
-                //this.getLocationCoordinates()
-                this.checkPermission = true
+                this.getLocationCoordinates()
+                this.checkPermissionSource.next(true)
             },
             error => alert('Error requesting location permissions ' + JSON.stringify(error))
         );
@@ -89,8 +103,30 @@ export class GeoLocationService {
     }
 
     // Methos to get device accurate coordinates using device GPS
-    getLocationCoordinates(): Observable<Point> {
+    getLocationCoordinates() {
 
+        this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then(
+            resp => {
+                //this.currentPointsService.setPointA({ latitudine: resp.coords.latitude, longitudine: resp.coords.longitude, title: "Posizione corrente", img: "", abstract: "" })
+                this.currentPositionSource.next({ latitudine: resp.coords.latitude, longitudine: resp.coords.longitude, title: "Posizione corrente", img: "", abstract: "" })
+            }
+        )
+    }
+
+
+    getLocationCoordinatesSetup() {
+        if (this.checkRicalcoloSource) {
+            console.log(true)
+            //this.getLocationCoordinates()
+            this.checkGPSPermission()
+        } else {
+            console.log(false)
+        }
+    }
+
+
+    // Methos to get device accurate coordinates using device GPS
+    getLocationCoordinatesPromise(): Observable<Point> {
         return from(this.geolocation.getCurrentPosition({ enableHighAccuracy: true }))
             .pipe(
                 map(resp => {
@@ -98,8 +134,9 @@ export class GeoLocationService {
                         latitudine: resp.coords.latitude,
                         longitudine: resp.coords.longitude
                     } as Point
-                }
-                ));
+
+                })
+            )
 
     }
 
@@ -114,6 +151,10 @@ export class GeoLocationService {
         } else if (err.code == 2) {
             alert("Error: Position is unavailable!");
         }
+    }
+
+    setChechRicalcolo(value) {
+        this.checkRicalcoloSource = value
     }
 
 }

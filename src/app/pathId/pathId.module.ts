@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { PathIdPage } from './pathId.page';
 import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.page';
 import { MapModalStartPage } from './map-modal-start/map-modal-start.page';
+import { MapModalRicalcoloPage } from './map-modal-ricalcolo/map-modal-ricalcolo.page';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { MapModalStartPage } from './map-modal-start/map-modal-start.page';
     FormsModule,
     RouterModule.forChild([{ path: '', component: PathIdPage }])
   ],
-  entryComponents: [MapModalModalitaPage, MapModalStartPage],
-  declarations: [PathIdPage, MapModalModalitaPage, MapModalStartPage]
+  entryComponents: [MapModalModalitaPage, MapModalStartPage, MapModalRicalcoloPage],
+  declarations: [PathIdPage, MapModalModalitaPage, MapModalStartPage, MapModalRicalcoloPage]
 })
 export class PathIdPageModule { }

@@ -232,12 +232,15 @@ export class MapModalModalitaPage {
     }
 
     getEnabled() {
+        const arrayFIltere = this.paths.filter(x => x.spunta)
+        if (arrayFIltere.length > 0) {
 
-        return this.paths.filter(x => x.spunta)
-            .map(x => { return x.modalita_figlio })[0]
-            .map(x => {
-                return x
-            })
+            return this.paths.filter(x => x.spunta)
+                .map(x => { return x.modalita_figlio })[0]
+                .map(x => {
+                    return x
+                })
+        }
 
     }
 
@@ -268,6 +271,7 @@ export class MapModalModalitaPage {
             let pointStart = this.pointA.latitudine + "," + this.pointA.longitudine
             let pointEnd = this.pointB.latitudine + "," + this.pointB.longitudine
             this.pathService.getPath(pointStart, pointEnd, x.valore)
+                .pipe(takeUntil(this.unsubscribe$))
                 .subscribe(
                     posts => {
                         this.pathToDisplay.push({

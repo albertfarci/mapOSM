@@ -63,7 +63,6 @@ export class MapModalStoragePage {
 
 
     closeModal() {
-        console.log("close")
         this.currenteCtrl.dismiss();
     }
 
@@ -139,8 +138,6 @@ export class MapModalStoragePage {
 
 
     async openStorageModal() {
-        console.log(this.path)
-
         this.closeModal()
         const modal = await this.modalCtrl.create({
             component: MapModalNavigationPage,

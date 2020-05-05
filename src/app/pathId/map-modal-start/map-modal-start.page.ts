@@ -24,7 +24,6 @@ export class MapModalStartPage {
 
         this.pathService.poisNearToPoint.subscribe(
             (data) => {
-                console.log(data)
                 if (data) this.start = data
             }
         )
