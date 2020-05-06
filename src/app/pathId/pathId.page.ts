@@ -491,8 +491,10 @@ export class PathIdPage {
   }
 
   isLastNode(node) {
-    console.log(node)
-    this.onLastNodePopup()
+    if (node.isLast) {
+      console.log(node)
+      this.onLastNodePopup()
+    }
   }
 
   async onLastNodePopup() {
