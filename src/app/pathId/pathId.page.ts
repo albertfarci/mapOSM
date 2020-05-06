@@ -17,6 +17,7 @@ import { MapModalStartPage } from './map-modal-start/map-modal-start.page';
 import { MapModalRicalcoloPage } from './map-modal-ricalcolo/map-modal-ricalcolo.page';
 import { takeUntil } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
+import { MapModalLastNodePage } from './map-modal-last-node/map-modal-last-node.page';
 
 @Component({
   selector: 'app-pathId',
@@ -203,12 +204,13 @@ export class PathIdPage {
   }
 
   sendTrackingUser(tracking) {
-
+    console.log(tracking)
     if (tracking.status) {
       let now = new Date();
       let diffMs = (now.getMinutes() - this.lastDateGetted.getMinutes())
       this.geoLocationService.sendTrackingUserData(new Date().toUTCString(), tracking.node, diffMs, this.routerState).subscribe()
       this.lastDateGetted = now
+      this.isLastNode(tracking.isLast)
     }
   }
 
@@ -484,6 +486,18 @@ export class PathIdPage {
     const modal = await this.modalController.create({
       component: MapModalStartPage,
       cssClass: 'my-custom-modal-css'
+    });
+    return await modal.present();
+  }
+
+  isLastNode(node) {
+    console.log(node)
+    this.onLastNodePopup()
+  }
+
+  async onLastNodePopup() {
+    const modal = await this.modalController.create({
+      component: MapModalLastNodePage
     });
     return await modal.present();
   }

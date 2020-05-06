@@ -116,10 +116,12 @@ export class PathService {
     for (var i = 0; i < path.geometry.length; i++) {
       if (L.GeometryUtil.distance(_map, L.latLng(point.longitudine, point.latitudine), L.latLng(path.geometry[i][0], path.geometry[i][1])) <= 5) {
 
-        console.log(L.GeometryUtil.distance(_map, L.latLng(point.longitudine, point.latitudine), L.latLng(path.geometry[i][0], path.geometry[i][1])))
+        //console.log(L.GeometryUtil.distance(_map, L.latLng(point.longitudine, point.latitudine), L.latLng(path.geometry[i][0], path.geometry[i][1])))
+
         return {
           status: true,
-          node: JSON.parse(path.nodes)[i]
+          node: JSON.parse(path.nodes)[i],
+          isLast: i == path.geometry.length
         }
 
       }
@@ -127,7 +129,8 @@ export class PathService {
     }
     return {
       status: false,
-      node: []
+      node: [],
+      isLast: false
     };;
   }
 }
