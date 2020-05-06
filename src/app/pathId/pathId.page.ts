@@ -82,7 +82,8 @@ export class PathIdPage {
   markerA
   map: Map
 
-  path = []
+  lastDateGetted: Date
+  path
   allPoisthis
   //refactor
   pointA: Point
@@ -177,14 +178,18 @@ export class PathIdPage {
                 }
               }
 
-
+              this.lastDateGetted = new Date()
               L.marker([resp.latitudine, resp.longitudine], { title: "PC", icon: this.icons.pointPC }).addTo(this.map)
               L.marker([resp.latitudine, resp.longitudine], { title: "Shadow", icon: this.icons.shadowPC }).addTo(this.map)
 
               this.map.setView([resp.latitudine, resp.longitudine], 16);
-              if (this.path.length > 0) {
-                if (!this.pathService.isPointOnLine(resp, this.path)) {
+              if (this.path.geometry.length > 0) {
+                let isPointOnLine = this.pathService.isPointOnLine(resp, this.path)
+                if (!isPointOnLine.status) {
                   this.onRicalcoloPopup()
+                } else {
+                  let trackingUser = this.pathService.trackingUser(this.map, resp, this.path)
+                  this.sendTrackingUser(trackingUser)
                 }
               }
             }
@@ -195,6 +200,16 @@ export class PathIdPage {
 
 
     this.initMap()
+  }
+
+  sendTrackingUser(tracking) {
+
+    if (tracking.status) {
+      let now = new Date();
+      let diffMs = (now.getMinutes() - this.lastDateGetted.getMinutes())
+      this.geoLocationService.sendTrackingUserData(new Date().toUTCString(), tracking.node, diffMs, this.routerState).subscribe()
+      this.lastDateGetted = now
+    }
   }
 
   ionViewDidLeave() {
@@ -435,7 +450,10 @@ export class PathIdPage {
               .pipe(takeUntil(this.unsubscribe$))
               .subscribe(
                 geometryArray2Dim => {
-                  this.path = geometryArray2Dim
+                  this.path = {
+                    geometry: geometryArray2Dim,
+                    nodes: posts.nodes
+                  }
                   this.layerGroup.addLayer(geoJSON({
                     "type": "LineString",
                     "coordinates": geometryArray2Dim,

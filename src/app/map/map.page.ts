@@ -60,16 +60,13 @@ export class MapPage {
 
     )
 
-    console.log("constr")
   }
 
   ionViewDidEnter() {
-    console.log(this.unsubscribe$)
     this.subscriptions.push(
       this.currentPointService.currentPointA
         .subscribe(
           (data) => {
-            console.log(data)
             if (data) this.pointA = data
           }
         ))
@@ -103,7 +100,6 @@ export class MapPage {
       this.geoLocationService.currentPosition.subscribe(
         (data) => {
           if (data) {
-            console.log(data)
             this.currentPointService.setPointA(data)
           }
         }
@@ -114,7 +110,6 @@ export class MapPage {
       this.geoLocationService.currentPosition.subscribe(
         (data) => {
           if (data) {
-            console.log(data)
             this.currentPointService.setPointA(data)
           }
         }
@@ -125,7 +120,6 @@ export class MapPage {
       this.geoLocationService.currentPosition.subscribe(
         (data) => {
           if (data) {
-            console.log(data)
             this.currentPointService.setPointA(data)
           }
         }
@@ -272,7 +266,6 @@ export class MapPage {
       }
     });
     return await modal.present();*/
-    console.log("onDetail")
     this.currentStepService.setStep(2).then(
       (success) => {
       }
@@ -288,13 +281,11 @@ export class MapPage {
   }
 
   ionViewWillLeave() {
-    console.log("ionViewWillLeave")
     this.unsubscribe$.next(true)
     this.subscriptions.forEach(subscription => subscription.unsubscribe())
   }
 
   ngOnDestroy() {
-    console.log("ngOnDestroy")
     this.unsubscribe$.next(true)
     this.unsubscribe$.complete()
   }

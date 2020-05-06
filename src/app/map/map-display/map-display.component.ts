@@ -327,7 +327,6 @@ export class MapDisplayComponent implements OnInit {
       L.marker([item.latitudine, item.longitudine], { title: "Punto B", icon: this.icons.puntoB })
         .bindPopup(customPopup)
         .on('click', (x => {
-          console.log("Click")
           this.detail.emit()
           this.pointDetail = this.pointsPath[1]
         })).addTo(this.map).openPopup()

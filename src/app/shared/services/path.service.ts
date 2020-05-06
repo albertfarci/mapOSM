@@ -89,11 +89,45 @@ export class PathService {
 
   isPointOnLine(point, path) {
     //const current = L.latLng(point.longitudine, point.latitudine);
-    for (var i = 0; i < path.length - 1; i++) {
-      if (L.GeometryUtil.belongsSegment(L.latLng(point.longitudine, point.latitudine), L.latLng(path[i][0], path[i][1]), L.latLng(path[i + 1][0], path[i + 1][1]), 0.3)) {
-        return true;
+    for (var i = 0; i < path.geometry.length - 1; i++) {
+      if (L.GeometryUtil.belongsSegment(L.latLng(point.longitudine, point.latitudine), L.latLng(path.geometry[i][0], path.geometry[i][1]), L.latLng(path.geometry[i + 1][0], path.geometry[i + 1][1]), 1)) {
+        let segments = [];
+        segments.push(path.geometry[i])
+        segments.push(path.geometry[i + 1])
+        let nodes = [];
+
+        nodes.push(JSON.parse(path.nodes)[i])
+        nodes.push(JSON.parse(path.nodes)[i + 1])
+        return {
+          status: true,
+          segment: [segments],
+          nodes: [nodes]
+        }
       }
     }
-    return false;
+    return {
+      status: false,
+      segment: []
+    };
+  }
+
+  trackingUser(_map, point, path) {
+    //const current = L.latLng(point.longitudine, point.latitudine);
+    for (var i = 0; i < path.geometry.length; i++) {
+      if (L.GeometryUtil.distance(_map, L.latLng(point.longitudine, point.latitudine), L.latLng(path.geometry[i][0], path.geometry[i][1])) <= 5) {
+
+        console.log(L.GeometryUtil.distance(_map, L.latLng(point.longitudine, point.latitudine), L.latLng(path.geometry[i][0], path.geometry[i][1])))
+        return {
+          status: true,
+          node: JSON.parse(path.nodes)[i]
+        }
+
+      }
+
+    }
+    return {
+      status: false,
+      node: []
+    };;
   }
 }

@@ -9,6 +9,7 @@ import { Point } from '../models/point.model';
 import { mergeMap, map, filter, distinctUntilChanged } from 'rxjs/operators';
 import { CurrentPointService } from './current-points.service';
 import deepEqual from 'deep-equal';
+import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class GeoLocationService {
 
@@ -19,16 +20,17 @@ export class GeoLocationService {
     checkPermission = this.checkPermissionSource.asObservable()
 
     private readonly currentPositionSource = new BehaviorSubject<Point>(null)
-    currentPosition = this.currentPositionSource.asObservable().pipe(
+    currentPosition = this.currentPositionSource.asObservable()/*.pipe(
         filter(a => a != null),
         distinctUntilChanged((a, b) => deepEqual(a, b)),
         filter(Boolean)
-    ) as Observable<Point>
+    ) as Observable<Point>*/
 
     constructor(
         private androidPermissions: AndroidPermissions,
         private geolocation: Geolocation,
         private locationAccuracy: LocationAccuracy,
+        private http: HttpClient,
         private currentPointsService: CurrentPointService) { }
 
     //Check if application having GPS access permission  
@@ -116,11 +118,8 @@ export class GeoLocationService {
 
     getLocationCoordinatesSetup() {
         if (this.checkRicalcoloSource) {
-            console.log(true)
-            //this.getLocationCoordinates()
-            this.checkGPSPermission()
-        } else {
-            console.log(false)
+            this.getLocationCoordinates()
+            //this.checkGPSPermission()
         }
     }
 
@@ -155,6 +154,11 @@ export class GeoLocationService {
 
     setChechRicalcolo(value) {
         this.checkRicalcoloSource = value
+    }
+
+    sendTrackingUserData(data, node_id, tempo_percorrenza, modalita) {
+
+        return this.http.post<any>(`http://156.148.14.188:8080/v1/requestTrip/salvataggio_segmenti/?data=` + data + `osm_id=` + node_id + `&tempo_percorrenza=` + tempo_percorrenza + `&modalita=` + modalita, {});
     }
 
 }
