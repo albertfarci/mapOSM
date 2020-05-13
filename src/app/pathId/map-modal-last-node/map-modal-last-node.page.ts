@@ -1,15 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { NavParams, ModalController } from '@ionic/angular';
-import { Point } from 'src/app/shared/models/point.model';
 import { CurrentStepService } from 'src/app/shared/services/current-step.services';
 import { FilterListService } from 'src/app/shared/services/filters.service';
-import { PathService } from 'src/app/shared/services/path.service';
 import { CurrentPointService } from 'src/app/shared/services/current-points.service';
-import { post } from 'selenium-webdriver/http';
-import { PoiService } from 'src/app/shared/services/poi.service';
-import { GeoLocationService } from 'src/app/shared/services/geoLocation.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 @Component({
     selector: 'map-modal-last-node-page',
     templateUrl: './map-modal-last-node.component.html',
@@ -18,7 +12,11 @@ import { takeUntil } from 'rxjs/operators';
 export class MapModalLastNodePage {
     // Data passed in by componentProps
     constructor(
-        private modalCtrl: ModalController) {
+        private currentPointService: CurrentPointService,
+        private currentStepService: CurrentStepService,
+        private filterService: FilterListService,
+        private modalCtrl: ModalController,
+        public router: Router) {
 
     }
 
@@ -27,4 +25,13 @@ export class MapModalLastNodePage {
         this.modalCtrl.dismiss();
     }
 
+    creaNuovoPercorso() {
+
+        this.currentPointService.deletePointA()
+        this.currentPointService.deletePointB()
+        this.filterService.setAllFalseSpunta()
+        this.currentStepService.setStep(1)
+
+        this.router.navigate(['/tabs/map']);
+    }
 }
