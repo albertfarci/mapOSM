@@ -18,6 +18,8 @@ import { MapModalRicalcoloPage } from './map-modal-ricalcolo/map-modal-ricalcolo
 import { takeUntil } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
 import { MapModalLastNodePage } from './map-modal-last-node/map-modal-last-node.page';
+import { FilterListService } from '../shared/services/filters.service';
+import { CurrentStepService } from '../shared/services/current-step.services';
 
 @Component({
   selector: 'app-pathId',
@@ -108,7 +110,10 @@ export class PathIdPage {
     private currentPointService: CurrentPointService,
     private _Activatedroute: ActivatedRoute,
     public modalController: ModalController,
-    private poiService: PoiService
+    private poiService: PoiService,
+    private filterService: FilterListService,
+
+    private currentStepService: CurrentStepService
 
   ) {
   }
@@ -143,7 +148,12 @@ export class PathIdPage {
     this.subscriptions.push(
       this.currentPointService.currentPointB.subscribe(
         (data) => {
-          if (data) {
+          if (data != this.pointA && this.map) {
+            this.pointB = data
+            //this.onStartNavigaitonPopup()
+            this.getPath()
+          } else {
+
             this.pointB = data
           }
           //this.getPath()
@@ -153,13 +163,16 @@ export class PathIdPage {
     )
 
     this.subscriptions.push(
-      this.observerIdRouter = this._Activatedroute.paramMap.subscribe(params => {
-        if (params) {
-          this.routerState = params.get("id")
+      this.filterService.currentFilter.subscribe(
+        (data) => {
+          if (data) {
+            this.routerState = data.filter.valore
+          }
+          //this.getPath()
         }
-      })
-    )
+      )
 
+    )
 
 
     this.subscriptions.push(
@@ -219,7 +232,46 @@ export class PathIdPage {
     this.unsubscribe$.next()
     this.unsubscribe$.complete()
     this.subscriptions.forEach(sub => sub.unsubscribe())
-    this.observerIdRouter.unsubscribe()
+    this.removePath()
+    this.removePointA()
+    this.removePointB()
+    this.currentPointService.deletePointA()
+    this.currentPointService.deletePointB()
+    this.filterService.setAllFalseSpunta()
+    this.currentStepService.setStep(1)
+  }
+
+  removePath() {
+    for (const property in this.map._layers) {
+      if (this.map._layers[property].options) {
+        if (this.map._layers[property].options.style) {
+          this.map.removeLayer(this.map._layers[property])
+        }
+      }
+    }
+
+  }
+
+  removePointA() {
+    for (const property in this.map._layers) {
+      if (this.map._layers[property].options && this.map._layers[property].options.title) {
+        if (this.map._layers[property].options.title == "Punto A") {
+
+          this.map.removeLayer(this.map._layers[property])
+        }
+      }
+    }
+  }
+
+  removePointB() {
+    for (const property in this.map._layers) {
+      if (this.map._layers[property].options && this.map._layers[property].options.title) {
+        if (this.map._layers[property].options.title == "Punto B") {
+
+          this.map.removeLayer(this.map._layers[property])
+        }
+      }
+    }
   }
 
   initMap() {
@@ -385,14 +437,7 @@ export class PathIdPage {
     if (this.pointA) {
 
       if (this.map) {
-        for (const property in this.map._layers) {
-          if (this.map._layers[property].options && this.map._layers[property].options.title) {
-            if (this.map._layers[property].options.title == "Punto A") {
-
-              this.map.removeLayer(this.map._layers[property])
-            }
-          }
-        }
+        this.removePointA()
 
         L.marker([this.pointA.latitudine, this.pointA.longitudine], { title: "Punto A", icon: this.icons.puntoA }).addTo(this.map)
 
@@ -406,8 +451,12 @@ export class PathIdPage {
   displayPointB() {
 
     if (this.pointB) {
+      if (this.map) {
+        this.removePointB()
 
-      L.marker([this.pointB.latitudine, this.pointB.longitudine], { title: "Punto B", icon: this.icons.puntoB }).addTo(this.map)
+        L.marker([this.pointB.latitudine, this.pointB.longitudine], { title: "Punto B", icon: this.icons.puntoB }).addTo(this.map)
+
+      }
 
       //this.map.setView([this.pointB.latitudine, this.pointB.longitudine], 16)
     }
@@ -422,15 +471,8 @@ export class PathIdPage {
     this.displayPointB()
     if (this.pointA && this.pointB) {
 
-      if (this.map) {
-        for (const property in this.map._layers) {
-          if (this.map._layers[property].options) {
-            if (this.map._layers[property].options.style) {
-              this.map.removeLayer(this.map._layers[property])
-            }
-          }
-        }
-      }
+      this.removePath()
+
 
       var point = this.pointA.latitudine + "," + this.pointA.longitudine
       //var point = "39.21477,9.11289"

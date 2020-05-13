@@ -96,35 +96,7 @@ export class MapPage {
       )
     )
 
-    this.subscriptions.push(
-      this.geoLocationService.currentPosition.subscribe(
-        (data) => {
-          if (data) {
-            this.currentPointService.setPointA(data)
-          }
-        }
-      )
-    )
 
-    this.subscriptions.push(
-      this.geoLocationService.currentPosition.subscribe(
-        (data) => {
-          if (data) {
-            this.currentPointService.setPointA(data)
-          }
-        }
-      )
-    )
-
-    this.subscriptions.push(
-      this.geoLocationService.currentPosition.subscribe(
-        (data) => {
-          if (data) {
-            this.currentPointService.setPointA(data)
-          }
-        }
-      )
-    )
 
   }
 

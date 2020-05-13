@@ -12,12 +12,47 @@
 </ion-header>
 
 <ion-content fullscreen>
-    <div class="row h-100">
-        <div class="col-xs-12 col-sm-12 remaining-height">
 
 
-            <app-map-search style="height: 100%" (poi)="onPointSelected($event)" (back)="onBackTap()"></app-map-search>
-        </div>
 
-    </div>
+    <ion-grid class="gridSearch">
+        <ion-row>
+            <ion-searchbar mode="md" #searchbar showCancelButton="focus" placeholder="Trova un luogo"
+                [(ngModel)]="searchInput" (ionInput)="onSearchByKeyword($event)" (ionCancel)="onBackTap()"
+                debounce="300">
+            </ion-searchbar>
+
+        </ion-row>
+        <ion-row *ngIf="start" style="margin: 0 3%">
+            <div *ngIf="isFocused" style="width: 100%;">
+                <ion-item style="    width: 100%;">
+                    <ion-thumbnail slot="start">
+                        <img src="/assets/bb/icon3-m.png" alt="" style="height: auto;" />
+                    </ion-thumbnail>
+                    <ion-label (click)="selectPOI()">
+                        <h3 style="font-weight: bold;">Scegli punto su mappa</h3>
+                    </ion-label>
+                </ion-item>
+                <ion-item style="    width: 100%;" *ngIf="routerState.id == 'A' ">
+                    <ion-thumbnail slot="start">
+                        <img src="/assets/release1/locate.svg" alt="" style="height: auto;" />
+                    </ion-thumbnail>
+                    <ion-label (click)="getLocationCoordinates()">
+                        <h3 style="font-weight: bold;">Posizione attuale</h3>
+                    </ion-label>
+                </ion-item>
+            </div>
+
+            <ion-item *ngFor="let poi of start; let i = index;" style="    width: 100%;">
+                <ion-thumbnail slot="start" style="text-align: center;">
+                    <img class="image_poi" src="{{routerState.icon}}" alt="" />
+                </ion-thumbnail>
+                <ion-label (click)="selectPOI(poi)">
+                    <h3 style="font-weight: bold;">{{poi.properties.name}}</h3>
+                    <p style="font-weight: bold;">{{poi.properties.city}}</p>
+                    <p style="font-weight: bold;">{{poi.properties.osm_value | searchLabel}}</p>
+                </ion-label>
+            </ion-item>
+        </ion-row>
+    </ion-grid>
 </ion-content>

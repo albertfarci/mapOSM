@@ -12,7 +12,7 @@ import { CurrentPointService } from 'src/app/shared/services/current-points.serv
 import { Point } from 'src/app/shared/models/point.model';
 import { FilterListService } from 'src/app/shared/services/filters.service';
 import { CurrentStepService } from 'src/app/shared/services/current-step.services';
-import { Subject, ReplaySubject } from 'rxjs';
+import { Subject, ReplaySubject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -28,6 +28,7 @@ export class MapDisplayComponent implements OnInit {
   @Output() contract = new EventEmitter<any>();
   @Output() detail = new EventEmitter<any>();
   @Output() location = new EventEmitter<any>();
+  private subscriptions: Subscription[] = []
   pointsPath: Array<Point> = []
   pointDetail: any
   pointA: any
@@ -161,6 +162,7 @@ export class MapDisplayComponent implements OnInit {
       setTimeout(() => { this.map.invalidateSize() }, 1000);
 
       this.layerGroup = new LayerGroup();
+
       this.layerGroup.addTo(this.map);
 
       this.addGeolocationButton()
@@ -424,6 +426,17 @@ export class MapDisplayComponent implements OnInit {
     if (!document.getElementById("locate")) {
       L.easyButton('<div > <ion-icon name="locate" id="locate"></ion-icon> </div>', () => {
 
+        this.subscriptions.push(
+          this.geoLocationService.currentPosition.subscribe(
+            (data) => {
+              if (data) this.currentPointsService.setPointA(data)
+
+
+              this.subscriptions.forEach(subscription => subscription.unsubscribe())
+            }
+          )
+
+        )
         this.geoLocationService.getLocationCoordinatesSetup()
         //this.geoLocationService.checkGPSPermission()
         //this.getLocationCoordinates()

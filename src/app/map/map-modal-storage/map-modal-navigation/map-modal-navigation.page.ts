@@ -3,6 +3,7 @@ import { NavParams, ModalController } from '@ionic/angular';
 import { Point } from 'src/app/shared/models/point.model';
 import { CurrentStepService } from 'src/app/shared/services/current-step.services';
 import { Router } from '@angular/router';
+import { FilterListService } from 'src/app/shared/services/filters.service';
 
 @Component({
     selector: 'map-modal-navigaiton-page',
@@ -18,12 +19,13 @@ export class MapModalNavigationPage {
         private modalCtrl: ModalController,
         private currentStepService: CurrentStepService,
 
+        private filterService: FilterListService,
         public router: Router) {
         // componentProps can also be accessed at construction time using NavParams
     }
 
     ngOnInit() {
-
+        console.log(this.path)
     }
 
     closeModal() {
@@ -31,8 +33,8 @@ export class MapModalNavigationPage {
     }
 
     navigateToTracking() {
-
-        this.router.navigate(['/tabs/pathId', this.path.filter.valore]);
+        this.filterService.setCurrentFilter(this.path)
+        this.router.navigate(['/tabs/pathId']);
         this.modalCtrl.dismiss();
     }
 

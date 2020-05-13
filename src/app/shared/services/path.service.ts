@@ -112,11 +112,14 @@ export class PathService {
   }
 
   trackingUser(_map, point, path) {
+    console.log(point)
     //const current = L.latLng(point.longitudine, point.latitudine);
     for (var i = 0; i < path.geometry.length; i++) {
-      if (L.GeometryUtil.distance(_map, L.latLng(point.longitudine, point.latitudine), L.latLng(path.geometry[i][0], path.geometry[i][1])) <= 5) {
 
-        //console.log(L.GeometryUtil.distance(_map, L.latLng(point.longitudine, point.latitudine), L.latLng(path.geometry[i][0], path.geometry[i][1])))
+      console.log(_map)
+      console.log(L.latLng(point.longitudine, point.latitudine))
+      console.log(L.latLng(path.geometry[i][0], path.geometry[i][1]))
+      if (L.GeometryUtil.distance(_map, L.latLng(point.longitudine, point.latitudine), L.latLng(path.geometry[i][0], path.geometry[i][1])) <= 5) {
 
         return {
           status: true,

@@ -18,6 +18,7 @@ export class MapSearchComponent implements OnInit {
 
   @ViewChild('searchbar', { static: false }) searchbar: IonSearchbar;
 
+  isFocused: boolean = false
   start = []
   searchInput: string
   routerState
@@ -32,8 +33,14 @@ export class MapSearchComponent implements OnInit {
   ngOnInit() {
     this.searchInput = ""
     this.start = []
-    setTimeout(() => this.searchbar.setFocus(), 500);
+    this.isFocused = false
 
+    console.log("ngOnInit")
+    setTimeout(() => {
+      this.searchbar.setFocus()
+      console.log(this.searchbar)
+      this.isFocused = true
+    }, 1000);
 
     this.observerIdRouter = this._Activatedroute.paramMap.subscribe(params => {
       if (params) {
@@ -53,6 +60,17 @@ export class MapSearchComponent implements OnInit {
     });
   }
 
+  ionViewDidEnter() {
+
+    console.log("ionViewDidEnter")
+  }
+
+  ionViewDidLeave() {
+
+    console.log("destroys")
+    this.observerIdRouter.unsubscribe()
+    console.log("ionViewDidEnter")
+  }
 
   ngOnDestroy() {
     this.observerIdRouter.unsubscribe()
@@ -62,54 +80,11 @@ export class MapSearchComponent implements OnInit {
 
     this.router.navigateByUrl('/tabs/map')
     this.geoLocationService.getLocationCoordinatesSetup()
-    //this.geoLocationService.checkGPSPermission()
-    /*
-    this.geoLocationService.getLocationCoordinates()
-      .subscribe(
-        resp => {
-          //this.poi.emit({ latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente", img: "", abstract: "" });
-          this.selectPOI({ lat: resp.latitudine, long: resp.longitudine, label: "Posizione corrente", img: "", abstract: "" })
-          //this.currentPointsService.setPointA({ latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente", img: "", abstract: "" })
-          //this.setPointA({ latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente" })
 
-        })*/
   }
 
   onSearchByKeyword(event: any) {
 
-    /*
-    if (!event.detail) {
-      this.start = []
-      document.getElementById("map-page").style.height = "100%"
-    } else {
-      document.getElementById("map-page").style.height = "0%"
-      this.start = []
-      JSON.parse(this.poiService.getMonuments())
-        .default
-        .map(x => {
-          if (x.label.includes(this.searchInput)) this.start.push(x)
-        })
-
-      JSON.parse(this.poiService.getArcheoSites())
-        .default
-        .map(x => {
-          if (x.label.includes(this.searchInput)) this.start.push(x)
-        })
-    }*/
-    /*
-    this.start = []
-    JSON.parse(this.poiService.getMonuments())
-      .default
-      .map(x => {
-        if (x.label.includes(this.searchInput)) this.start.push(x)
-      })
-
-    JSON.parse(this.poiService.getArcheoSites())
-      .default
-      .map(x => {
-        if (x.label.includes(this.searchInput)) this.start.push(x)
-      })
-      */
     this.poiService.getPoisByString(this.searchInput).
       subscribe(
         data => { this.addPoistToList(data.features) }
@@ -145,7 +120,6 @@ export class MapSearchComponent implements OnInit {
       this.poi.emit({ lat: "", long: "", label: "", img: "", abstract: "" });
       this.router.navigateByUrl('/tabs/map')
     }
-    //document.getElementById("map-page").style.height = "100%"
     this.start = []
   }
 }
