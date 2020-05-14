@@ -120,10 +120,15 @@ export class PathIdPage {
 
 
   ionViewDidEnter() {
-
     this.allPoisthis = this.poiService.getAllPois()
+    this.tracker = setInterval(() => {
+      //  this.geoLocationService.checkGPSPermission()
+      //this.geoLocationService.getLocationCoordinates()
 
-
+      this.map.invalidateSize()
+      this.geoLocationService.getLocationCoordinatesSetup()
+      //this.startTracking();
+    }, 5000);
     this.subscriptions.push(
       this.currentPointService.currentPointA.subscribe(
         (data) => {
@@ -182,7 +187,6 @@ export class PathIdPage {
 
 
             if (this.map) {
-
               for (const property in this.map._layers) {
                 if (this.map._layers[property].options && this.map._layers[property].options.title) {
                   if (this.map._layers[property].options.title == "PC" || this.map._layers[property].options.title == "Shadow") {
@@ -294,10 +298,10 @@ export class PathIdPage {
         this.addButtonOverMap()
       }, 2000);
 
+
       this.layerGroup = new LayerGroup();
       this.layerGroup.addTo(this.map);
     }
-
   }
 
 
@@ -507,12 +511,7 @@ export class PathIdPage {
               )
 
           });
-      this.tracker = setInterval(() => {
-        //  this.geoLocationService.checkGPSPermission()
-        //this.geoLocationService.getLocationCoordinates()
-        this.geoLocationService.getLocationCoordinatesSetup()
-        //this.startTracking();
-      }, 5000);
+
     }
   }
 
