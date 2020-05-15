@@ -186,6 +186,7 @@ export class PathIdPage {
           if (resp) {
 
 
+            this.geoLocationService.setChechRicalcolo(false)
             if (this.map) {
               for (const property in this.map._layers) {
                 if (this.map._layers[property].options && this.map._layers[property].options.title) {
@@ -204,6 +205,7 @@ export class PathIdPage {
               if (this.path.geometry.length > 0) {
                 let isPointOnLine = this.pathService.isPointOnLine(resp, this.path)
                 if (!isPointOnLine.status) {
+
                   this.onRicalcoloPopup()
                 } else {
                   let trackingUser = this.pathService.trackingUser(this.map, resp, this.path)
@@ -516,7 +518,6 @@ export class PathIdPage {
   }
 
   async onRicalcoloPopup() {
-    this.geoLocationService.setChechRicalcolo(false)
     const modal = await this.modalController.create({
       component: MapModalRicalcoloPage
     });
