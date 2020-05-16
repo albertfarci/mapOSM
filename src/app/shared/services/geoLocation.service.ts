@@ -33,6 +33,10 @@ export class GeoLocationService {
         private http: HttpClient,
         private currentPointsService: CurrentPointService) { }
 
+
+    getCheckRicalcolo() {
+        return this.checkRicalcoloSource
+    }
     //Check if application having GPS access permission  
     checkGPSPermission() {
 
@@ -87,6 +91,60 @@ export class GeoLocationService {
         );
     }
 
+    checkGPSPermissionHome() {
+
+        this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
+            result => {
+
+                if (result.hasPermission) {
+
+                    //If having permission show 'Turn On GPS' dialogue
+                    this.askToTurnOnGPS();
+                } else {
+
+                    //If not having permission ask for permission
+                    this.requestGPSPermission();
+                }
+            },
+            err => {
+                alert(err);
+            }
+        );
+
+    }
+
+    requestGPSPermissionHome() {
+        this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+            if (canRequest) {
+            } else {
+                //Show 'GPS Permission Request' dialogue
+                this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
+                    .then(
+                        () => {
+                            // call method to turn on GPS
+                            this.askToTurnOnGPS();
+                        },
+                        error => {
+                            //Show alert if user click on 'No Thanks'
+                            alert('requestPermission Error requesting location permissions ' + error)
+                        }
+                    );
+            }
+        });
+    }
+
+    askToTurnOnGPSForHome() {
+        this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+            () => {
+                // When GPS Turned ON call method to get Accurate location coordinates
+                //this.getLocationCoordinates()
+                this.checkPermissionSource.next(true)
+            },
+            error => alert('Error requesting location permissions ' + JSON.stringify(error))
+        );
+    }
+
+
     getWatchCoordinates() {
         var options = { timeout: 1000 };
 
@@ -118,8 +176,8 @@ export class GeoLocationService {
 
     getLocationCoordinatesSetup() {
         if (this.checkRicalcoloSource) {
-            //this.getLocationCoordinates()
-            this.checkGPSPermission()
+            this.getLocationCoordinates()
+            //this.checkGPSPermission()
         }
     }
 

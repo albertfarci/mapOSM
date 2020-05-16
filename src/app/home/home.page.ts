@@ -7,6 +7,8 @@ import { map } from 'rxjs/operators';
 import { PathService } from '../shared/services/path.service';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { PreferitiService } from '../shared/services/preferiti.service';
+import { GeoLocationService } from '../shared/services/geoLocation.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -16,11 +18,11 @@ import { PreferitiService } from '../shared/services/preferiti.service';
 export class HomePage {
   point: { lng: any; lat: any; };
 
-  pointsPath=[];
+  pointsPath = [];
 
   map: Map
 
-  
+
   paths = {
     "0": {
       "value": 0,
@@ -46,63 +48,67 @@ export class HomePage {
       "value": 5,
       "name": "Bycicle co2"
     },
-    "6":{
+    "6": {
       "value": 6,
       "name": "Anziani"
     },
-    "7":{
-      "value":7,
-      "name":"Famiglie"
+    "7": {
+      "value": 7,
+      "name": "Famiglie"
     },
-    "8":{
-      "value":8,
-      "name":"Turistico"
+    "8": {
+      "value": 8,
+      "name": "Turistico"
     }
   }
 
 
   constructor(public http: Http,
-            public plt: Platform,
-            public router: Router,
-            public preferitiService: PreferitiService,
-            private localNotifications: LocalNotifications) {
+    public plt: Platform,
+    public router: Router,
+    public preferitiService: PreferitiService,
+    public geoLocationService: GeoLocationService,
+    private localNotifications: LocalNotifications) {
 
-            }
+  }
 
-  setTypePAth(){
+  ionViewDidEnter() {
+    this.geoLocationService.checkGPSPermissionHome()
+  }
+  setTypePAth() {
 
     this.router.navigate(["/tabs/map"]);
   }
 
   single_notification() {
     // Schedule a single notification
-    
-    const now= new Date()
+
+    const now = new Date()
     const trigger = new Date()
-    trigger.setDate(now.getDate()+1)
-    
-    trigger.setMinutes(now.getMinutes()+3)
+    trigger.setDate(now.getDate() + 1)
+
+    trigger.setMinutes(now.getMinutes() + 3)
     this.localNotifications.schedule({
       id: 1,
       text: 'Single ILocalNotification',
       data: { secret: 'key_data' },
-      trigger: {at: trigger},
+      trigger: { at: trigger },
       smallIcon: 'assets://bb/icon3-m.png',
-      sound:  'file://sound.mp3',
+      sound: 'file://sound.mp3',
     });
   }
 
-  goToProfile(){
+  goToProfile() {
 
     this.router.navigate(["/tabs/profilo"]);
   }
 
-  goToPreferiti(item){
+  goToPreferiti(item) {
     this.preferitiService.setPeriti(this.paths[item])
     this.router.navigate(["/tabs/path"]);
   }
 
-  goToPoisView(){
+  goToPoisView() {
 
     this.router.navigate(["/tabs/pois_view"]);
   }
