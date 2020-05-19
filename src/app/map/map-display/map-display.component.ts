@@ -45,16 +45,6 @@ export class MapDisplayComponent implements OnInit {
 
   icons = {
 
-    greenIcon: L.icon({
-      iconUrl: '/assets/pref-2/green-m.png',
-      iconSize: [25, 25],
-      popupAnchor: [0, -20]
-    }),
-    redIcon: icon({
-      iconUrl: '/assets/pref-2/red-m.png',
-      iconSize: [25, 25],
-      popupAnchor: [0, -20]
-    }),
     puntoA: icon({
       iconUrl: '/assets/release1/Oval.svg',
       iconSize: [25, 25],

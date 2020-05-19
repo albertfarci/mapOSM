@@ -20,6 +20,7 @@ import { Subject, Subscription } from 'rxjs';
 import { MapModalLastNodePage } from './map-modal-last-node/map-modal-last-node.page';
 import { FilterListService } from '../shared/services/filters.service';
 import { CurrentStepService } from '../shared/services/current-step.services';
+import { MapModalSegnalazionePage } from './map-modal-segnalazione/map-modal-segnalazione.page';
 
 @Component({
   selector: 'app-pathId',
@@ -314,7 +315,17 @@ export class PathIdPage {
     this.addMuseumsNearToMeButton();
     this.addRestaurantNearToMeButton();
     this.addShopsNearToMeButton();
+    this.addSegnalazioneButton();
 
+  }
+
+  addSegnalazioneButton() {
+    if (!document.getElementById("trail-sign")) {
+      L.easyButton('<div ><ion-icon src="/assets/release1/alert.svg"></ion-icon></div>', () => {
+        this.onSegnalazionePopup()
+
+      }, { "title": "trail-sign" }).addTo(this.map);
+    }
   }
 
   addRestaurantNearToMeButton() {
@@ -516,6 +527,15 @@ export class PathIdPage {
           });
 
     }
+  }
+
+  async onSegnalazionePopup() {
+
+    this.geoLocationService.setChechRicalcolo(false)
+    const modal = await this.modalController.create({
+      component: MapModalSegnalazionePage
+    });
+    return await modal.present();
   }
 
   async onRicalcoloPopup() {
