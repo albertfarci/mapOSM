@@ -146,7 +146,6 @@ export class MapDisplayComponent implements OnInit {
     if (this.map == undefined) {
       this.map = new L.Map('map-page').setView([39.21834898953833, 9.1126227435], 16);
 
-      //L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
 
       setTimeout(() => { this.map.invalidateSize() }, 1000);
@@ -279,12 +278,6 @@ export class MapDisplayComponent implements OnInit {
 
     }
 
-    /*
-    this.layerGroup.addLayer(geoJSON({
-      "type": "LineString",
-      "coordinates": geometryArray2Dim,
-    }, { style: myStyle }).bindPopup('<img src="' + value.icon + '"><h5>' + x.nome + ' </h5><h5>' + this.timeConverter(posts.duration) + ' </h5><h5>' + this.distanceConverter(posts.distance) + ' </h5>'));
-    */
   }
 
 
@@ -350,7 +343,6 @@ export class MapDisplayComponent implements OnInit {
     } else {
       this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 16)
     }
-    //this.addControls()
   }
 
   setPointA(item: Point) {
@@ -379,7 +371,6 @@ export class MapDisplayComponent implements OnInit {
       this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 16)
     }
 
-    //this.addControls()
   }
 
   addControls() {
@@ -389,8 +380,6 @@ export class MapDisplayComponent implements OnInit {
         [this.pointsPath[0].latitudine, this.pointsPath[0].longitudine],
         [this.pointsPath[1].latitudine, this.pointsPath[1].longitudine]
       ]);
-      //this.addContractButton()
-      //this.addNavigationButton()
 
     }
   }
@@ -401,12 +390,10 @@ export class MapDisplayComponent implements OnInit {
     if (!this.pointsPath[0]) {
       this.currentPointsService.setPointA(tpmPoint)
       this.currentStepService.setStep(1)
-      //this.setPointA(tpmPoint)
     } else if (!this.pointsPath[1]) {
       this.currentPointsService.setPointB(tpmPoint)
 
       this.currentStepService.setStep(1)
-      //this.setPointB(tpmPoint)
     }
 
   }
@@ -428,9 +415,6 @@ export class MapDisplayComponent implements OnInit {
 
         )
         this.geoLocationService.getLocationCoordinatesSetup()
-        //this.geoLocationService.checkGPSPermission()
-        //this.getLocationCoordinates()
-
       }, { "title": "locate" }).addTo(this.map);
     }
 
@@ -469,33 +453,11 @@ export class MapDisplayComponent implements OnInit {
     this.navigate.emit(this.pointsPath);
   }
 
-  addNavigationButton() {
-
-    if (!document.getElementById("navigate")) {
-      L.easyButton('<div id="navigate"><ion-icon name="navigate"  class="star"></ion-icon></div>', () => {
-        this.map.fitBounds([
-          [this.pointsPath[0].latitudine, this.pointsPath[0].longitudine],
-          [this.pointsPath[1].latitudine, this.pointsPath[1].longitudine]
-        ]);
-        (this.map)
-        this.map.removeLayer(document.getElementById("navigate"));
-        this.navigate.emit(this.pointsPath);
-      }).addTo(this.map);
-    }
-
-  }
 
   getLocationCoordinates() {
 
 
     this.geoLocationService.checkGPSPermission()
-    /*this.geoLocationService.getLocationCoordinates()
-      .subscribe(
-        resp => {
-          this.currentPointsService.setPointA({ latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente", img: "", abstract: "" })
-          //this.setPointA({ latitudine: resp.latitudine, longitudine: resp.longitudine, title: "Posizione corrente" })
-
-        })*/
   }
 
   ngOnDestroy() {

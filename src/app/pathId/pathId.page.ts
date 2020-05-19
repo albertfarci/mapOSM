@@ -123,12 +123,9 @@ export class PathIdPage {
   ionViewDidEnter() {
     this.allPoisthis = this.poiService.getAllPois()
     this.tracker = setInterval(() => {
-      //  this.geoLocationService.checkGPSPermission()
-      //this.geoLocationService.getLocationCoordinates()
       console.log("ENter")
       this.map.invalidateSize()
       this.geoLocationService.getLocationCoordinatesSetup()
-      //this.startTracking();
     }, 5000);
     this.subscriptions.push(
       this.currentPointService.currentPointA.subscribe(
@@ -136,18 +133,12 @@ export class PathIdPage {
           if (data) {
             if (data != this.pointA && this.map) {
               this.pointA = data
-              //this.onStartNavigaitonPopup()
               this.getPath()
             } else {
 
               this.pointA = data
             }
-
           }
-
-          //if (this.pointA && this.pointB) this.getPath()
-
-          //this.getPath()
         }
       )
     )
@@ -156,13 +147,11 @@ export class PathIdPage {
         (data) => {
           if (data != this.pointA && this.map) {
             this.pointB = data
-            //this.onStartNavigaitonPopup()
             this.getPath()
           } else {
 
             this.pointB = data
           }
-          //this.getPath()
         }
       )
 
@@ -174,7 +163,6 @@ export class PathIdPage {
           if (data) {
             this.routerState = data.filter.valore
           }
-          //this.getPath()
         }
       )
 
@@ -289,16 +277,11 @@ export class PathIdPage {
     if (this.map == undefined) {
 
       this.map = new Map('map-pathId').setView([39.21834898953833, 9.1126227435], 12.5);
-      //L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
 
       setTimeout(() => {
         this.map.invalidateSize()
-        //this.getLocationCoordinates()
-        //this.geoLocationService.getLocationCoordinatesSetup()
-        //this.onStartNavigaitonPopup()
         this.getPath()
-        //this.geoLocationService.checkGPSPermission()
         this.addButtonOverMap()
       }, 2000);
 
@@ -459,7 +442,6 @@ export class PathIdPage {
 
         L.marker([this.pointA.latitudine, this.pointA.longitudine], { title: "Punto A", icon: this.icons.puntoA }).addTo(this.map)
 
-        //this.map.setView([this.pointA.latitudine, this.pointA.longitudine], 16)
       }
 
     }
@@ -476,7 +458,6 @@ export class PathIdPage {
 
       }
 
-      //this.map.setView([this.pointB.latitudine, this.pointB.longitudine], 16)
     }
 
   }
@@ -493,10 +474,8 @@ export class PathIdPage {
 
 
       var point = this.pointA.latitudine + "," + this.pointA.longitudine
-      //var point = "39.21477,9.11289"
       var pointEnd = this.pointB.latitudine + "," + this.pointB.longitudine
       this.pathService.getPath(point, pointEnd, this.routerState)
-        //this.pathService.getPath(point, pointEnd, 27)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           posts => {
@@ -519,7 +498,6 @@ export class PathIdPage {
                   this.layerGroup.addLayer(geoJSON({
                     "type": "LineString",
                     "coordinates": geometryArray2Dim,
-                    //}).bindPopup('<h1>'+this.currentFilter.name+'</h1>'));
                   }, { style: myStyle }).bindPopup('<h1>Car</h1>'));
                 }
               )
