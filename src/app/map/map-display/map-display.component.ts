@@ -74,9 +74,10 @@ export class MapDisplayComponent implements OnInit {
     this.currentPointsService.currentPointA.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data) => {
         if (data) {
+
+          setTimeout(() => { this.map.invalidateSize() }, 1000);
           if (data.latitudine != "" && data.longitudine != "") {
 
-            setTimeout(() => { this.map.invalidateSize() }, 1000);
             this.pathService.setToNullSelectedPath()
             this.pointA = data
             this.addPointA()
@@ -98,10 +99,10 @@ export class MapDisplayComponent implements OnInit {
     this.currentPointsService.currentPointB.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data) => {
         if (data) {
+          setTimeout(() => { this.map.invalidateSize() }, 1000);
           if (data.latitudine != "" && data.longitudine != "") {
 
 
-            setTimeout(() => { this.map.invalidateSize() }, 1000);
             this.pathService.setToNullSelectedPath()
             this.pointB = data
             this.addPointB()
