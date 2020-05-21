@@ -76,6 +76,7 @@ export class MapDisplayComponent implements OnInit {
         if (data) {
           if (data.latitudine != "" && data.longitudine != "") {
 
+            setTimeout(() => { this.map.invalidateSize() }, 1000);
             this.pathService.setToNullSelectedPath()
             this.pointA = data
             this.addPointA()
@@ -99,6 +100,8 @@ export class MapDisplayComponent implements OnInit {
         if (data) {
           if (data.latitudine != "" && data.longitudine != "") {
 
+
+            setTimeout(() => { this.map.invalidateSize() }, 1000);
             this.pathService.setToNullSelectedPath()
             this.pointB = data
             this.addPointB()
@@ -132,6 +135,8 @@ export class MapDisplayComponent implements OnInit {
 
     this.currentStepService.currentStep.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data) => {
+
+        setTimeout(() => { this.map.invalidateSize() }, 1000);
         this.currentStep = data
 
 
@@ -346,6 +351,7 @@ export class MapDisplayComponent implements OnInit {
   }
 
   setPointA(item: Point) {
+
     if (!this.pointsPath[0]) {
       L.marker([item.latitudine, item.longitudine], { title: "Punto A", icon: this.icons.puntoA }).addTo(this.map)
 
