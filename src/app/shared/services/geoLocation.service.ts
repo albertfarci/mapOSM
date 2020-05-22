@@ -70,10 +70,6 @@ export class GeoLocationService {
                         () => {
                             // call method to turn on GPS
                             this.askToTurnOnGPS();
-                        },
-                        error => {
-                            //Show alert if user click on 'No Thanks'
-                            alert('requestPermission Error requesting location permissions ' + error)
                         }
                     );
             }
@@ -86,8 +82,7 @@ export class GeoLocationService {
                 // When GPS Turned ON call method to get Accurate location coordinates
                 this.getLocationCoordinates()
                 this.checkPermissionSource.next(true)
-            },
-            error => alert('Error requesting location permissions ' + JSON.stringify(error))
+            }
         );
     }
 
@@ -99,11 +94,11 @@ export class GeoLocationService {
                 if (result.hasPermission) {
 
                     //If having permission show 'Turn On GPS' dialogue
-                    this.askToTurnOnGPS();
+                    this.askToTurnOnGPSForHome();
                 } else {
 
                     //If not having permission ask for permission
-                    this.requestGPSPermission();
+                    this.requestGPSPermissionHome();
                 }
             },
             err => {
@@ -140,7 +135,7 @@ export class GeoLocationService {
                 //this.getLocationCoordinates()
                 this.checkPermissionSource.next(true)
             },
-            error => alert('Error requesting location permissions ' + JSON.stringify(error))
+            error => alert(error.message)
         );
     }
 
@@ -176,8 +171,8 @@ export class GeoLocationService {
 
     getLocationCoordinatesSetup() {
         if (this.checkRicalcoloSource) {
-            this.getLocationCoordinates()
-            //this.checkGPSPermission()
+            //this.getLocationCoordinates()
+            this.checkGPSPermission()
         }
     }
 
