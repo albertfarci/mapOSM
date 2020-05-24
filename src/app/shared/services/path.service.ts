@@ -123,7 +123,10 @@ export class PathService {
 
         return {
           status: true,
-          node: JSON.parse(path.nodes)[i],
+          node: {
+            id: JSON.parse(path.nodes)[i],
+            index: i
+          },
           isLast: i == path.geometry.length
         }
 
@@ -132,7 +135,7 @@ export class PathService {
     }
     return {
       status: false,
-      node: [],
+      node: {},
       isLast: false
     };;
   }

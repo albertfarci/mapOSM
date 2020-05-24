@@ -200,6 +200,7 @@ export class PathIdPage {
                 } else {
                   let trackingUser = this.pathService.trackingUser(this.map, resp, this.path)
                   this.sendTrackingUser(trackingUser)
+                  this.removeNodeFromPath(trackingUser)
                 }
               }
             }
@@ -217,9 +218,20 @@ export class PathIdPage {
     if (tracking.status) {
       let now = new Date();
       let diffMs = (now.getMinutes() - this.lastDateGetted.getMinutes())
-      this.geoLocationService.sendTrackingUserData(new Date().toUTCString(), tracking.node, diffMs, this.routerState).subscribe()
+      this.geoLocationService.sendTrackingUserData(new Date().toUTCString(), tracking.node.id, diffMs, this.routerState).subscribe()
       this.lastDateGetted = now
       this.isLastNode(tracking.isLast)
+    }
+  }
+
+  removeNodeFromPath(tracking) {
+
+    if (tracking.status) {
+      for (let i = 0; i < tracking.index; i++) {
+        this.path.geometry.shift()
+        this.path.nodes.shift()
+        this.displayPath(this.path)
+      }
     }
   }
 
@@ -479,12 +491,7 @@ export class PathIdPage {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           posts => {
-            let myStyle = {
-              color: 'red',
-              dashArray: "5 10",
-              weight: 7,
-              opacity: 0.65,
-            };
+
 
 
             this.pathService.calculateGeometry(posts)
@@ -495,16 +502,26 @@ export class PathIdPage {
                     geometry: geometryArray2Dim,
                     nodes: posts.nodes
                   }
-                  this.layerGroup.addLayer(geoJSON({
-                    "type": "LineString",
-                    "coordinates": geometryArray2Dim,
-                  }, { style: myStyle }).bindPopup('<h1>Car</h1>'));
+                  this.displayPath(this.path)
                 }
               )
 
           });
 
     }
+  }
+
+  displayPath(path) {
+    let myStyle = {
+      color: 'red',
+      dashArray: "5 10",
+      weight: 7,
+      opacity: 0.65,
+    };
+    this.layerGroup.addLayer(geoJSON({
+      "type": "LineString",
+      "coordinates": path.geometry,
+    }, { style: myStyle }));
   }
 
   async onSegnalazionePopup() {
