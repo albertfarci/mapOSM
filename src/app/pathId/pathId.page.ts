@@ -199,7 +199,7 @@ export class PathIdPage {
                   }
                 } else {
                   let trackingUser = this.pathService.trackingUser(this.map, resp, this.path)
-                  this.sendTrackingUser(trackingUser)
+                  //this.sendTrackingUser(trackingUser)
                   this.removeNodeFromPath(trackingUser)
                 }
               }
@@ -225,7 +225,7 @@ export class PathIdPage {
   }
 
   removeNodeFromPath(tracking) {
-
+    console.log(tracking)
     if (tracking.status) {
       for (let i = 0; i < tracking.index; i++) {
         this.path.geometry.shift()
@@ -482,8 +482,6 @@ export class PathIdPage {
     this.displayPointB()
     if (this.pointA && this.pointB) {
 
-      this.removePath()
-
 
       var point = this.pointA.latitudine + "," + this.pointA.longitudine
       var pointEnd = this.pointB.latitudine + "," + this.pointB.longitudine
@@ -512,6 +510,7 @@ export class PathIdPage {
   }
 
   displayPath(path) {
+    this.removePath()
     let myStyle = {
       color: 'red',
       dashArray: "5 10",
