@@ -48,9 +48,12 @@
                     <img class="image_poi" src="{{routerState.icon}}" alt="" />
                 </ion-thumbnail>
                 <ion-label (click)="selectPOI(poi)">
-                    <h3 style="font-weight: bold;">{{poi.properties.name}}</h3>
+
+                    <h3 *ngIf="poi.properties.housenumber" style="font-weight: bold;">
+                        {{poi.properties.street}} {{poi.properties.housenumber}}</h3>
+                    <h3 *ngIf="!poi.properties.housenumber" style="font-weight: bold;">
+                        {{poi.properties.name}}</h3>
                     <p style="font-weight: bold;">{{poi.properties.city}}</p>
-                    <p style="font-weight: bold;">{{poi.properties.osm_value | searchLabel}}</p>
                 </ion-label>
             </ion-item>
         </ion-row>
