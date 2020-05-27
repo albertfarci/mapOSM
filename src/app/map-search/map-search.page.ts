@@ -161,8 +161,7 @@ export class MapSearchPage implements OnInit {
     }
 
     onSearchByKeyword(event: any) {
-
-        this.poiService.getPoisByString(this.searchInput).
+        this.poiService.getPoisByString(event.detail.srcElement.value).
             subscribe(
                 data => { this.addPoistToList(data.features) }
             )
@@ -181,10 +180,10 @@ export class MapSearchPage implements OnInit {
 
 
     selectPOI(poi?) {
-
+        console.log(poi)
         this.searchInput = ""
         if (poi) {
-
+            poi.properties.name = poi.properties.name ? poi.properties.name : poi.properties.street + " " + poi.properties.housenumber
             this.onPointSelected({ lat: poi.geometry.coordinates[1], long: poi.geometry.coordinates[0], label: poi.properties.name, img: "", abstract: "" })
 
         } else {
