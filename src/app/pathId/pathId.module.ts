@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PathIdPage } from './pathId.page';
 import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.page';
@@ -15,6 +15,7 @@ import { MapModalSegnalazionePage } from './map-modal-segnalazione/map-modal-seg
     IonicModule,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild([{ path: '', component: PathIdPage }])
   ],
   entryComponents: [MapModalModalitaPage, MapModalStartPage, MapModalRicalcoloPage, MapModalLastNodePage, MapModalSegnalazionePage],

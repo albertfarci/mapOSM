@@ -18,38 +18,58 @@
                     </ion-label>
                 </ion-col>
             </ion-row>
-
-            <ion-row style="margin-top: 5%;">
-                <ion-col>
-                    <ion-list>
+            <form [formGroup]="selazioneForm" (ngSubmit)="onSubmit(selazioneForm.value)">
+                <ion-row style="margin-top: 5%;">
+                    <ion-col>
                         <ion-item>
-                            <ion-label>Categoria segnalazione</ion-label>
-                            <ion-select value="dog">
-                                <ion-select-option value="incidente">Incidente</ion-select-option>
-                                <ion-select-option value="rallentamenti">Rallentamenti</ion-select-option>
-                                <ion-select-option value="lavori-in-corso">Lavori in corso</ion-select-option>
-                            </ion-select>
+                            <ion-label>Descrizione</ion-label>
+                            <input id="description" type="text" formControlName="description" autofocus="true" required>
                         </ion-item>
-                    </ion-list>
-                    <ion-list>
-                        <ion-item>
-                            <ion-label>Metri di distanza</ion-label>
-                            <ion-select value="dog">
-                                <ion-select-option value="meno di 10 metri">meno di 10 metri</ion-select-option>
-                                <ion-select-option value="più di 10 metri">più di 10 metri</ion-select-option>
-                                <ion-select-option value="meno di 100 metri">meno di 100 metri</ion-select-option>
-                                <ion-select-option value="più di 100 metri">più di 100 metri</ion-select-option>
-                            </ion-select>
-                        </ion-item>
-                    </ion-list>
 
-                </ion-col>
-            </ion-row>
-            <ion-row style="margin-top: 5%;">
-                <ion-col>
-                    <ion-button (click)="inviaSegnalazione()" color="primary" style="width: 60%;">Invia</ion-button>
-                </ion-col>
-            </ion-row>
+                        <ion-list>
+                            <ion-item>
+                                <ion-label for="tipology">Categoria</ion-label>
+                                <ion-select id="tipology" formControlName="tipology" required>
+                                    <ion-select-option value="1">Lavori stradali</ion-select-option>
+                                    <ion-select-option value="2">Manifestazioni/scioperi</ion-select-option>
+                                    <ion-select-option value="3">Allagamento</ion-select-option>
+                                    <ion-select-option value="4">Caduta alberi/massi</ion-select-option>
+                                    <ion-select-option value="5">Incidente</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                        </ion-list>
+                        <ion-list>
+                            <ion-item>
+                                <ion-label>Livello di severità</ion-label>
+                                <ion-select id="severity" formControlName="severity" required>
+                                    <ion-select-option value="1">1</ion-select-option>
+                                    <ion-select-option value="2">2</ion-select-option>
+                                    <ion-select-option value="3">3</ion-select-option>
+                                    <ion-select-option value="4">4</ion-select-option>
+                                    <ion-select-option value="5">5</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                        </ion-list>
+                        <ion-list>
+                            <ion-item>
+                                <ion-label>Tipo percorso</ion-label>
+                                <ion-select id="mode" formControlName="mode" required>
+                                    <ion-select-option value="1">Auto</ion-select-option>
+                                    <ion-select-option value="2">Piedi</ion-select-option>
+                                    <ion-select-option value="3">Bici</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                        </ion-list>
+
+                    </ion-col>
+                </ion-row>
+                <ion-row style="margin-top: 5%;">
+                    <ion-col>
+                        <ion-button type="submit" color="primary" style="width: 60%;" [disabled]="!selazioneForm.valid">
+                            Invia</ion-button>
+                    </ion-col>
+                </ion-row>
+            </form>
         </ion-grid>
     </ion-content>
 </div>

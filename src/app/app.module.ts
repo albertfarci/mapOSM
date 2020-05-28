@@ -28,6 +28,8 @@ import { GeoLocationService } from './shared/services/geoLocation.service';
 import { StorageService } from './shared/services/storage.service';
 import { CurrentPointService } from './shared/services/current-points.service';
 import { CurrentStepService } from './shared/services/current-step.services';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SegnalazioneService } from './shared/services/segnalazione.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -52,6 +54,7 @@ import { CurrentStepService } from './shared/services/current-step.services';
     Geolocation,
     LocationAccuracy,
     LocalNotifications,
+    SegnalazioneService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

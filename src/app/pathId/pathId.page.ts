@@ -90,6 +90,7 @@ export class PathIdPage {
   path
   allPoisthis
   //refactor
+  currentPosition
   pointA: Point
   pointB: Point
   observerIdRouter
@@ -174,6 +175,7 @@ export class PathIdPage {
         resp => {
           if (resp) {
 
+            this.currentPosition = resp
 
             if (this.map) {
               for (const property in this.map._layers) {
@@ -524,19 +526,22 @@ export class PathIdPage {
   }
 
   async onSegnalazionePopup() {
-
     this.geoLocationService.setChechRicalcolo(false)
     const modal = await this.modalController.create({
-      component: MapModalSegnalazionePage
+      component: MapModalSegnalazionePage,
+      componentProps: {
+        'currentPosition': this.currentPosition,
+        'path': this.path
+      }
     });
     return await modal.present();
   }
 
   async onRicalcoloPopup() {
-
     this.geoLocationService.setChechRicalcolo(false)
     const modal = await this.modalController.create({
-      component: MapModalRicalcoloPage
+      component: MapModalRicalcoloPage,
+
     });
     return await modal.present();
   }

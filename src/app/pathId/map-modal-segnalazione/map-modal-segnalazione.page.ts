@@ -7,6 +7,12 @@ import { PathService } from 'src/app/shared/services/path.service';
 import { CurrentPointService } from 'src/app/shared/services/current-points.service';
 import { post } from 'selenium-webdriver/http';
 import { GeoLocationService } from 'src/app/shared/services/geoLocation.service';
+import { FormBuilder, Validators } from '@angular/forms';
+
+import { FormGroup, FormControl } from '@angular/forms';
+import { SegnalazioneService } from 'src/app/shared/services/segnalazione.service';
+import { Subscription } from 'rxjs';
+
 @Component({
     selector: 'map-modal-segnalazione-page',
     templateUrl: './map-modal-segnalazione.component.html',
@@ -14,12 +20,25 @@ import { GeoLocationService } from 'src/app/shared/services/geoLocation.service'
 })
 export class MapModalSegnalazionePage {
 
+    selazioneForm;
+    routerState
+
+    @Input() currentPosition
+    @Input() path
+    private subscriptions: Subscription[] = []
+
     constructor(private modalCtrl: ModalController,
-        public geoLocationService: GeoLocationService) {
+        private formBuilder: FormBuilder,
+        public geoLocationService: GeoLocationService,
+        private segnalazioneService: SegnalazioneService,
+        private pathService: PathService) {
 
-    }
-
-    ionViewDidEnter() {
+        this.selazioneForm = this.formBuilder.group({
+            description: ['', Validators.required],
+            tipology: ['', Validators.required],
+            severity: ['', Validators.required],
+            mode: ['', Validators.required]
+        });
 
 
 
@@ -34,8 +53,21 @@ export class MapModalSegnalazionePage {
         this.modalCtrl.dismiss();
     }
 
-    async closeModal(path) {
+    onSubmit(customerData) {
+        this.selazioneForm.reset();
+        let date = new Date()
+        customerData.timestamp = date.getMilliseconds()
+        let isPointOnLine = this.pathService.isPointOnLine(this.currentPosition, this.path)
+        if (isPointOnLine.status) {
+            customerData.roadSegment = "[" + isPointOnLine.nodes[0][0] + ", " + isPointOnLine.nodes[0][1] + "]"
+            this.segnalazioneService.sendSegnalazione(customerData).subscribe()
+        }
+        this.closeModal()
+    }
 
+    async closeModal() {
+
+        this.subscriptions.forEach(sub => sub.unsubscribe())
         this.geoLocationService.setChechRicalcolo(true)
         this.modalCtrl.dismiss();
     }

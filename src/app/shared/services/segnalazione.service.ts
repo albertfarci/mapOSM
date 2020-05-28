@@ -6,9 +6,18 @@ export class SegnalazioneService {
 
     constructor(private http: HttpClient) { }
 
-    sendSegnalazione(data, tipo, messaggio, punto) {
+    sendSegnalazione(data) {
 
-        return this.http.post<any>(`http://156.148.14.188:8080/v1/requestTrip/salvataggio_messaggi/?data=` + data + `tipo=` + tipo + `&messaggio=` + messaggio + `&punto=` + punto, {});
+
+        return this.http.post<any>(`https://dss03.crs4.it/v1/obstacles`, {
+            "description": data.description,
+            "mode": data.mode,
+            "roadSegment": data.roadSegment,
+            "severity": data.severity,
+            "timestamp": data.timestamp,
+            "tipology": data.tipology
+        }
+            , { headers: { 'Content-Type': 'application/json', 'Authorization': 'Token ca5d91ad5020ed55c709c40f00f7510f1338ad9e' } });
     }
 
 }
