@@ -201,7 +201,8 @@ export class PathIdPage {
                   }
                 } else {
                   let trackingUser = this.pathService.trackingUser(this.map, resp, this.path)
-                  //this.sendTrackingUser(trackingUser)
+                  this.sendTrackingUser(isPointOnLine)
+                  this.isLastNode(trackingUser.isLast)
                   this.removeNodeFromPath(trackingUser)
                 }
               }
@@ -216,13 +217,14 @@ export class PathIdPage {
   }
 
   sendTrackingUser(tracking) {
-    console.log(tracking)
+
     if (tracking.status) {
       let now = new Date();
-      let diffMs = (now.getMinutes() - this.lastDateGetted.getMinutes())
-      this.geoLocationService.sendTrackingUserData(new Date().toUTCString(), tracking.node.id, diffMs, this.routerState).subscribe()
+
+      const roadSegment = "[" + tracking.nodes[0][0] + ", " + tracking.nodes[0][1] + "]"
+      const timestamps = [now.getMilliseconds(), this.lastDateGetted.getMilliseconds()]
+      this.geoLocationService.sendTrackingUserData(tracking.nodes[0], timestamps, this.routerState).subscribe()
       this.lastDateGetted = now
-      this.isLastNode(tracking.isLast)
     }
   }
 

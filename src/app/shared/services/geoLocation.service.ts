@@ -209,9 +209,16 @@ export class GeoLocationService {
         this.checkRicalcoloSource = value
     }
 
-    sendTrackingUserData(data, node_id, tempo_percorrenza, modalita) {
+    sendTrackingUserData(roadSegment, timestamps, modalita) {
+        return this.http.post<any>(`https://dss03.crs4.it/v1/segments`,
+            {
+                "roadSegment": roadSegment,
+                "mode": modalita,
+                "distance": 0,
+                "timestamps": timestamps
+            }
+            , { headers: { 'Content-Type': 'application/json', 'Authorization': 'Token ca5d91ad5020ed55c709c40f00f7510f1338ad9e' } });
 
-        return this.http.post<any>(`http://156.148.14.188:8080/v1/requestTrip/salvataggio_segmenti/?data=` + data + `osm_id=` + node_id + `&tempo_percorrenza=` + tempo_percorrenza + `&modalita=` + modalita, {});
     }
 
 }
