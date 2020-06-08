@@ -203,7 +203,7 @@ export class PathIdPage {
                   let trackingUser = this.pathService.trackingUser(this.map, resp, this.path)
                   this.sendTrackingUser(isPointOnLine)
                   this.isLastNode(trackingUser.isLast)
-                  this.removeNodeFromPath(trackingUser)
+                  //this.removeNodeFromPath(trackingUser)
                 }
               }
             }
