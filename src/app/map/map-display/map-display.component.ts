@@ -337,18 +337,8 @@ export class MapDisplayComponent implements OnInit {
     }
     this.pointsPath[1] = item
 
+    this.map.setView([this.pointsPath[1].latitudine, this.pointsPath[1].longitudine], 16)
 
-    if (!!this.pointsPath[1] && !!this.pointsPath[0]) {
-
-
-      this.map.fitBounds([
-        [this.pointsPath[1].latitudine, this.pointsPath[1].longitudine],
-        [this.pointsPath[0].latitudine, this.pointsPath[0].longitudine]
-      ], { padding: [50, 50] })
-
-    } else {
-      this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 16)
-    }
   }
 
   setPointA(item: Point) {
@@ -366,17 +356,8 @@ export class MapDisplayComponent implements OnInit {
       }
     }
     this.pointsPath[0] = item
-    if (!!this.pointsPath[1] && !!this.pointsPath[0]) {
+    this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 16)
 
-
-      this.map.fitBounds([
-        [this.pointsPath[1].latitudine, this.pointsPath[1].longitudine],
-        [this.pointsPath[0].latitudine, this.pointsPath[0].longitudine]
-      ], { padding: [50, 50] })
-
-    } else {
-      this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 16)
-    }
 
   }
 
