@@ -203,7 +203,7 @@ export class PathIdPage {
                   let trackingUser = this.pathService.trackingUser(this.map, resp, this.path)
                   this.sendTrackingUser(isPointOnLine)
                   this.isLastNode(trackingUser.isLast)
-                  this.removeNodeFromPath(trackingUser)
+                  //this.removeNodeFromPath(trackingUser)
                 }
               }
             }
@@ -457,6 +457,7 @@ export class PathIdPage {
       if (this.map) {
         this.removePointA()
 
+        this.map.setView([this.pointA.latitudine, this.pointA.longitudine], 12)
         L.marker([this.pointA.latitudine, this.pointA.longitudine], { title: "Punto A", icon: this.icons.puntoA }).addTo(this.map)
 
       }

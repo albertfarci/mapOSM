@@ -206,7 +206,7 @@ export class MapDisplayComponent implements OnInit {
         let pointStart = this.pointsPath[0].latitudine + "," + this.pointsPath[0].longitudine
         let pointEnd = this.pointsPath[1].latitudine + "," + this.pointsPath[1].longitudine
 
-
+        this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 12)
 
         this.pathFilter.map(x => {
           if (x.filter.spunta) {
