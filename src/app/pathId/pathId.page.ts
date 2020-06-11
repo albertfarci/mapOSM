@@ -203,7 +203,7 @@ export class PathIdPage {
                   let trackingUser = this.pathService.trackingUser(this.map, resp, this.path)
                   this.sendTrackingUser(isPointOnLine)
                   this.isLastNode(trackingUser.isLast)
-                  //this.removeNodeFromPath(trackingUser)
+                  this.removeNodeFromPath(trackingUser)
                 }
               }
             }
@@ -231,10 +231,11 @@ export class PathIdPage {
   removeNodeFromPath(tracking) {
     console.log(tracking)
     if (tracking.status) {
+      let pathShifted = this.path
       for (let i = 0; i < tracking.index; i++) {
-        this.path.geometry.shift()
-        this.path.nodes.shift()
-        this.displayPath(this.path)
+        pathShifted.geometry.shift()
+        pathShifted.nodes.shift()
+        this.displayPath(pathShifted)
       }
     }
   }
