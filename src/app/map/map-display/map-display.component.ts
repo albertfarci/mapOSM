@@ -337,7 +337,7 @@ export class MapDisplayComponent implements OnInit {
     }
     this.pointsPath[1] = item
 
-    this.map.setView([this.pointsPath[1].latitudine, this.pointsPath[1].longitudine], 16)
+    this.map.setView([this.pointsPath[1].latitudine, this.pointsPath[1].longitudine], 20)
 
   }
 
@@ -356,7 +356,7 @@ export class MapDisplayComponent implements OnInit {
       }
     }
     this.pointsPath[0] = item
-    this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 16)
+    this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 20)
 
 
   }
