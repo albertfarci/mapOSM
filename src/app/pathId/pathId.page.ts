@@ -457,7 +457,7 @@ export class PathIdPage {
       if (this.map) {
         this.removePointA()
 
-        this.map.setView([this.pointA.latitudine, this.pointA.longitudine], 12)
+        this.map.setView([this.pointA.latitudine, this.pointA.longitudine], 20)
         L.marker([this.pointA.latitudine, this.pointA.longitudine], { title: "Punto A", icon: this.icons.puntoA }).addTo(this.map)
 
       }
