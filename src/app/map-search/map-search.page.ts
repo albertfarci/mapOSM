@@ -44,10 +44,8 @@ export class MapSearchPage implements OnInit {
         this.start = []
         this.isFocused = false
 
-        console.log("ngOnInit")
         setTimeout(() => {
             this.searchbar.setFocus()
-            console.log(this.searchbar)
             this.isFocused = true
         }, 1000);
 
@@ -67,7 +65,7 @@ export class MapSearchPage implements OnInit {
 
             }
         });
-        console.log("ngOnInit map page")
+
         this.observerIdRouter = this._Activatedroute.paramMap.subscribe(params => {
             if (params) {
                 if (params.get("id") == "A") {
@@ -84,20 +82,18 @@ export class MapSearchPage implements OnInit {
 
             }
         });
-        console.log("ionViewDidEnter page")
+
     }
 
     ionViewDidLeave() {
 
-        console.log("destroys page")
         this.observerIdRouter.unsubscribe()
 
         this.subscriptions.forEach(subscription => subscription.unsubscribe())
-        console.log("ionViewDidEnter page")
+
     }
 
     ngOnDestroy() {
-        console.log("destroys")
         this.observerIdRouter.unsubscribe()
     }
 
@@ -180,7 +176,6 @@ export class MapSearchPage implements OnInit {
 
 
     selectPOI(poi?) {
-        console.log(poi)
         this.searchInput = ""
         if (poi) {
             poi.properties.name = poi.properties.name ? poi.properties.name : poi.properties.street + " " + poi.properties.housenumber

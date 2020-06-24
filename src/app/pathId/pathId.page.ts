@@ -124,7 +124,6 @@ export class PathIdPage {
   ionViewDidEnter() {
     this.allPoisthis = this.poiService.getAllPois()
     this.tracker = setInterval(() => {
-      console.log("ENter")
       this.map.invalidateSize()
       this.geoLocationService.getLocationCoordinatesSetup()
     }, 5000);
@@ -229,7 +228,6 @@ export class PathIdPage {
   }
 
   removeNodeFromPath(tracking) {
-    console.log(tracking)
     if (tracking.status) {
       let pathShifted = this.path
       for (let i = 0; i < tracking.index; i++) {
@@ -248,6 +246,7 @@ export class PathIdPage {
     this.removePath()
     this.removePointA()
     this.removePointB()
+    this.deletePOIsFromMap()
     this.currentPointService.deletePointA()
     this.currentPointService.deletePointB()
     this.filterService.setAllFalseSpunta()
@@ -353,14 +352,7 @@ export class PathIdPage {
           this.poiService.setCurrentPois(poisList)
 
         } else {
-          for (const property in this.map._layers) {
-            if (this.map._layers[property].options && this.map._layers[property].options.title) {
-              if (this.map._layers[property].options.title == "restaurant") {
-
-                this.map.removeLayer(this.map._layers[property])
-              }
-            }
-          }
+          this.deletePOIsFromMap("restaurant")
         }
 
       }, { "title": "trail-sign" }).addTo(this.map);
@@ -401,14 +393,9 @@ export class PathIdPage {
           this.poiService.setCurrentPois(poisList)
 
         } else {
-          for (const property in this.map._layers) {
-            if (this.map._layers[property].options && this.map._layers[property].options.title) {
-              if (this.map._layers[property].options.title == "museum") {
 
-                this.map.removeLayer(this.map._layers[property])
-              }
-            }
-          }
+          this.deletePOIsFromMap("museum")
+
         }
 
       }, { "title": "trail-sign" }).addTo(this.map);
@@ -436,14 +423,7 @@ export class PathIdPage {
           this.poiService.setCurrentPois(poisList)
 
         } else {
-          for (const property in this.map._layers) {
-            if (this.map._layers[property].options && this.map._layers[property].options.title) {
-              if (this.map._layers[property].options.title == "shop") {
-
-                this.map.removeLayer(this.map._layers[property])
-              }
-            }
-          }
+          this.deletePOIsFromMap("shop")
         }
 
       }, { "title": "trail-sign" }).addTo(this.map);
@@ -529,6 +509,26 @@ export class PathIdPage {
     }, { style: myStyle }));
   }
 
+  deletePOIsFromMap(typePOIs?) {
+    if (typePOIs) {
+      for (const property in this.map._layers) {
+        if (this.map._layers[property].options && this.map._layers[property].options.title) {
+          if (this.map._layers[property].options.title == typePOIs) {
+
+            this.map.removeLayer(this.map._layers[property])
+          }
+        }
+      }
+    } else {
+      for (const property in this.map._layers) {
+        if (this.map._layers[property].options && this.map._layers[property].options.title) {
+          this.map.removeLayer(this.map._layers[property])
+        }
+      }
+    }
+
+  }
+
   async onSegnalazionePopup() {
     this.geoLocationService.setChechRicalcolo(false)
     const modal = await this.modalController.create({
@@ -560,7 +560,6 @@ export class PathIdPage {
 
   isLastNode(node) {
     if (node.isLast) {
-      console.log(node)
       this.onLastNodePopup()
     }
   }

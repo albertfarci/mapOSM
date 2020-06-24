@@ -189,23 +189,6 @@ export class PathPage {
         this.pathsToDisplay = data
       }
     )
-    /*
-    button.modalita_figlio.map(
-      x => {
-        console.log(x)
-        this.pathFilter
-          //.filter(path => JSON.parse(path).value == x.valore)
-          .map(path => {
-
-            this.toast.show(JSON.parse(path.filter), '3000', 'center').subscribe(
-              toast => {
-                console.log(toast);
-              })
-            this.pathsToDisplay.push(path)
-          })
-      }
-    )
-*/
 
   }
 

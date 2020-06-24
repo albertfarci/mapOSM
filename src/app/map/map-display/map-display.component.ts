@@ -171,7 +171,7 @@ export class MapDisplayComponent implements OnInit {
       });
 
     }
-    setTimeout(() => { this.map.invalidateSize() }, 1000);
+    setTimeout(() => { this.map.invalidateSize(), console.log("set timout") }, 3000);
 
   }
 

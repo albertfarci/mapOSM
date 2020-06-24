@@ -35,10 +35,8 @@ export class MapSearchComponent implements OnInit {
     this.start = []
     this.isFocused = false
 
-    console.log("ngOnInit")
     setTimeout(() => {
       this.searchbar.setFocus()
-      console.log(this.searchbar)
       this.isFocused = true
     }, 1000);
 
@@ -62,14 +60,11 @@ export class MapSearchComponent implements OnInit {
 
   ionViewDidEnter() {
 
-    console.log("ionViewDidEnter")
   }
 
   ionViewDidLeave() {
 
-    console.log("destroys")
     this.observerIdRouter.unsubscribe()
-    console.log("ionViewDidEnter")
   }
 
   ngOnDestroy() {
