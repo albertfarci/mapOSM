@@ -63,16 +63,21 @@ export class MapPage {
   }
 
   ionViewDidEnter() {
+
     this.subscriptions.push(
       this.currentPointService.currentPointA
         .subscribe(
           (data) => {
+            console.log(data)
+            if (data.latitudine == "") this.currentPointService.deletePointA()
             if (data) this.pointA = data
           }
         ))
     this.subscriptions.push(
       this.currentPointService.currentPointB.subscribe(
         (data) => {
+          console.log(data)
+          if (data.latitudine == "") this.currentPointService.deletePointB()
           if (data) this.pointB = data
         }
       )

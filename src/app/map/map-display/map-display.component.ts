@@ -74,8 +74,7 @@ export class MapDisplayComponent implements OnInit {
     this.currentPointsService.currentPointA.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data) => {
         if (data) {
-
-          setTimeout(() => { this.map.invalidateSize() }, 1000);
+          setTimeout(() => { this.map.invalidateSize() }, 2000);
           if (data.latitudine != "" && data.longitudine != "") {
 
             this.pathService.setToNullSelectedPath()
