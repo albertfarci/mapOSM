@@ -220,9 +220,11 @@ export class PathIdPage {
     if (tracking.status) {
       let now = new Date();
 
+      console.log(tracking)
+      const pointSegment = "[" + tracking.segment[0][0] + ", " + tracking.segment[0][1] + "]"
       const roadSegment = "[" + tracking.nodes[0][0] + ", " + tracking.nodes[0][1] + "]"
-      const timestamps = [now.getMilliseconds(), this.lastDateGetted.getMilliseconds()]
-      this.geoLocationService.sendTrackingUserData(tracking.nodes[0], timestamps, this.routerState).subscribe()
+      const timestamps = [Number(this.lastDateGetted), Number(now)]
+      this.geoLocationService.sendTrackingUserData(tracking, timestamps, this.routerState).subscribe()
       this.lastDateGetted = now
     }
   }
