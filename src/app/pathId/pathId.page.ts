@@ -471,8 +471,8 @@ export class PathIdPage {
     if (this.pointA && this.pointB) {
 
 
-      var point = this.pointA.latitudine + "," + this.pointA.longitudine
-      var pointEnd = this.pointB.latitudine + "," + this.pointB.longitudine
+      var point = this.pointA.longitudine + "," + this.pointA.latitudine
+      var pointEnd = this.pointB.longitudine + "," + this.pointB.latitudine
       this.pathService.getPath(point, pointEnd, this.routerState)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(

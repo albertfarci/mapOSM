@@ -202,8 +202,8 @@ export class MapDisplayComponent implements OnInit {
     if (this.pathFilter.length > 0) {
       if (this.pointsPath[0] && this.pointsPath[1]) {
 
-        let pointStart = this.pointsPath[0].latitudine + "," + this.pointsPath[0].longitudine
-        let pointEnd = this.pointsPath[1].latitudine + "," + this.pointsPath[1].longitudine
+        let pointStart = this.pointsPath[0].longitudine + "," + this.pointsPath[0].latitudine
+        let pointEnd = this.pointsPath[1].longitudine + "," + this.pointsPath[1].latitudine
 
         this.map.setView([this.pointsPath[0].latitudine, this.pointsPath[0].longitudine], 20)
 
@@ -213,13 +213,15 @@ export class MapDisplayComponent implements OnInit {
             this.pathService.getPath(pointStart, pointEnd, x.filter.valore)
               .pipe(takeUntil(this.unsubscribe$)).subscribe(
                 posts => {
-                  let newGeometry = posts.geometry.replace("[", "");
-                  newGeometry = newGeometry.replace("]", "");
+                  let newGeometry = posts.geometry.split("(")[1];
+
+                  newGeometry = newGeometry.replace("(", "");
+                  newGeometry = newGeometry.replace(")", "");
                   newGeometry = newGeometry.replace(/ /g, "|");
-                  newGeometry = newGeometry.replace("|", "");
 
                   // 2. split sulle virgole:
                   let geometryArray1Dim = newGeometry.split(",");
+
 
                   // 3. crea array bidimesionale:
                   let geometryArray2Dim = Array.from(Array(geometryArray1Dim.length), () => new Array(2));
@@ -232,12 +234,6 @@ export class MapDisplayComponent implements OnInit {
                       geometryArray2Dim[i][1] = parseFloat(tempArray[1]);
                     }
                   }
-
-                  let newPointList = posts.nodes.replace("[", "");
-                  newPointList = newPointList.replace("]", "");
-
-                  // 2. split sulle virgole:
-                  let PointList1Dim = newPointList.split(",");
 
 
                   if (x.filter.nome == "Sicuro") var myStyle = {
@@ -265,6 +261,9 @@ export class MapDisplayComponent implements OnInit {
                     "distance": posts.distance,
                     "style": myStyle
                   })
+
+                  console.log(geometryArray2Dim)
+
                   this.layerGroup.addLayer(geoJSON({
                     "type": "LineString",
                     "coordinates": geometryArray2Dim,
