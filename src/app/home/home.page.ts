@@ -72,11 +72,9 @@ export class HomePage {
 
   }
 
-  ionViewDidEnter() {
-    this.geoLocationService.checkGPSPermissionHome()
-  }
   setTypePAth() {
 
+    this.geoLocationService.checkGPSPermissionHome()
     this.router.navigate(["/tabs/map"]);
   }
 
