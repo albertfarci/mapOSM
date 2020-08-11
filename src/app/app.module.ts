@@ -28,6 +28,7 @@ import { GeoLocationService } from './shared/services/geoLocation.service';
 import { StorageService } from './shared/services/storage.service';
 import { CurrentPointService } from './shared/services/current-points.service';
 import { CurrentStepService } from './shared/services/current-step.services';
+import { Insomnia } from '@ionic-native/insomnia/ngx';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SegnalazioneService } from './shared/services/segnalazione.service';
 
@@ -55,6 +56,7 @@ import { SegnalazioneService } from './shared/services/segnalazione.service';
     LocationAccuracy,
     LocalNotifications,
     SegnalazioneService,
+    Insomnia,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
