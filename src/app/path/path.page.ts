@@ -1,15 +1,10 @@
 import { Component } from '@angular/core';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
-import { Toast } from '@ionic-native/toast/ngx';
-import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { PreferitiService } from '../shared/services/preferiti.service';
-import { DettaglioPreferitoService } from '../shared/services/dettaglioPreferito.service';
 import { StorageService } from '../shared/services/storage.service';
 import { FilterListService } from '../shared/services/filters.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
+import { CurrentPointService } from '../shared/services/current-points.service';
 @Component({
   selector: 'app-path',
   templateUrl: 'path.page.html',
@@ -27,21 +22,26 @@ export class PathPage {
   unsubscribe$ = new Subject()
   constructor(
     private router: Router,
-    private preferitiService: PreferitiService,
-    private dettaglioPreferitoService: DettaglioPreferitoService,
-    private storageService: StorageService,
-    private filterListService: FilterListService,
-    private toast: Toast
+    private currentPointService: CurrentPointService,
+    private filterService: FilterListService,
+    private storageService: StorageService
   ) {
+
+  }
+
+
+
+  ionViewDidEnter() {
 
 
     this.pathsSaved = []
-
-    this.filterListService.filterList.pipe(takeUntil(this.unsubscribe$)).subscribe(
-      (data) => {
-        this.paths = data
-      }
-    )
+    this.getPaths();
+    /*this.goToPathId({
+      modalita_figlio: null,
+      nome: "Ecosostenibile",
+      spunta: true,
+      valore: 26
+    })*/
   }
 
   ionViewDidLeave() {
@@ -53,139 +53,28 @@ export class PathPage {
     return this.paths.filter(x => x.spunta).length > 0
   }
 
-  goToPathId(filter) {
+  goToPathId(path) {
+    //console.log(path.coordinates)
 
-    this.dettaglioPreferitoService.setPreferito(this.pathFilter[filter], filter)
+    const pathParsed = JSON.parse(path.coordinates)
+    let tpmPoint = { latitudine: pathParsed[0].lat, longitudine: pathParsed[0].lng, title: pathParsed[0].lat + " , " + pathParsed[0].lng, img: "", abstract: "" }
+    //let tpmPoint = { latitudine: 39.218675676836675, longitudine: 9.11167695314004, title: "39.218675676836675 , 9.11167695314004", img: "", abstract: "" }
+    this.currentPointService.setPointA(tpmPoint)
+
+    tpmPoint = { latitudine: pathParsed[1].lat, longitudine: pathParsed[1].lng, title: pathParsed[1].lat + " , " + pathParsed[1].lng, img: "", abstract: "" }
+    //tpmPoint = { latitudine: 39.21795975, longitudine: 9.11490479603865, title: "Torre dell'Elefante", img: "", abstract: "" }
+    this.currentPointService.setPointB(tpmPoint)
+
+    this.filterService.setCurrentFilter(JSON.parse(path.filter))
+    //this.filterService.setCurrentFilter(path.filter)
     this.router.navigate(['/tabs/pathId']);
   }
 
-  filterBicycle() {
-  }
-
-
-  filterFirstLevel(value) {
-    this.pathsToDisplay = []
-    this.paths
-      .map(x => {
-        if (x.nome == value) {
-
-          if (x.spunta) {
-
-            this.filterListService.setFalseSpunta(value).then(
-              () => {
-                this.setDisableButton()
-
-                this.optionsFilter = false
-              }
-            )
-          } else {
-            this.filterListService.setAllFalseSpunta()
-              .then(
-                () => {
-                  this.filterListService.setSecondLevelFalseSpunta()
-                    .then(
-                      () => {
-                        this.filterListService.setTrueSpunta(value).then(
-                          () => {
-                            this.setEnableButton()
-                            this.setDisableButton()
-                            if (x.nome == "Auto") {
-                              x.modalita_figlio.map(x => this.getPaths(x))
-
-                            }
-                          }
-                        )
-                      })
-                }
-              )
-
-          }
-        }
-      })
-  }
-
-
-  setEnableButtonSecondLevel(value) {
-
-
-    this.pathsToDisplay = []
-    this.filterListService.setSecondLevelFalseSpunta().then(
-      () => {
-        this.paths
-          .map(x => {
-            if (x.spunta) {
-              x.modalita_figlio.map(x => {
-                if (x.nome == value) {
-                  this.filterListService.setSecondLevelTrueSpunta(value)
-                    .then(
-                      () => {
-                        this.paths
-                          .map(x => {
-                            if (x.spunta) {
-                              x.modalita_figlio.map(x => {
-                                if (x.nome == value) {
-                                  x.color = 'secondary'
-                                }
-                              })
-                            }
-                          })
-
-                        this.paths
-                          .map(x => {
-                            x.modalita_figlio.map(x => {
-                              if (x.nome != value) {
-                                x.color = 'light'
-                              }
-                            })
-
-                          })
-                      }
-                    )
-                }
-              })
-            }
-          })
-      }
-
-    )
-
-
-  }
-
-
-
-  setEnableButton() {
-
-    this.paths
-      .filter(x => x.spunta)
-      .map(x => {
-        x.color = "secondary"
-      })
-  }
-
-  setDisableButton() {
-    this.paths
-      .filter(x => !x.spunta)
-      .map(x => {
-        x.color = "light"
-      })
-  }
-
-
-  getEnabled() {
-
-    return this.paths.filter(x => x.spunta)
-      .map(x => { return x.modalita_figlio })[0]
-      .map(x => {
-        return x
-      })
-
-  }
-
-  getPaths(button) {
+  getPaths() {
     this.pathsToDisplay = []
     this.storageService.getPathFromStorage().then(
       (data) => {
+        console.log("Data from db:", data)
         this.pathsToDisplay = data
       }
     )

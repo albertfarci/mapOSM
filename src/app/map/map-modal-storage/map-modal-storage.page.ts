@@ -1,14 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { NavParams, ModalController } from '@ionic/angular';
 import { Point } from 'src/app/shared/models/point.model';
-import { CurrentStepService } from 'src/app/shared/services/current-step.services';
-import { FilterListService } from 'src/app/shared/services/filters.service';
 import { PathService } from 'src/app/shared/services/path.service';
 import { CurrentPointService } from 'src/app/shared/services/current-points.service';
-import { post } from 'selenium-webdriver/http';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
-import { Toast } from '@ionic-native/toast/ngx';
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { MapModalNavigationPage } from './map-modal-navigation/map-modal-navigation.page';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -30,12 +24,9 @@ export class MapModalStoragePage {
     isSetAlertSelectedItem: boolean = false
 
     unsubscribe$ = new Subject()
-    constructor(navParams: NavParams,
+    constructor(
         private modalCtrl: ModalController,
         private currenteCtrl: ModalController,
-        private sqlite: SQLite,
-        private toast: Toast,
-        private localNotifications: LocalNotifications,
         private currentPointsService: CurrentPointService,
         public pathService: PathService,
         public router: Router) {

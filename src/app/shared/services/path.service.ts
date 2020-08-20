@@ -83,12 +83,17 @@ export class PathService {
 
   addSavedPath(path) {
     this.tmpSavedPath.push(path)
-    this.savedPathSource.next(this.tmpSelectedPath)
+    this.savedPathSource.next(this.tmpSavedPath)
   }
 
   removeSelectedPath(path) {
     this.tmpSelectedPath = this.tmpSelectedPath.filter(x => x.filter != path.filter)
     this.selectedPathSource.next(this.tmpSelectedPath)
+  }
+
+  removeSavedPath(path) {
+    this.tmpSavedPath = this.tmpSavedPath.filter(x => x.filter != path.filter)
+    this.savedPathSource.next(this.tmpSavedPath)
   }
 
   setToNullSelectedPath() {

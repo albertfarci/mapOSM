@@ -56,7 +56,7 @@
                 </div>
             </ion-row>
         </ion-row>
-        <ion-row id="row-map-display">
+        <ion-row id="row-map-display" style="height: 80%">
             <app-map-display style="width: 100%;" (navigate)="onNavigate($event)" (detail)="onDetail()"
                 (location)="onPointSelectedA($event)" [pathFilter]="pathFilter">
             </app-map-display>

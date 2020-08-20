@@ -1,15 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { NavParams, ModalController } from '@ionic/angular';
-import { Point } from 'src/app/shared/models/point.model';
-import { CurrentStepService } from 'src/app/shared/services/current-step.services';
 import { FilterListService } from 'src/app/shared/services/filters.service';
 import { PathService } from 'src/app/shared/services/path.service';
 import { CurrentPointService } from 'src/app/shared/services/current-points.service';
-import { post } from 'selenium-webdriver/http';
 import { MapModalStoragePage } from '../map-modal-storage/map-modal-storage.page';
-import { MapModalNavigationPage } from '../map-modal-storage/map-modal-navigation/map-modal-navigation.page';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { Toast } from '@ionic-native/toast/ngx';
 
 @Component({
     selector: 'map-modal-modalita-page',
@@ -26,13 +24,18 @@ export class MapModalModalitaPage {
     paths
     optionsFilter: boolean = false;
 
+    savedPath
+    selectedPath;
+
     unsubscribe$ = new Subject()
 
     constructor(navParams: NavParams,
         private modalCtrl: ModalController,
         public filterListService: FilterListService,
         public pathService: PathService,
-        private currentPointsService: CurrentPointService) {
+        private currentPointsService: CurrentPointService,
+        private sqlite: SQLite,
+        private toast: Toast) {
 
         this.currentPointsService.currentPointA
             .pipe(takeUntil(this.unsubscribe$)).subscribe(
@@ -75,18 +78,15 @@ export class MapModalModalitaPage {
     }
 
     ionViewDidEnter() {
+
         this.pathService.selectedPath
             .pipe(takeUntil(this.unsubscribe$)).subscribe(
                 (data) => {
                     if (data) {
                         if (data.length) {
-                            data.map(data => {
-                                document.querySelectorAll("ion-icon[name='eye']")
-                                    .forEach(x => {
 
-                                        if (data.filter.valore == x.id) x.setAttribute("style", "color: blue")
-                                    })
-                            })
+                            this.selectedPath = data
+                            this.setEyeColor();
                         }
                     }
                 }
@@ -96,21 +96,46 @@ export class MapModalModalitaPage {
             .pipe(takeUntil(this.unsubscribe$)).subscribe(
                 (data) => {
                     if (data) {
-                        data.map(data => {
-                            document.querySelectorAll("ion-icon[name='heart']")
-                                .forEach(x => {
+                        if (data.length) {
+                            this.savedPath = data
+                            this.setHeartColor();
+                        }
 
-                                    if (data.filter.valore == x.id) x.setAttribute("style", "color: red")
-                                })
-                        })
                     }
 
                 }
             )
 
+
         if (!!this.getEnabled()) {
 
             this.optionsFilter = true
+        }
+
+    }
+
+    setEyeColor() {
+        if (this.selectedPath) {
+            this.selectedPath.map(data => {
+                document.querySelectorAll("ion-icon[name='eye']")
+                    .forEach(x => {
+
+                        if (data.filter.valore == x.id) x.setAttribute("style", "color: blue")
+                    })
+            })
+        }
+
+    }
+
+    setHeartColor() {
+        if (this.savedPath) {
+            this.savedPath.map(data => {
+                document.querySelectorAll("ion-icon[name='heart']")
+                    .forEach(x => {
+                        console.log(data.filter.valore == x.id)
+                        if (data.filter.valore == x.id) x.setAttribute("style", "color: red")
+                    })
+            })
         }
 
     }
@@ -274,6 +299,11 @@ export class MapModalModalitaPage {
                 .pipe(takeUntil(this.unsubscribe$))
                 .subscribe(
                     posts => {
+
+                        this.setEyeColor();
+
+                        this.setHeartColor();
+
                         this.pathToDisplay.push({
                             "filter": x,
                             "icon": value.icon,
@@ -300,6 +330,56 @@ export class MapModalModalitaPage {
 
     }
 
+    savePathNavigate(item) {
+
+        document.querySelectorAll("ion-icon[name='heart']")
+            .forEach(x => {
+                if (item.filter.valore == x.id) {
+                    x.setAttribute("style", "color: red")
+
+                    this.pathService.addSavedPath(item)
+                }
+            })
+
+
+        this.sqlite.create({
+            name: 'filters.db',
+            location: 'default'
+        })
+            .then((db: SQLiteObject) => {
+                db.executeSql(`CREATE TABLE IF NOT EXISTS paths(
+              rowid INTEGER PRIMARY KEY, 
+              filter TEXT,
+              coordinates TEXT)`, [])
+                    .then((tableInserted) => {
+
+                        this.toast.show("Percorso salvato, vai nei tuoi Preferiti per avviare il percorso", '3000', 'center').subscribe(
+                            toast => {
+                                console.log(toast);
+                            })
+
+                        const pointPaths = [
+                            { lat: this.pointA.latitudine, lng: this.pointA.longitudine },
+                            { lat: this.pointB.latitudine, lng: this.pointB.longitudine }
+                        ]
+                        db.executeSql(`
+                INSERT INTO paths (filter,coordinates)
+                  VALUES(?,?)`, [
+                            JSON.stringify(item.filter),
+                            JSON.stringify(pointPaths)])
+                            .then((tableInserted) => {
+                                this.openStorageModal(item)
+                            })
+                    })
+                    .catch((e) => {
+                        this.toast.show("Something went wrong", '3000', 'center').subscribe(
+                            toast => {
+                                console.log(toast);
+                            })
+                    })
+            })
+
+    }
 
 
     async openStorageModal(path) {

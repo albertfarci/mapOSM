@@ -4,12 +4,10 @@ import { AlertController, Platform, ModalController } from '@ionic/angular';
 import { FilterListService } from '../shared/services/filters.service';
 import { CurrentPointService } from '../shared/services/current-points.service';
 import { Point } from '../shared/models/point.model';
-import { MapModalPage } from './map-modal/map-modal.page';
 import { CurrentStepService } from '../shared/services/current-step.services';
 import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.page';
 import { PathService } from '../shared/services/path.service';
-import { Subject, ReplaySubject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ReplaySubject, Subscription } from 'rxjs';
 import { GeoLocationService } from '../shared/services/geoLocation.service';
 
 
@@ -68,7 +66,6 @@ export class MapPage {
       this.currentPointService.currentPointA
         .subscribe(
           (data) => {
-            console.log(data)
             if (data.latitudine == "") this.currentPointService.deletePointA()
             if (data) this.pointA = data
           }
@@ -76,7 +73,6 @@ export class MapPage {
     this.subscriptions.push(
       this.currentPointService.currentPointB.subscribe(
         (data) => {
-          console.log(data)
           if (data.latitudine == "") this.currentPointService.deletePointB()
           if (data) this.pointB = data
         }
@@ -97,6 +93,7 @@ export class MapPage {
           if (data == 1) {
             document.getElementById("row-map-display").style.height = "80%"
           }
+
         }
       )
     )

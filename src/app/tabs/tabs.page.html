@@ -8,11 +8,13 @@
       <ion-tab-button tab="map" class="tab">
         <ion-icon name="compass" style="color: white"></ion-icon>
       </ion-tab-button>
+
       <ion-tab-button tab="home" class="tab">
         <img class="tab-img" src="/assets/bb/icon2-s.png" alt="" />
       </ion-tab-button>
+
       <ion-tab-button class="tab">
-        <ion-icon name="heart" style="color: white"></ion-icon>
+        <ion-icon (click)="goToPreferiti()" name="heart" style="color: white"></ion-icon>
       </ion-tab-button>
 
     </ion-tab-bar>
