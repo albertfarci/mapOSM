@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Map, LeafIcon, tileLayer, marker, icon, polyline, geoJSON, removeLayers, LayerGroup } from 'leaflet';
+import { Map, icon, geoJSON, LayerGroup } from 'leaflet';
 import { Platform, ModalController } from '@ionic/angular';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
-import { Toast } from '@ionic-native/toast/ngx';
 import { PathService } from '../shared/services/path.service';
 import { DettaglioPreferitoService } from '../shared/services/dettaglioPreferito.service';
 import { GeoLocationService } from '../shared/services/geoLocation.service';
@@ -11,7 +9,6 @@ import L from 'leaflet'
 import "leaflet-easybutton"
 import { Point } from '../shared/models/point.model';
 import { CurrentPointService } from '../shared/services/current-points.service';
-import { MapModalModalitaPage } from './map-modal-modalita/map-modal-modalita.page';
 import { PoiService } from '../shared/services/poi.service';
 import { MapModalStartPage } from './map-modal-start/map-modal-start.page';
 import { MapModalRicalcoloPage } from './map-modal-ricalcolo/map-modal-ricalcolo.page';
@@ -127,6 +124,12 @@ export class PathIdPage {
       this.map.invalidateSize()
       this.geoLocationService.getLocationCoordinatesSetup()
     }, 5000);
+
+    this.path = {
+      geometry: [],
+      nodes: []
+    }
+
     this.subscriptions.push(
       this.currentPointService.currentPointA.subscribe(
         (data) => {
@@ -149,7 +152,6 @@ export class PathIdPage {
             this.pointB = data
             this.getPath()
           } else {
-
             this.pointB = data
           }
         }
@@ -161,7 +163,8 @@ export class PathIdPage {
       this.filterService.currentFilter.subscribe(
         (data) => {
           if (data) {
-            this.routerState = data.filter.valore
+            this.routerState = data.valore
+            this.getPath();
           }
         }
       )
@@ -468,7 +471,7 @@ export class PathIdPage {
         */
     this.displayPointA()
     this.displayPointB()
-    if (this.pointA && this.pointB) {
+    if (this.pointA && this.pointB && this.routerState) {
 
 
       var point = this.pointA.longitudine + "," + this.pointA.latitudine

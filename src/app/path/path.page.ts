@@ -37,10 +37,12 @@ export class PathPage {
     this.pathsSaved = []
     this.getPaths();
     /*this.goToPathId({
-      modalita_figlio: null,
-      nome: "Ecosostenibile",
-      spunta: true,
-      valore: 26
+      filter: {
+        modalita_figlio: null,
+        nome: "Ecosostenibile",
+        spunta: true,
+        valore: 26
+      }
     })*/
   }
 
@@ -66,7 +68,7 @@ export class PathPage {
     this.currentPointService.setPointB(tpmPoint)
 
     this.filterService.setCurrentFilter(JSON.parse(path.filter))
-    //this.filterService.setCurrentFilter(path.filter)
+    //this.filterService.setCurrentFilter(path)
     this.router.navigate(['/tabs/pathId']);
   }
 

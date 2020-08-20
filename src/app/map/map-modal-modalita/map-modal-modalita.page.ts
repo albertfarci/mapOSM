@@ -340,17 +340,30 @@ export class MapModalModalitaPage {
                     this.pathService.addSavedPath(item)
                 }
             })
-
-
+        /*
+    this.sqlite.create({
+        name: 'filters.db',
+        location: 'default'
+    })
+        .then((db: SQLiteObject) => {
+            db.executeSql(`DROP TABLE paths`, [])
+                .then((tableInserted) => {
+                    this.toast.show("TABLE DROPPED", '3000', 'center').subscribe(
+                        toast => {
+                            console.log(toast);
+                        })
+                })
+        })
+    */
         this.sqlite.create({
             name: 'filters.db',
             location: 'default'
         })
             .then((db: SQLiteObject) => {
                 db.executeSql(`CREATE TABLE IF NOT EXISTS paths(
-              rowid INTEGER PRIMARY KEY, 
-              filter TEXT,
-              coordinates TEXT)`, [])
+      rowid INTEGER PRIMARY KEY, 
+      filter TEXT,
+      coordinates TEXT)`, [])
                     .then((tableInserted) => {
 
                         this.toast.show("Percorso salvato, vai nei tuoi Preferiti per avviare il percorso", '3000', 'center').subscribe(
@@ -363,8 +376,8 @@ export class MapModalModalitaPage {
                             { lat: this.pointB.latitudine, lng: this.pointB.longitudine }
                         ]
                         db.executeSql(`
-                INSERT INTO paths (filter,coordinates)
-                  VALUES(?,?)`, [
+        INSERT INTO paths (filter,coordinates)
+          VALUES(?,?)`, [
                             JSON.stringify(item.filter),
                             JSON.stringify(pointPaths)])
                             .then((tableInserted) => {
