@@ -139,24 +139,6 @@ export class GeoLocationService {
         );
     }
 
-
-    getWatchCoordinates() {
-        var options = { timeout: 1000 };
-
-        return this.geolocation.watchPosition(options)
-            .pipe(
-                filter((p) => p.coords !== undefined),
-                map(resp => {
-                    return {
-                        latitudine: resp.coords.latitude,
-                        longitudine: resp.coords.longitude
-                    } as Point
-                }
-                ));
-
-
-    }
-
     // Methos to get device accurate coordinates using device GPS
     getLocationCoordinates() {
 
@@ -171,8 +153,8 @@ export class GeoLocationService {
 
     getLocationCoordinatesSetup() {
         if (this.checkRicalcoloSource) {
-            //this.getLocationCoordinates()
-            this.checkGPSPermission()
+            this.getLocationCoordinates()
+            //this.checkGPSPermission()
         }
     }
 
