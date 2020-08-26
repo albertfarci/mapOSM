@@ -114,13 +114,9 @@ export class PathService {
         segments.push(path.geometry[i])
         segments.push(path.geometry[i + 1])
         let nodes = [];
-
-        nodes.push(JSON.parse(path.nodes)[i])
-        nodes.push(JSON.parse(path.nodes)[i + 1])
         return {
           status: true,
-          segment: [segments],
-          nodes: [nodes]
+          segment: [segments]
         }
       }
     }

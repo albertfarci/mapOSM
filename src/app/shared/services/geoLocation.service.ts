@@ -153,8 +153,8 @@ export class GeoLocationService {
 
     getLocationCoordinatesSetup() {
         if (this.checkRicalcoloSource) {
-            this.getLocationCoordinates()
-            //this.checkGPSPermission()
+            //this.getLocationCoordinates()
+            this.checkGPSPermission()
         }
     }
 

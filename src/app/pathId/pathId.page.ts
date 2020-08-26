@@ -163,7 +163,7 @@ export class PathIdPage {
       this.filterService.currentFilter.subscribe(
         (data) => {
           if (data) {
-            this.routerState = data.valore
+            this.routerState = data.filter.valore
             this.getPath();
           }
         }
@@ -223,9 +223,6 @@ export class PathIdPage {
     if (tracking.status) {
       let now = new Date();
 
-      console.log(tracking)
-      const pointSegment = "[" + tracking.segment[0][0] + ", " + tracking.segment[0][1] + "]"
-      const roadSegment = "[" + tracking.nodes[0][0] + ", " + tracking.nodes[0][1] + "]"
       const timestamps = [Number(this.lastDateGetted), Number(now)]
       this.geoLocationService.sendTrackingUserData(tracking, timestamps, this.routerState).subscribe()
       this.lastDateGetted = now
@@ -473,16 +470,12 @@ export class PathIdPage {
     this.displayPointB()
     if (this.pointA && this.pointB && this.routerState) {
 
-
       var point = this.pointA.longitudine + "," + this.pointA.latitudine
       var pointEnd = this.pointB.longitudine + "," + this.pointB.latitudine
       this.pathService.getPath(point, pointEnd, this.routerState)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           posts => {
-
-
-
             this.pathService.calculateGeometry(posts)
               .pipe(takeUntil(this.unsubscribe$))
               .subscribe(

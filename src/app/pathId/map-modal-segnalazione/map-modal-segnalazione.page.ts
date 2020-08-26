@@ -58,7 +58,6 @@ export class MapModalSegnalazionePage {
         customerData.timestamp = date.getMilliseconds()
         let isPointOnLine = this.pathService.isPointOnLine(this.currentPosition, this.path)
         if (isPointOnLine.status) {
-            customerData.roadSegment = "[" + isPointOnLine.nodes[0][0] + ", " + isPointOnLine.nodes[0][1] + "]"
             this.segnalazioneService.sendSegnalazione(customerData, this.currentPosition).subscribe()
         }
         this.closeModal()
