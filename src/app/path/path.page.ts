@@ -67,7 +67,13 @@ export class PathPage {
     //tpmPoint = { latitudine: 39.21795975, longitudine: 9.11490479603865, title: "Torre dell'Elefante", img: "", abstract: "" }
     this.currentPointService.setPointB(tpmPoint)
 
-    this.filterService.setCurrentFilter(JSON.parse(path.filter))
+    const pathFilterParsed = JSON.parse(path.filter);
+
+    const pathFilter = {
+      filter: pathFilterParsed
+    };
+
+    this.filterService.setCurrentFilter(pathFilter)
     //this.filterService.setCurrentFilter(path)
     this.router.navigate(['/tabs/pathId']);
   }

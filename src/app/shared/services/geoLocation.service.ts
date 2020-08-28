@@ -197,9 +197,6 @@ export class GeoLocationService {
                 "pointSegment": [
                     tracking.segment[0][0], tracking.segment[0][1]
                 ],
-                "roadSegment": [
-                    tracking.nodes[0][0], tracking.nodes[0][1]
-                ],
                 "mode": modalita,
                 "distance": 0,
                 "valid": 1,
