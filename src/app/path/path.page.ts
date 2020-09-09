@@ -78,6 +78,29 @@ export class PathPage {
     this.router.navigate(['/tabs/pathId']);
   }
 
+  sendPathToServer(path) {
+
+
+    const pathParsed = JSON.parse(path.coordinates);
+    const pathFilterParsed = JSON.parse(path.filter);
+
+    const pathCoordinates = {
+      coordinates: pathParsed
+    };
+
+    const pathItem = {
+      filter: pathFilterParsed
+    };
+
+    const jsonToSend = {
+      pathItem,
+      pathCoordinates
+    }
+
+    console.log(jsonToSend)
+
+  }
+
   getPaths() {
     this.pathsToDisplay = []
     this.storageService.getPathFromStorage().then(
