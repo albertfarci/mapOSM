@@ -5,6 +5,7 @@ import { FilterListService } from '../shared/services/filters.service';
 import { Subject } from 'rxjs';
 
 import { CurrentPointService } from '../shared/services/current-points.service';
+import { PathService } from '../shared/services/path.service';
 @Component({
   selector: 'app-path',
   templateUrl: 'path.page.html',
@@ -24,7 +25,8 @@ export class PathPage {
     private router: Router,
     private currentPointService: CurrentPointService,
     private filterService: FilterListService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private pathService: PathService
   ) {
 
   }
@@ -99,6 +101,9 @@ export class PathPage {
 
     console.log(jsonToSend)
 
+    this.pathService.savePath().subscribe(
+      result => console.log(result)
+    );
   }
 
   getPaths() {
