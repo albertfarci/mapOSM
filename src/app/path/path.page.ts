@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { StorageService } from '../shared/services/storage.service';
 import { FilterListService } from '../shared/services/filters.service';
 import { Subject } from 'rxjs';
-
+import { Toast } from '@ionic-native/toast/ngx';
 import { CurrentPointService } from '../shared/services/current-points.service';
 import { PathService } from '../shared/services/path.service';
+
 @Component({
   selector: 'app-path',
   templateUrl: 'path.page.html',
@@ -26,7 +27,8 @@ export class PathPage {
     private currentPointService: CurrentPointService,
     private filterService: FilterListService,
     private storageService: StorageService,
-    private pathService: PathService
+    private pathService: PathService,
+    private toast: Toast
   ) {
 
   }
@@ -58,7 +60,7 @@ export class PathPage {
   }
 
   goToPathId(path) {
-    //console.log(path.coordinates)
+    console.log(path.coordinates)
 
     const pathParsed = JSON.parse(path.coordinates)
     let tpmPoint = { latitudine: pathParsed[0].lat, longitudine: pathParsed[0].lng, title: pathParsed[0].lat + " , " + pathParsed[0].lng, img: "", abstract: "" }
@@ -82,7 +84,6 @@ export class PathPage {
 
   sendPathToServer(path) {
 
-
     const pathParsed = JSON.parse(path.coordinates);
     const pathFilterParsed = JSON.parse(path.filter);
 
@@ -102,8 +103,21 @@ export class PathPage {
     console.log(jsonToSend)
 
     this.pathService.savePath().subscribe(
-      result => console.log(result)
-    );
+      result => {
+        this.toast.show('Percorso salvato', '3000', 'center').subscribe(
+          toast => {
+            console.log(toast);
+          })
+      },
+      error => {
+        error.error.errors.msg.forEach(element => {
+          this.toast.show(JSON.stringify(element), '3000', 'center').subscribe(
+            toast => {
+              console.log(toast);
+            })
+          console.log(element);
+        });
+      });
   }
 
   getPaths() {
@@ -114,7 +128,6 @@ export class PathPage {
         this.pathsToDisplay = data
       }
     )
-
   }
 
 }
